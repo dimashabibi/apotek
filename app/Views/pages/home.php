@@ -9,11 +9,6 @@
 
 <body>
     Dashboard Apotek Sumber Sekar
-    <h1>dimas</h1>
-    <h1>dimas</h1>
-    <h1>dimas</h1>
-    <h1>dimas</h1>
-    <h1>dimas</h1>
 </body>
 
 </html>
