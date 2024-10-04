@@ -24,6 +24,8 @@
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
+      <!-- ------------------------ form login start --------------------------------------- -->
+
       <form action="<?= site_url('proses_login') ?>" method="post">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="name" name="username">
@@ -50,22 +52,23 @@
               </label>
             </div>
           </div>
-          <!-- /.col -->
+          <!-- button sign in -->
           <div class="col-4">
             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
-          <!-- /.col -->
+          <!-- button sign in -->
         </div>
       </form>
+      <!-- form login end -->
 
-      <div class="social-auth-links text-center mt-2 mb-3">
+      <!-- <div class="social-auth-links text-center mt-2 mb-3">
         <a href="#" class="btn btn-block btn-primary">
           <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
         </a>
         <a href="#" class="btn btn-block btn-danger">
           <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
         </a>
-      </div>
+      </div> -->
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
