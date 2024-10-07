@@ -23,3 +23,7 @@ $routes->get('/daftar_obat', 'ObatController::daftar_obat', ['filter' => 'AuthFi
 $routes->post('/tambah_obat', 'ObatController::tambah_obat', ['filter' => 'AuthFilter']);
 $routes->post('/edit_obat/(:num)', 'ObatController::edit_obat/$1', ['filter' => 'AuthFilter']);
 $routes->get('/delete_obat/(:num)', 'ObatController::delete_obat/$1', ['filter' => 'AuthFilter']);
+
+//Kategori
+$routes->get('/daftar_kategori', 'ObatController::daftar_kategori', ['filter' => 'AuthFilter']);
+$routes->post('/tambah_kategori', 'ObatController::tambah_kategori', ['filter' => 'AuthFilter']);

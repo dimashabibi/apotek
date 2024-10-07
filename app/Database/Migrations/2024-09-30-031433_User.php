@@ -17,10 +17,15 @@ class User extends Migration
             ],
             'nama_user' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '255',
+                'constraint' => '100',
                 'null'       => true,
             ],
             'username'       => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+                'null'       => false,
+            ],
+            'email'       => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
                 'null'       => false,
@@ -28,6 +33,11 @@ class User extends Migration
             'password'       => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
+                'null'       => false,
+            ],
+            'role'       => [
+                'type'       => 'VARCHAR',
+                'constraint' => '20',
                 'null'       => false,
             ],
         ]);
