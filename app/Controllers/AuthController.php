@@ -42,7 +42,6 @@ class AuthController extends BaseController
                 return redirect()->back();
             }
         }
-        
     }
 
     //------------------------------- Register Controller -----------------------------------------

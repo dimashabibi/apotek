@@ -10,16 +10,16 @@ class TblobatSeeder extends Seeder
     {
         $data = [
             'barcode' => '675561253',
-            'nama_obat' => 'bodrex batuk',
+            'nama_obat' => 'bodrexin',
             'stok_obat' => '50',
             'satuan' => 'TABLET',
             'jenis_obat' => 'BEBAS',
-            'kategori_obat' => 'BATUK/PILEK',
+            'id_kategori' => '3',
             'merk_obat' => 'BODE',
             'harga_pokok' => '1.000',
             'harga_jual' => '2.471',
             'stok_min' => '10',
-            'keterangan_obat' => 'obat batuk berdahak',
+            'keterangan_obat' => 'obat pilek berdahak',
             'supplier' => 'PT JAKSA AGUNG',
         ];
         $this->db->table('tbl_obat')->insert($data);

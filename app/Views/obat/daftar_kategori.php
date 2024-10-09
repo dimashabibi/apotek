@@ -10,11 +10,11 @@
   </div>
 
   <div class="col-md-10">
-    <?php foreach ($kategori as $kategori): ?>
+    <?php foreach ($kategori as $item): ?>
+
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title"><?= $kategori['nama_kategori'] ?></h3>
-
+          <h3 class="card-title"><?= $item['nama_kategori'] ?></h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
@@ -42,47 +42,44 @@
               </tr>
             </thead>
             <tbody>
-              <?php 
-                $i = 1;
-                foreach ($list_obat as $obat): 
-                  // Tampilkan obat hanya jika kategori_id cocok
-                  if ($obat['kategori_id'] == $kategori['id']): 
-              ?>
-                <tr>
-                  <td><?= $i++; ?></td>
-                  <td><?= $obat['barcode']; ?></td>
-                  <td class="text-capitalize"><?= $obat['nama_obat']; ?></td>
-                  <td><?= $obat['stok_obat']; ?></td>
-                  <td class="text-uppercase"><?= $obat['satuan']; ?></td>
-                  <td class="text-uppercase"><?= $obat['jenis_obat']; ?></td>
-                  <td class="text-uppercase"><?= $obat['nama_kategori']; ?></td>
-                  <td class="text-capitalize"><?= $obat['merk_obat']; ?></td>
-                  <td><?= $obat['harga_pokok']; ?></td>
-                  <td><?= $obat['harga_jual']; ?></td>
-                  <td><?= $obat['stok_min']; ?></td>
-                  <td class="text-capitalize"><?= $obat['keterangan_obat']; ?></td>
-                  <td class="text-uppercase"><?= $obat['supplier']; ?></td>
-                  <td>
-                    <button type="button" class="btn btn-sm bg-gradient-info" data-toggle="modal"
+              <?php $i = 1; ?>
+              <?php foreach ($list_obat as $obat): ?>
+                <?php if ($obat['id_kategori'] == $item['id']): ?>
+                  <tr>
+                    <td><?= $i++; ?></td>
+                    <td><?= $obat['barcode']; ?></td>
+                    <td class="text-capitalize"><?= $obat['nama_obat']; ?></td>
+                    <td><?= $obat['stok_obat']; ?></td>
+                    <td class="text-uppercase"><?= $obat['satuan']; ?></td>
+                    <td class="text-uppercase"><?= $obat['jenis_obat']; ?></td>
+                    <td class="text-uppercase"><?= $obat['nama_kategori']; ?></td>
+                    <td class="text-capitalize"><?= $obat['merk_obat']; ?></td>
+                    <td><?= $obat['harga_pokok']; ?></td>
+                    <td><?= $obat['harga_jual']; ?></td>
+                    <td><?= $obat['stok_min']; ?></td>
+                    <td class="text-capitalize"><?= $obat['keterangan_obat']; ?></td>
+                    <td class="text-uppercase"><?= $obat['supplier']; ?></td>
+                    <td>
+                      <button type="button" class="btn btn-sm bg-gradient-info" data-toggle="modal"
                         data-target="#modalEdit<?= $obat['id']; ?>">
                         <i class="fa fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
+                      </button>
+                      <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
                         data-target="#modalDelete<?= $obat['id']; ?>">
                         <i class="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              <?php 
-                  endif;
-                endforeach; 
-              ?>
+                      </button>
+                    </td>
+                  </tr>
+                <?php endif; ?>
+              <?php endforeach; ?>
             </tbody>
           </table>
         </div>
         <!-- /.card-body -->
       </div>
+
     <?php endforeach; ?>
+
   </div>
 </div>
 

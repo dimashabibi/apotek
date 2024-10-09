@@ -27,7 +27,7 @@ class ObatController extends BaseController
             'breadcrumb'        => 'Obat',
             'breadcrumb_active' => 'Daftar Obat',
             'list_obat'         => $this->obatModel->getObat(),
-            'kategori'         => $this->kategoriModel->findAll(),
+            'kategori'          => $this->kategoriModel->findAll(),
         ];
         return view('obat/daftar_obat', $data);
     }
@@ -42,7 +42,7 @@ class ObatController extends BaseController
             'stok_obat'       => $this->request->getVar('stok_obat'),
             'satuan'          => $this->request->getVar('satuan'),
             'jenis_obat'      => $this->request->getVar('jenis_obat'),
-            'id_kategori'   => $this->request->getVar('id_kategori'),
+            'id_kategori'     => $this->request->getVar('id_kategori'),
             'merk_obat'       => $this->request->getVar('merk_obat'),
             'harga_pokok'     => $this->request->getVar('harga_pokok'),
             'harga_jual'      => $this->request->getVar('harga_jual'),
@@ -64,7 +64,7 @@ class ObatController extends BaseController
             'stok_obat'       => $this->request->getVar('stok_obat'),
             'satuan'          => $this->request->getVar('satuan'),
             'jenis_obat'      => $this->request->getVar('jenis_obat'),
-            'id_kategori'   => $this->request->getVar('id_kategori'),
+            'id_kategori'     => $this->request->getVar('id_kategori'),
             'merk_obat'       => $this->request->getVar('merk_obat'),
             'harga_pokok'     => $this->request->getVar('harga_pokok'),
             'harga_jual'      => $this->request->getVar('harga_jual'),
@@ -86,28 +86,44 @@ class ObatController extends BaseController
 
     //-------------------------- Kategori Obat ----------------------------------------
 
-    public function daftar_kategori(){
-
-        $kategoriId = 1;
-
-        $data=[
-            'title' => 'Kategori Page',
+    public function daftar_kategori()
+    {
+        $kategori_id = null;
+        $data = [
+            'title'             => 'Kategori Page',
             'content_header'    => 'Daftar Kategori',
             'breadcrumb'        => 'Obat',
             'breadcrumb_active' => 'Daftar Kategori',
-            'list_obat'         => $this->obatModel->getObatById($kategoriId),
-            'kategori'         => $this->kategoriModel->findAll(),
+            'list_obat'         => $this->kategoriModel->getNestedObat($kategori_id),
+            'kategori'          => $this->kategoriModel->findAll(),
         ];
+
         return view('obat/daftar_kategori', $data);
     }
 
-     //-------------------------- tambah Kategori Obat ----------------------------------------
-    public function tambah_kategori(){
+    //-------------------------- tambah Kategori Obat ----------------------------------------
+    public function tambah_kategori()
+    {
         $this->kategoriModel->insert([
             'nama_kategori' => $this->request->getVar('nama_kategori')
         ]);
-        
+
         session()->setFlashdata('success', 'Kategori berhasil ditambah');
         return redirect()->to(base_url('/daftar_kategori'));
+    }
+
+    public function daftarObatByKategori($kategoriId)
+    {
+        $data = [
+            'title'             => 'Kategori Page',
+            'content_header'    => 'Daftar Kategori',
+            'breadcrumb'        => 'Obat',
+            'breadcrumb_active' => 'Daftar Kategori',
+            'obat'              => $this->kategoriModel->getObatByKategori($kategoriId),
+            'kategori'          => $this->kategoriModel->getKategoriById($kategoriId)
+        ];
+
+
+        return view('obat/daftar_kategori', $data);  // Tampilkan ke view
     }
 }

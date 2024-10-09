@@ -10,6 +10,7 @@ class KategoriSeeder extends Seeder
     {
         $data = [
             'nama_kategori' => 'obat dewasa',
+            'id_obat' => '1',
         ];
         $this->db->table('tbl_kategori')->insert($data);
     }

@@ -65,24 +65,6 @@
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Barcode</th>
-                            <th>Nama Obat</th>
-                            <th>Stok Obat</th>
-                            <th>Satuan</th>
-                            <th>Jenis Obat</th>
-                            <th>Kategori Obat</th>
-                            <th>Merk Obat</th>
-                            <th>Harga Pokok</th>
-                            <th>Harga Jual</th>
-                            <th>Stok Min</th>
-                            <th>Keterangan Obat</th>
-                            <th>Supplier</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <!-- /.card-body -->
@@ -151,7 +133,7 @@
                                 <div class="form-group">
                                     <label>Kategori</label>
                                     <select class="form-control select2 select2-danger"
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;" name="id_kategori">
                                         <option selected="selected">Pilih kategori</option>
                                         <?php foreach ($kategori as $kategori): ?>
                                             <option value="<?= $kategori['id'] ?>"><?= $kategori['nama_kategori'] ?>
@@ -378,7 +360,7 @@
 
 <?= $this->section('script'); ?>
 <script>
-    $(function () {
+    $(function() {
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": false,

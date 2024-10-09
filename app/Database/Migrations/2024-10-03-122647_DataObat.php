@@ -40,8 +40,8 @@ class DataObat extends Migration
                 'constraint' => '10',
                 'null'       => true,
             ],
-            'kategori_obat'       => [
-                'type'       => 'VARCHAR',
+            'id_kategori'       => [
+                'type'       => 'INT',
                 'constraint' => '20',
                 'null'       => true,
             ],
