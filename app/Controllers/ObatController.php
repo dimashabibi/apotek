@@ -6,71 +6,141 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\ObatModel;
 use App\Models\KategoriModel;
+use App\Models\GolonganModel;
+use App\Models\SupplierModel;
+use App\Models\PabrikModel;
+use App\Models\SatuanModel;
+use App\Models\EtiketModel;
 
 class ObatController extends BaseController
 {
     protected $obatModel;
     protected $kategoriModel;
+    protected $golonganModel;
+    protected $supplierModel;
+    protected $pabrikModel;
+    protected $satuanModel;
+    protected $etiketModel;
 
     public function __construct()
     {
-        $this->obatModel = new ObatModel();
+        $this->obatModel     = new ObatModel();
         $this->kategoriModel = new KategoriModel();
+        $this->golonganModel = new GolonganModel();
+        $this->supplierModel = new SupplierModel();
+        $this->pabrikModel   = new PabrikModel();
+        $this->satuanModel   = new SatuanModel();
+        $this->etiketModel   = new EtiketModel();
     }
 
     //--------------------------Daftar Obat ----------------------------------------
     public function daftar_obat()
     {
         $data = [
-            'title'             => 'Daftar Obat',
-            'content_header'    => 'Daftar Obat',
-            'breadcrumb'        => 'Obat',
-            'breadcrumb_active' => 'Daftar Obat',
-            'list_obat'         => $this->obatModel->getObat(),
-            'kategori'          => $this->kategoriModel->findAll(),
+            'title'             => 'Daftar Obat | Apotek Sumbersekar',
+            'menu'              => 'master_data',
+            'submenu'           => 'obat',
+            'obat'              => $this->obatModel->getObat(),
+            'kategori'          => $this->kategoriModel->getKategori(),
         ];
         return view('obat/daftar_obat', $data);
     }
 
     //-------------------------- Tambah Obat ----------------------------------------
+
+    public function create_obat()
+    {
+
+        $data = [
+            'title'             => 'Tambah Data Obat | Apotek Sumbersekar',
+            'menu'              => 'master_data',
+            'submenu'           => 'obat',
+            'obat'              => $this->obatModel->getObat(),
+            'kategori'          => $this->kategoriModel->findAll(),
+            'golongan'          => $this->golonganModel->findAll(),
+            'supplier'          => $this->supplierModel->findAll(),
+            'pabrik'            => $this->pabrikModel->findAll(),
+            'satuan'            => $this->satuanModel->findAll(),
+            'etiket'            => $this->etiketModel->findAll(),
+        ];
+        return view('obat/create_obat', $data);
+    }
+
     public function tambah_obat()
     {
 
         $this->obatModel->insert([
-            'barcode'         => $this->request->getVar('barcode'),
-            'nama_obat'       => $this->request->getVar('nama_obat'),
-            'stok_obat'       => $this->request->getVar('stok_obat'),
-            'satuan'          => $this->request->getVar('satuan'),
-            'jenis_obat'      => $this->request->getVar('jenis_obat'),
-            'id_kategori'     => $this->request->getVar('id_kategori'),
-            'merk_obat'       => $this->request->getVar('merk_obat'),
-            'harga_pokok'     => $this->request->getVar('harga_pokok'),
-            'harga_jual'      => $this->request->getVar('harga_jual'),
-            'stok_min'        => $this->request->getVar('stok_min'),
-            'keterangan_obat' => $this->request->getVar('keterangan_obat'),
-            'supplier'        => $this->request->getVar('supplier'),
+            'barcode_obat'      => $this->request->getVar('barcode_obat'),
+            'merk_obat'         => $this->request->getVar('merk_obat'),
+            'nama_obat'         => $this->request->getVar('nama_obat'),
+            'id_golongan'       => $this->request->getVar('id_golongan'),
+            'id_kategori'       => $this->request->getVar('id_kategori'),
+            'id_supplier'       => $this->request->getVar('id_supplier'),
+            'id_pabrik'         => $this->request->getVar('id_pabrik'),
+            'stok_min'          => $this->request->getVar('stok_min'),
+            'stok_obat'         => $this->request->getVar('stok_obat'),
+            'id_satuan'         => $this->request->getVar('id_satuan'),
+            'harga_pokok'       => $this->request->getVar('harga_pokok'),
+            'harga_jual'        => $this->request->getVar('harga_jual'),
+            'id_etiket'         => $this->request->getVar('id_etiket'),
+
         ]);
         session()->setFlashdata('success', 'Data berhasil ditambahkan');
         return redirect()->to(base_url('/daftar_obat'));
     }
 
     //--------------------------Edit Obat ----------------------------------------
+
     public function edit_obat($id)
     {
 
+        $obat     = $this->obatModel->find($id);
+        $kategori = $this->kategoriModel->find($obat['id_kategori']);
+        $golongan = $this->golonganModel->find($obat['id_golongan']);
+        $supplier = $this->supplierModel->find($obat['id_supplier']);
+        $pabrik   = $this->pabrikModel->find($obat['id_pabrik']);
+        $satuan   = $this->satuanModel->find($obat['id_satuan']);
+        $etiket   = $this->etiketModel->find($obat['id_etiket']);
+
+
+        $data = [
+            'title'               => 'Edit Data Obat | Apotek Sumbersekar',
+            'menu'                => 'master_data',
+            'submenu'             => 'obat',
+            'obat'                => $obat,
+            'kategoriId'          => $kategori,
+            'golonganId'          => $golongan,
+            'supplierId'          => $supplier,
+            'pabrikId'            => $pabrik,
+            'satuanId'            => $satuan,
+            'etiketId'            => $etiket,
+            'kategori'            => $this->kategoriModel->findAll(),
+            'golongan'            => $this->golonganModel->findAll(),
+            'supplier'            => $this->supplierModel->findAll(),
+            'pabrik'              => $this->pabrikModel->findAll(),
+            'satuan'              => $this->satuanModel->findAll(),
+            'etiket'              => $this->etiketModel->findAll(),
+        ];
+        return view('obat/edit_obat', $data);
+    }
+
+    public function update($id)
+    {
+
         $this->obatModel->update($id, [
-            'barcode'         => $this->request->getVar('barcode'),
-            'nama_obat'       => $this->request->getVar('nama_obat'),
-            'stok_obat'       => $this->request->getVar('stok_obat'),
-            'satuan'          => $this->request->getVar('satuan'),
-            'jenis_obat'      => $this->request->getVar('jenis_obat'),
-            'id_kategori'     => $this->request->getVar('id_kategori'),
-            'merk_obat'       => $this->request->getVar('merk_obat'),
-            'harga_pokok'     => $this->request->getVar('harga_pokok'),
-            'harga_jual'      => $this->request->getVar('harga_jual'),
-            'stok_min'        => $this->request->getVar('stok_min'),
-            'keterangan_obat' => $this->request->getVar('keterangan_obat'),
-            'supplier'        => $this->request->getVar('supplier'),
+            'barcode_obat'      => $this->request->getVar('barcode_obat'),
+            'merk_obat'         => $this->request->getVar('merk_obat'),
+            'nama_obat'         => $this->request->getVar('nama_obat'),
+            'id_golongan'       => $this->request->getVar('id_golongan'),
+            'id_kategori'       => $this->request->getVar('id_kategori'),
+            'id_supplier'       => $this->request->getVar('id_supplier'),
+            'id_pabrik'         => $this->request->getVar('id_pabrik'),
+            'stok_min'          => $this->request->getVar('stok_min'),
+            'stok_obat'         => $this->request->getVar('stok_obat'),
+            'id_satuan'         => $this->request->getVar('id_satuan'),
+            'harga_pokok'       => $this->request->getVar('harga_pokok'),
+            'harga_jual'        => $this->request->getVar('harga_jual'),
+            'id_etiket'         => $this->request->getVar('id_etiket'),
         ]);
         session()->setFlashdata('success', 'Data berhasil diubah');
         return redirect()->to(base_url('/daftar_obat'));
@@ -84,46 +154,6 @@ class ObatController extends BaseController
         return redirect()->to(base_url('/daftar_obat'));
     }
 
-    //-------------------------- Kategori Obat ----------------------------------------
+    
 
-    public function daftar_kategori()
-    {
-        $kategori_id = null;
-        $data = [
-            'title'             => 'Kategori Page',
-            'content_header'    => 'Daftar Kategori',
-            'breadcrumb'        => 'Obat',
-            'breadcrumb_active' => 'Daftar Kategori',
-            'list_obat'         => $this->kategoriModel->getNestedObat($kategori_id),
-            'kategori'          => $this->kategoriModel->findAll(),
-        ];
-
-        return view('obat/daftar_kategori', $data);
-    }
-
-    //-------------------------- tambah Kategori Obat ----------------------------------------
-    public function tambah_kategori()
-    {
-        $this->kategoriModel->insert([
-            'nama_kategori' => $this->request->getVar('nama_kategori')
-        ]);
-
-        session()->setFlashdata('success', 'Kategori berhasil ditambah');
-        return redirect()->to(base_url('/daftar_kategori'));
-    }
-
-    public function daftarObatByKategori($kategoriId)
-    {
-        $data = [
-            'title'             => 'Kategori Page',
-            'content_header'    => 'Daftar Kategori',
-            'breadcrumb'        => 'Obat',
-            'breadcrumb_active' => 'Daftar Kategori',
-            'obat'              => $this->kategoriModel->getObatByKategori($kategoriId),
-            'kategori'          => $this->kategoriModel->getKategoriById($kategoriId)
-        ];
-
-
-        return view('obat/daftar_kategori', $data);  // Tampilkan ke view
-    }
 }

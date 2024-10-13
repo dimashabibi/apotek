@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class DataObat extends Migration
+class Obat extends Migration
 {
     public function up()
     {
@@ -15,34 +15,9 @@ class DataObat extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'barcode' => [
+            'barcode_obat' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
-                'null'       => true,
-            ],
-            'nama_obat' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
-                'null'       => true,
-            ],
-            'stok_obat'       => [
-                'type'       => 'DECIMAL',
-                'constraint' => '10, 2',
-                'null'       => true,
-            ],
-            'satuan'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '20',
-                'null'       => true,
-            ],
-            'jenis_obat'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '10',
-                'null'       => true,
-            ],
-            'id_kategori'       => [
-                'type'       => 'INT',
-                'constraint' => '20',
                 'null'       => true,
             ],
             'merk_obat'       => [
@@ -50,14 +25,29 @@ class DataObat extends Migration
                 'constraint' => '25',
                 'null'       => true,
             ],
-            'harga_pokok'       => [
-                'type'       => 'DECIMAL',
-                'constraint' => '10, 2',
+            'nama_obat' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
                 'null'       => true,
             ],
-            'harga_jual'       => [
-                'type'       => 'DECIMAL',
-                'constraint' => '10, 2',
+            'id_golongan'       => [
+                'type'       => 'INT',
+                'constraint' => '20',
+                'null'       => true,
+            ],
+            'id_kategori'       => [
+                'type'       => 'INT',
+                'constraint' => '20',
+                'null'       => true,
+            ],
+            'id_supplier'       => [
+                'type'       => 'INT',
+                'constraint' => '20',
+                'null'       => true,
+            ],
+            'id_pabrik'       => [
+                'type'       => 'INT',
+                'constraint' => '20',
                 'null'       => true,
             ],
             'stok_min'       => [
@@ -65,14 +55,29 @@ class DataObat extends Migration
                 'constraint' => '10, 2',
                 'null'       => true,
             ],
-            'keterangan_obat'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
+            'stok_obat'       => [
+                'type'       => 'DECIMAL',
+                'constraint' => '10, 2',
                 'null'       => true,
             ],
-            'supplier'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
+            'id_satuan'       => [
+                'type'       => 'INT',
+                'constraint' => '20',
+                'null'       => true,
+            ],
+            'harga_pokok'       => [
+                'type'       => 'DECIMAL',
+                'constraint' => '19, 2',
+                'null'       => true,
+            ],
+            'harga_jual'       => [
+                'type'       => 'DECIMAL',
+                'constraint' => '19, 2',
+                'null'       => true,
+            ],
+            'id_etiket'       => [
+                'type'       => 'int',
+                'constraint' => '20',
                 'null'       => true,
             ],
         ]);

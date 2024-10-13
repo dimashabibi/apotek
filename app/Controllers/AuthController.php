@@ -13,8 +13,12 @@ class AuthController extends BaseController
     public function index()
     {
 
+        if (session()->get('logged_in')) {
+            return redirect()->to(base_url('/home'));
+        }
+
         $data = [
-            'title' => 'Login Page',
+            'title' => 'Login Page | Apotek Sumbersekar',
         ];
         return view('auth/login_page', $data);
     }
@@ -48,7 +52,7 @@ class AuthController extends BaseController
     public function register()
     {
         $data = [
-            'title' => 'Register Page'
+            'title' => 'Register Page | Apotek Sumbersekar'
         ];
         return view('auth/register_page', $data);
     }

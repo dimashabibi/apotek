@@ -15,7 +15,7 @@ class User extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'nama_user' => [
+            'nama_lengkap' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
                 'null'       => true,

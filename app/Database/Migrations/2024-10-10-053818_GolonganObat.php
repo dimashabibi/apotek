@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class TblKategori extends Migration
+class GolonganObat extends Migration
 {
     public function up()
     {
@@ -15,23 +15,23 @@ class TblKategori extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'nama_kategori' => [
+            'nama_golongan' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => '150',
+                'constraint'     => '100',
                 'null'           => true,
             ],
-            'ket_kategori' => [
+            'ket_golongan' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => '150',
+                'constraint'     => '155',
                 'null'           => true,
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('tbl_kategori');
+        $this->forge->createTable('tbl_golongan');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tbl_kategori');
+        $this->forge->dropTable('tbl_golongan');
     }
 }

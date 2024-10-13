@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $title; ?></title>
+    <title class="text-capitalize"><?= $title; ?></title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'); ?>">
     <!-- Toastr -->
     <link rel="stylesheet" href="<?= base_url('assets/plugins/toastr/toastr.min.css'); ?>">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css'); ?>">
 </head>
 <!--
 `body` tag options:
@@ -38,23 +40,9 @@
         <?= $this->include('layout/navbar'); ?>
         <?= $this->include('layout/sidebar'); ?>
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0"><?= $content_header; ?></h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#"><?= $breadcrumb; ?></a></li>
-                                <li class="breadcrumb-item active"><?= $breadcrumb_active; ?></li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
+            <?= $this->renderSection('content_header') ?>
+
+
 
             <div class="content">
                 <div class="container-fluid">
@@ -84,12 +72,6 @@
 
     <!-- REQUIRED SCRIPTS -->
 
-    <!-- jQuery -->
-    <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
-    <!-- Bootstrap -->
-    <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-    <!-- AdminLTE -->
-    <script src="<?= base_url('assets/js/adminlte.js'); ?>"></script>
     <!-- Toastr -->
     <script src="<?= base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
     <?php if (!empty(session()->getFlashdata('success'))) : ?>
@@ -103,8 +85,19 @@
         </script>
     <?php endif; ?>
 
-    <!-- OPTIONAL SCRIPTS -->
-    <script src="<?= base_url('assets'); ?>/plugins/chart.js/Chart.min.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="<?= base_url('assets/dist/js/demo.js'); ?>"></script>
+    <!-- overlayScrollbars -->
+    <script src="<?= base_url('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js'); ?>"></script>
+    <!-- jQuery -->
+    <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
+    <!-- Bootstrap -->
+    <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+    <!-- AdminLTE -->
+    <script src="<?= base_url('assets/js/adminlte.js'); ?>"></script>
+    <!-- ChartJS -->
+    <script src="<?= base_url('assets/plugins/chart.js/Chart.min.js'); ?>"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url('assets/js/demo.js'); ?>"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

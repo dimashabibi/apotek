@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class KategoriobatModel extends Model
+class EtiketModel extends Model
 {
-    protected $table            = 'tbl_kategoriobat';
+    protected $table            = 'tbl_etiket';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
 
-    protected $allowedFields    = ['id_kategori', 'id_obat'];
+    protected $allowedFields    = ['nama_etiket', 'ket_etiket'];
 }
