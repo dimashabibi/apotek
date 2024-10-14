@@ -4,13 +4,14 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Dtltransaksi extends Migration
+class TempPenjualan extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'detail_transaksi_id' => [
-                'type' => 'bigint',
+                'type' => 'INT',
+                'constraint' => '11',
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
@@ -35,24 +36,23 @@ class Dtltransaksi extends Migration
                 'null' => true,
             ],
             'qty' => [
-                'type' => 'decimal',
-                'constraint' => '19, 2',
+                'type' => 'INT',
+                'constraint' => '11',
                 'null' => true,
             ],
             'sub_total' => [
                 'type' => 'DECIMAL',
                 'constraint' => '19, 2',
                 'null' => true,
-            ],
+            ]
         ]);
-        $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('no_faktur', 'tbl_transaksi', 'no_faktur', 'cascade');
-        $this->forge->addForeignKey('id_obat', 'tbl_obat', 'id', 'cascade');
-        $this->forge->createTable('tbl_detail_transaksi');
+
+        $this->forge->addPrimaryKey('detail_transaksi_id');
+        $this->forge->createTable('temporary');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tbl_detail_transaksi');
+        $this->forge->dropTable('temporary');
     }
 }

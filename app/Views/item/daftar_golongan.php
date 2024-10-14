@@ -35,7 +35,7 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputGolongan" class="col-sm-2 col-form-label text-capitalize">Nama golongan</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputGolongan" placeholder="Nama Golongan" name="nama_golongan">
+                            <input type="text" class="form-control" id="inputGolongan" placeholder="Nama Golongan" name="nama_golongan" autofocus>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
@@ -124,7 +124,7 @@
                                     <div class="form-group">
                                         <label for="inputNamaGolongan">Nama Golongan</label>
                                         <input type="text" class="form-control" id="inputNamaGolongan"
-                                            placeholder="Input Nama Golongan" name="nama_golongan" value="<?= $edit['nama_golongan']; ?>">
+                                            placeholder="Input Nama Golongan" name="nama_golongan" value="<?= $edit['nama_golongan']; ?>" autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="golongan" class="text-capitalize">Keterangan golongan</label>

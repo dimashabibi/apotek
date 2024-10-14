@@ -47,14 +47,14 @@
                     <div class="tab-pane fade show active" id="detail-obat" role="tabpanel" aria-labelledby="detail-obat-tab">
                         <div class="form-group row">
                             <label for="barcodeObat" class="col-sm-2 col-form-label">Barcode Obat</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="barcodeObat"
                                     placeholder="Input Barcode Obat" name="barcode_obat" autofocus>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="namaObat" class="col-sm-2 col-form-label">Nama Obat</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="namaObat"
                                     placeholder="Input Nama Obat" name="nama_obat">
                             </div>
@@ -62,46 +62,70 @@
 
                         <div class="form-group row">
                             <label for="merkObat" class="col-sm-2 col-form-label">Merk Obat</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="merkObat"
                                     placeholder="Input Merk Obat" name="merk_obat">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Golongan Obat</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_golongan">
-                                    <option selected="selected" hidden>Pilih Golongan</option>
-                                    <?php foreach ($golongan as $gol) : ?>
-                                        <option value="<?= $gol['id']; ?>"><?= $gol['nama_golongan']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="input-group">
+                                <label class="col-sm-2 col-form-label">Golongan Obat</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2" style="width: 100%;" name="id_golongan">
+                                        <option selected="selected" hidden>Pilih Golongan</option>
+                                        <?php foreach ($golongan as $gol) : ?>
+                                            <option value="<?= $gol['id']; ?>"><?= $gol['nama_golongan']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <span class="input-group-append">
+                                    <button class="btn btn-sm btn-flat btn-primary" data-toggle="modal"
+                                        data-target="#modalCreategolongan">
+                                        <i class=" fa fa-plus"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Kategori</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_kategori">
-                                    <option selected="selected" hidden>Pilih Kategori</option>
-                                    <?php foreach ($kategori as $kat) : ?>
-                                        <option value="<?= $kat['id']; ?>"><?= $kat['nama_kategori']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="input-group">
+                                <label class="col-sm-2 col-form-label">Kategori</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2" style="width: 100%;" name="id_kategori">
+                                        <option selected="selected" hidden>Pilih Kategori</option>
+                                        <?php foreach ($kategori as $kat) : ?>
+                                            <option value="<?= $kat['id']; ?>"><?= $kat['nama_kategori']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <span class="input-group-append">
+                                    <button class="btn btn-sm btn-flat btn-primary" data-toggle="modal"
+                                        data-target="#modalCreatekategori">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
 
-
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Etiket/Aturan Pemakaian</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_etiket">
-                                    <option selected="selected" hidden>Pilih Etiket</option>
-                                    <?php foreach ($etiket as $et) : ?>
-                                        <option value="<?= $et['id']; ?>"><?= $et['nama_etiket']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="input-group">
+                                <label class="col-sm-2 col-form-label">Etiket/Aturan Pemakaian</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2" style="width: 100%;" name="id_etiket">
+                                        <option selected="selected" hidden>Pilih Etiket</option>
+                                        <?php foreach ($etiket as $et) : ?>
+                                            <option value="<?= $et['id']; ?>"><?= $et['nama_etiket']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <span class="input-group-append">
+                                    <button class="btn btn-sm btn-flat btn-primary" data-toggle="modal"
+                                        data-target="#modalCreateetiket">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
 
@@ -118,14 +142,22 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Satuan</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select2" style="width: 100%;" name="id_satuan">
-                                            <option selected="selected" hidden>Pilih Satuan</option>
-                                            <?php foreach ($satuan as $sat) : ?>
-                                                <option value="<?= $sat['id']; ?>"><?= $sat['nama_satuan']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                    <div class="input-group">
+                                        <label class="col-sm-2 col-form-label">Satuan</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control select2" style="width: 100%;" name="id_satuan">
+                                                <option selected="selected" hidden>Pilih Satuan</option>
+                                                <?php foreach ($satuan as $sat) : ?>
+                                                    <option value="<?= $sat['id']; ?>"><?= $sat['nama_satuan']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <span class="input-group-append">
+                                            <button class="btn btn-sm btn-flat btn-primary" data-toggle="modal"
+                                                data-target="#modalCreatesatuan">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -189,12 +221,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Supplier</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2" style="width: 100%;" name="id_supplier">
-                                        <option selected="selected" hidden>Pilih Kategori</option>
-                                        <?php foreach ($supplier as $sup) : ?>
-                                            <option value="<?= $sup['id']; ?>"><?= $sup['nama_supplier']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <div class="input-group">
+                                        <select class="form-control select2" style="width: 100%;" name="id_supplier">
+                                            <option selected="selected" hidden>Pilih Kategori</option>
+                                            <?php foreach ($supplier as $sup) : ?>
+                                                <option value="<?= $sup['id']; ?>"><?= $sup['nama_supplier']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -225,7 +259,5 @@
         <!-- /.card -->
     </div>
 </div>
-
-
 
 <?php $this->endSection(); ?>

@@ -35,7 +35,7 @@
                     <div class="form-group row justify-content-center">
                         <label for="InputEtiket" class="col-sm-2 col-form-label text-capitalize">Nama etiket</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket">
+                            <input type="text" class="form-control" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket" autofocus>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
@@ -124,7 +124,7 @@
                                     <div class="form-group">
                                         <label for="inputNamaEtiket" class="text-capitalize">Nama etiket</label>
                                         <input type="text" class="form-control" id="inputNamaEtiket"
-                                            placeholder="Input Nama Etiket" name="nama_etiket" value="<?= $edit['nama_etiket']; ?>">
+                                            placeholder="Input Nama Etiket" name="nama_etiket" value="<?= $edit['nama_etiket']; ?>" autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="etiket" class="text-capitalize">Keterangan etiket</label>

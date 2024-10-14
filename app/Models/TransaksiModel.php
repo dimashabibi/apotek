@@ -8,12 +8,15 @@ use CodeIgniter\Model;
 class TransaksiModel extends Model
 {
     protected $table            = 'tbl_transaksi';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'no_faktur';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
 
-    protected $allowedFields    = ['no_faktur', 'tgl_transaksi', 'jam', 'grand_total', 'dibayar', 'kembalian', 'id_kasir'];
 
+
+    protected $allowedFields    = ['no_faktur', 'tgl_transaksi', 'jam', 'diskon_persen', 'diskon_uang', 'total_kotor', 'total_bersih'];
+
+    protected $transaksiModel;
 
     public function getNoFaktur()
     {
@@ -35,13 +38,27 @@ class TransaksiModel extends Model
         } else {
             $no = 1; // Jika tidak ada data, mulai dengan 1
         }
-
-        // Buat nomor faktur dengan format YYYYMMDD + nomor urut
-        $batas = str_pad($no, 4, "0", STR_PAD_LEFT); // Tambahkan padding nol jika diperlukan
+        
+        $batas = str_pad($no, 4, "0", STR_PAD_LEFT);
         $kodeTampil = date('Ymd') . $batas;
 
         return $kodeTampil;
     }
 
-   
+    public function getTemp($no_faktur)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('tbl_temp'); 
+
+        $builder->select('tbl_temp.detail_transaksi_id as id, tbl_temp.id_obat as obat,tbl_obat.nama_obat as nama_obat, tbl_obat.barcode_obat as barcode_obat, tbl_temp.harga_pokok as harga_pokok, tbl_temp.harga_jual as harga_jual, tbl_temp.qty as qty, tbl_temp.sub_total as sub_total');
+       
+        $builder->join('tbl_obat', 'tbl_obat.id = tbl_temp.id_obat');
+       
+        $builder->where('tbl_temp.no_faktur', $no_faktur);
+        $builder->orderBy('tbl_temp.detail_transaksi_id', 'asc');
+       
+        $query = $builder->get();
+
+        return $query->getResultArray();
+    }
 }

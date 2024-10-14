@@ -35,7 +35,7 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputSupplier" class="col-sm-2 col-form-label text-capitalize">Nama supplier</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputSupplier" placeholder="Nama supplier" name="nama_supplier">
+                            <input type="text" class="form-control" id="inputSupplier" placeholder="Nama supplier" name="nama_supplier" autofocus>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
@@ -173,7 +173,7 @@
                                     <div class="form-group">
                                         <label for="inputNamasupplier">Nama supplier</label>
                                         <input type="text" class="form-control" id="inputNamasupplier"
-                                            placeholder="Input Nama supplier" name="nama_supplier" value="<?= $edit['nama_supplier']; ?>">
+                                            placeholder="Input Nama supplier" name="nama_supplier" value="<?= $edit['nama_supplier']; ?>" autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">alamat</label>

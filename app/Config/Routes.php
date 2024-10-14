@@ -17,6 +17,7 @@ $routes->get('/logout', 'AuthController::logout');
 $routes->get('/home', 'PagesController::home', ['filter' => 'AuthFilter']);
 $routes->get('/kasir', 'PagesController::kasir', ['filter' => 'AuthFilter']);
 $routes->get('/cekObat', 'PagesController::cekObat', ['filter' => 'AuthFilter']);
+$routes->post('/dataDetail', 'PagesController::dataDetail', ['filter' => 'AuthFilter']);
 
 
 //obat
@@ -26,6 +27,8 @@ $routes->post('/tambah_obat', 'ObatController::tambah_obat', ['filter' => 'AuthF
 $routes->get('/edit_obat/(:num)', 'ObatController::edit_obat/$1', ['filter' => 'AuthFilter']);
 $routes->post('/update/(:num)', 'ObatController::update/$1', ['filter' => 'AuthFilter']);
 $routes->get('/delete_obat/(:num)', 'ObatController::delete_obat/$1', ['filter' => 'AuthFilter']);
+
+$routes->post('/addGolongan', 'ObatController::addGolongan', ['filter' => 'AuthFilter']);
 
 //Kategori
 $routes->get('/daftar_kategori', 'KategoriController::daftar_kategori', ['filter' => 'AuthFilter']);
@@ -62,3 +65,9 @@ $routes->get('/daftar_pabrik', 'PabrikController::daftar_pabrik', ['filter' => '
 $routes->post('/tambah_pabrik', 'PabrikController::tambah_pabrik', ['filter' => 'AuthFilter']);
 $routes->post('/edit_pabrik/(:num)', 'PabrikController::edit_pabrik/$1', ['filter' => 'AuthFilter']);
 $routes->get('/delete_pabrik/(:num)', 'PabrikController::delete_pabrik/$1', ['filter' => 'AuthFilter']);
+
+
+$routes->post('/kasir/addToCart', 'PagesController::addToCart');
+$routes->get('/kasir/viewCart', 'PagesController::viewCart');
+$routes->post('/kasir/clearCart', 'PagesController::clearCart');
+$routes->post('/kasir/checkout', 'PagesController::checkout');

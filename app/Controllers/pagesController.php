@@ -12,6 +12,7 @@ use App\Models\PabrikModel;
 use App\Models\SatuanModel;
 use App\Models\EtiketModel;
 use App\Models\TransaksiModel;
+use App\Models\TempModel;
 
 
 class PagesController extends BaseController
@@ -25,17 +26,19 @@ class PagesController extends BaseController
     protected $satuanModel;
     protected $etiketModel;
     protected $transaksiModel;
+    protected $tempModel;
 
     public function __construct()
     {
-        $this->obatModel     = new ObatModel();
-        $this->kategoriModel = new KategoriModel();
-        $this->golonganModel = new GolonganModel();
-        $this->supplierModel = new SupplierModel();
-        $this->pabrikModel   = new PabrikModel();
-        $this->satuanModel   = new SatuanModel();
-        $this->etiketModel   = new EtiketModel();
+        $this->obatModel        = new ObatModel();
+        $this->kategoriModel    = new KategoriModel();
+        $this->golonganModel    = new GolonganModel();
+        $this->supplierModel    = new SupplierModel();
+        $this->pabrikModel      = new PabrikModel();
+        $this->satuanModel      = new SatuanModel();
+        $this->etiketModel      = new EtiketModel();
         $this->transaksiModel   = new TransaksiModel();
+        $this->tempModel        = new TempModel();
     }
 
     public function home()
@@ -44,21 +47,22 @@ class PagesController extends BaseController
             'title'             => 'Dashboard | Apotek Sumbersekar',
             'menu'              => 'dashboard',
             'submenu'           => '',
-            'total_obat'              => $this->obatModel->countAllResults(),
-            'total_kategori'              => $this->kategoriModel->countAllResults(),
-            'total_supplier'              => $this->supplierModel->countAllResults(),
+            'total_obat'        => $this->obatModel->countAllResults(),
+            'total_kategori'    => $this->kategoriModel->countAllResults(),
+            'total_supplier'    => $this->supplierModel->countAllResults(),
         ];
         return view('pages/home', $data);
     }
 
     public function kasir()
     {
+        $no_faktur = $this->transaksiModel->getNoFaktur();
         $data = [
             'title'             => 'Kasir | Apotek Sumbersekar',
             'menu'              => 'kasir',
             'submenu'           => '',
             'breadcrumb_active' => 'Kasir',
-            'no_faktur'         => $this->transaksiModel->getNoFaktur(),
+            'no_faktur'         => $no_faktur,
             'obat'              => $this->obatModel->getObat(),
         ];
         return view('pages/kasir', $data);
@@ -76,9 +80,9 @@ class PagesController extends BaseController
         if ($obat == null) {
             $data = [
                 'barcode_obat'       => '',
-                'nama_kategori' => '',
-                'nama_satuan'   => '',
-                'harga_jual'    => '',
+                'nama_kategori'      => '',
+                'nama_satuan'        => '',
+                'harga_jual'         => '',
             ];
         } else {
             // Jika obat ditemukan, masukkan data obat
@@ -92,5 +96,21 @@ class PagesController extends BaseController
 
         // Kirim respons dalam format JSON
         return $this->response->setJSON($data);
+    }
+
+    // Controller method
+    public function dataDetail()
+    {
+        $no_faktur = $this->request->getVar('no_faktur');
+        $detail = $this->transaksiModel->getTemp($no_faktur);
+
+        $data = [
+            'datadetail' => $detail
+        ];
+        $msg = [
+            'data' => view('item/view_detail', $data)
+        ];
+
+        return $this->response->setJSON($msg);
     }
 }

@@ -154,6 +154,24 @@ class ObatController extends BaseController
         return redirect()->to(base_url('/daftar_obat'));
     }
 
-    
-
+    //-------------------------- Tambah Kategori ----------------------------------------
+    public function addKategori()
+    {
+        $this->kategoriModel->insert([
+            'nama_kategori' => $this->request->getVar('nama_kategori'),
+            'ket_kategori'  => $this->request->getVar('ket_kategori'),
+        ]);
+        session()->setFlashdata('success', 'Kategori berhasil ditambah');
+        return redirect()->to(base_url('/create_obat'))->withInput();
+    }
+    //-------------------------- Tambah Golongan ----------------------------------------
+    public function addGolongan()
+    {
+        $this->golonganModel->insert([
+            'nama_golongan' => $this->request->getVar('nama_golongan'),
+            'ket_golongan'  => $this->request->getVar('ket_golongan'),
+        ]);
+        session()->setFlashdata('success', 'golongan berhasil ditambah');
+        return redirect()->to(base_url('/create_obat'))->withInput();
+    }
 }

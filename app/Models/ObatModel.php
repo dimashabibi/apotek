@@ -17,12 +17,13 @@ class ObatModel extends Model
         $db      = \Config\Database::connect();
         $builder = $db->table('tbl_obat');
         $builder->select('tbl_obat.*, tbl_kategori.nama_kategori, tbl_golongan.nama_golongan, tbl_supplier.nama_supplier, tbl_pabrik.nama_pabrik, tbl_satuan.nama_satuan, tbl_etiket.nama_etiket');
+
         $builder->join('tbl_golongan', 'tbl_golongan.id = tbl_obat.id_golongan', 'left');
         $builder->join('tbl_kategori', 'tbl_kategori.id = tbl_obat.id_kategori', 'left');
         $builder->join('tbl_supplier', 'tbl_supplier.id = tbl_obat.id_supplier', 'left');
-        $builder->join('tbl_pabrik', 'tbl_pabrik.id = tbl_obat.id_pabrik', 'left');
-        $builder->join('tbl_satuan', 'tbl_satuan.id = tbl_obat.id_satuan', 'left');
-        $builder->join('tbl_etiket', 'tbl_etiket.id = tbl_obat.id_etiket', 'left');
+        $builder->join('tbl_pabrik',   'tbl_pabrik.id = tbl_obat.id_pabrik',     'left');
+        $builder->join('tbl_satuan',   'tbl_satuan.id = tbl_obat.id_satuan',     'left');
+        $builder->join('tbl_etiket',   'tbl_etiket.id = tbl_obat.id_etiket',     'left');
         $query = $builder->get();
 
         return $query->getResultArray();
@@ -33,12 +34,14 @@ class ObatModel extends Model
         $db      = \Config\Database::connect();
         $builder = $db->table('tbl_obat');
         $builder->select('tbl_obat.*, tbl_kategori.nama_kategori, tbl_golongan.nama_golongan, tbl_supplier.nama_supplier, tbl_pabrik.nama_pabrik, tbl_satuan.nama_satuan, tbl_etiket.nama_etiket');
+
         $builder->join('tbl_golongan', 'tbl_golongan.id = tbl_obat.id_golongan', 'left');
         $builder->join('tbl_kategori', 'tbl_kategori.id = tbl_obat.id_kategori', 'left');
         $builder->join('tbl_supplier', 'tbl_supplier.id = tbl_obat.id_supplier', 'left');
-        $builder->join('tbl_pabrik', 'tbl_pabrik.id = tbl_obat.id_pabrik', 'left');
-        $builder->join('tbl_satuan', 'tbl_satuan.id = tbl_obat.id_satuan', 'left');
-        $builder->join('tbl_etiket', 'tbl_etiket.id = tbl_obat.id_etiket', 'left');
+        $builder->join('tbl_pabrik',   'tbl_pabrik.id = tbl_obat.id_pabrik',     'left');
+        $builder->join('tbl_satuan',   'tbl_satuan.id = tbl_obat.id_satuan',     'left');
+        $builder->join('tbl_etiket',   'tbl_etiket.id = tbl_obat.id_etiket',     'left');
+
         $builder->where('tbl_obat.nama_obat', $nama_obat);
         $query = $builder->get();
 

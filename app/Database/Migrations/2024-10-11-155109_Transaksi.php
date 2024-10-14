@@ -9,17 +9,11 @@ class Transaksi extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id' => [
-                'type' => 'INT',
-                'constraint' => '11',
+            'no_faktur' => [
+                'type' => 'char',
+                'constraint' => '20',
                 'unsigned' => true,
                 'auto_increment' => true
-
-            ],
-            'no_faktur' => [
-                'type' => 'VARCHAR',
-                'constraint' => '15',
-                'null' => true,
 
             ],
             'tgl_transaksi' => [
@@ -30,24 +24,25 @@ class Transaksi extends Migration
                 'type' => 'TIME',
                 'null' => true,
             ],
-            'grand_total' => [
+            'diskon_persen' => [
                 'type' => 'DECIMAL',
                 'constraint' => '19, 2',
                 'null' => true,
             ],
-            'dibayar' => [
+            'diskon_uang' => [
                 'type' => 'DECIMAL',
                 'constraint' => '19, 2',
                 'null' => true,
             ],
-            'kembalian' => [
+            'total_kotor' => [
                 'type' => 'DECIMAL',
                 'constraint' => '19, 2',
                 'null' => true,
             ],
-            'id_kasir' => [
-                'type' => 'INT',
-                'constraint' => '11',
+            'total_bersih' => [
+                'type' => 'DECIMAL',
+                'constraint' => '19, 2',
+                'null' => true,
             ],
         ]);
         $this->forge->addKey(['id', true]);
