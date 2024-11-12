@@ -24,7 +24,7 @@ class PabrikController extends BaseController
             'pabrik'            => $this->pabrikModel->findAll(),
         ];
 
-        return view('item/daftar_pabrik', $data);
+        return view('pabrik/daftar_pabrik', $data);
     }
 
     //-------------------------- Tambah pabrik Obat ----------------------------------------

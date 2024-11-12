@@ -24,7 +24,7 @@ class SupplierController extends BaseController
             'supplier'          => $this->supplierModel->findAll(),
         ];
 
-        return view('item/daftar_supplier', $data);
+        return view('supplier/daftar_supplier', $data);
     }
 
     //-------------------------- Tambah supplier Obat ----------------------------------------

@@ -6,22 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title class="text-capitalize"><?= $title; ?></title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/favicon.png'); ?>" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="<?= base_url('assets/plugins/fontawesome-free/css/all.min.css'); ?>">
-    <!-- IonIcons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css'); ?>">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/daterangepicker/daterangepicker.css'); ?>">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css'); ?>">
     <!-- DataTables -->
     <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'); ?>">
-    <!-- Toastr -->
-    <link rel="stylesheet" href="<?= base_url('assets/plugins/toastr/toastr.min.css'); ?>">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="<?= base_url('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css'); ?>">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css'); ?>">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css'); ?>">
+
+
+
 </head>
 <!--
 `body` tag options:
@@ -61,8 +66,7 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-            All rights reserved.
+            <strong>Apoket Sumbersekar</strong>
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 3.1.0
             </div>
@@ -72,51 +76,59 @@
 
     <!-- REQUIRED SCRIPTS -->
 
-    <!-- Toastr -->
-    <script src="<?= base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
+    <!-- SweetAlert2 -->
+    <script src="<?= base_url('assets/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
+
     <?php if (!empty(session()->getFlashdata('success'))) : ?>
         <script>
-            toastr.success('<?= session()->getFlashdata('success'); ?>')
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                icon: 'success',
+                title: '  <?= session()->getFlashdata('success'); ?>'
+            })
         </script>
     <?php endif; ?>
     <?php if (!empty(session()->getFlashdata('error'))) : ?>
         <script>
-            toastr.error('<?= session()->getFlashdata('error'); ?>')
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                icon: 'success',
+                title: '  <?= session()->getFlashdata('error'); ?>'
+            })
         </script>
     <?php endif; ?>
 
 
-    <!-- AdminLTE for demo purposes -->
-    <script src="<?= base_url('assets/dist/js/demo.js'); ?>"></script>
-    <!-- overlayScrollbars -->
-    <script src="<?= base_url('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js'); ?>"></script>
     <!-- jQuery -->
     <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
     <!-- Bootstrap -->
     <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-    <!-- AdminLTE -->
-    <script src="<?= base_url('assets/js/adminlte.js'); ?>"></script>
-    <!-- ChartJS -->
-    <script src="<?= base_url('assets/plugins/chart.js/Chart.min.js'); ?>"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="<?= base_url('assets/js/demo.js'); ?>"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="<?= base_url('assets/js/pages/dashboard3.js'); ?>"></script>
+    <!-- Moment.js -->
+    <script src="<?= base_url('assets/plugins/moment/moment.min.js'); ?>"></script>
+    <!-- date-range-picker -->
+    <script src="<?= base_url('assets/plugins/daterangepicker/daterangepicker.js'); ?>"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="<?= base_url('assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js'); ?>"></script>
     <!-- DataTables  & Plugins -->
     <script src="<?= base_url('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
     <script src="<?= base_url('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>"></script>
     <script src="<?= base_url('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js'); ?>"></script>
     <script src="<?= base_url('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/jszip/jszip.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/pdfmake/pdfmake.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/pdfmake/vfs_fonts.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
-    <script src="<?= base_url('assets/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
     <?= $this->renderSection('script'); ?>
+    <!-- AdminLTE -->
+    <script src="<?= base_url('assets/js/adminlte.js'); ?>"></script>
 
-</body>
+
+</body>     
 
 </html>

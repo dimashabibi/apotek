@@ -30,14 +30,8 @@
                     <a class="nav-link active" id="detail-obat-tab" data-toggle="pill" href="#detail-obat" role="tab" aria-controls="detail-obat" aria-selected="true">Detail Obat</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="detail-satuan-tab" data-toggle="pill" href="#detail-satuan" role="tab" aria-controls="detail-satuan" aria-selected="false">Detail Satuan</a>
+                    <a class="nav-link" id="detail-satuan-tab" data-toggle="pill" href="#detail-satuan" role="tab" aria-controls="detail-satuan" aria-selected="false">Detail Stok</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#detail-supplier" role="tab" aria-controls="detail-supplier" aria-selected="false">Detail Supplier</a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-settings" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Settings</a>
-                </li> -->
             </ul>
         </div>
         <form action="<?= site_url('update/' . $obat['id']); ?>" method="post" class="form-horizontal">
@@ -70,44 +64,73 @@
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Golongan Obat</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_golongan">
+                            <div class="input-group col-sm-10">
+                                <select class="form-control select2" name="id_golongan">
                                     <option selected="selected" value="<?= $golonganId['id']; ?>" hidden><?= $golonganId['nama_golongan']; ?></option>
                                     <?php foreach ($golongan as $gol) : ?>
                                         <option value="<?= $gol['id']; ?>"><?= $gol['nama_golongan']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-primary btnTambahGolongan" id="btnTambahGolongan">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Kategori</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_kategori">
+                            <div class="input-group col-sm-10">
+                                <select class="form-control select2" name="id_kategori">
                                     <option selected="selected" value="<?= $kategoriId['id']; ?>" hidden><?= $kategoriId['nama_kategori']; ?></option>
                                     <?php foreach ($kategori as $kat) : ?>
                                         <option value="<?= $kat['id']; ?>"><?= $kat['nama_kategori']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-primary btnTambahKategori" id="btnTambahKategori">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
 
-
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Etiket/Aturan Pemakaian</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" style="width: 100%;" name="id_etiket">
+                            <div class="input-group col-sm-10">
+                                <select class="form-control select2" name="id_etiket">
                                     <option selected="selected" value="<?= $etiketId['id']; ?>" hidden><?= $etiketId['nama_etiket']; ?></option>
                                     <?php foreach ($etiket as $et) : ?>
                                         <option value="<?= $et['id']; ?>"><?= $et['nama_etiket']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-primary btnTambahEtiket" id="btnTambahEtiket">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="input-group">
+                                <label class="col-sm-2 col-form-label">Konsinyasi</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2" name="konsinyasi">
+                                        <option selected="selected" value="<?= $obat['konsinyasi']; ?>" hidden><?= $obat['konsinyasi']; ?></option>
+                                        <option value="konsinyasi">Konsinyasi</option>
+                                        <option value="non konsinyasi">Non Konsinyasi</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="float-sm-right">
-                                <a type="button" class="btn btn-secondary" href="<?= site_url('daftar_obat'); ?>">Close</a>
+                                <a type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#modalClose">Close</a>
+                                <button type="button" class="btn btn-primary next-tab" data-next="#detail-satuan-tab">Next</button>
                             </div>
                         </div>
                     </div>
@@ -116,16 +139,21 @@
                     <!-- Satuan Start -->
                     <div class="tab-pane fade" id="detail-satuan" role="tabpanel" aria-labelledby="detail-satuan-tab">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Satuan</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select2" style="width: 100%;" name="id_satuan">
+                                    <div class="input-group col-sm-10">
+                                        <select class="form-control select2" name="id_satuan">
                                             <option selected="selected" value="<?= $satuanId['id']; ?>" hidden><?= $satuanId['nama_satuan']; ?></option>
                                             <?php foreach ($satuan as $sat) : ?>
                                                 <option value=" <?= $sat['id']; ?>"><?= $sat['nama_satuan']; ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-primary btnTambahSatuan" id="btnTambahSatuan">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -145,6 +173,14 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label for="stokMin" class="col-sm-2 col-form-label">Kode Rak</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="kodeRak"
+                                            placeholder="Input Kode Rak" name="kode_rak" value="<?= $obat['kode_rak']; ?>" autocomplete="off">
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-6">
                                 <div class="form-group row">
@@ -154,7 +190,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control" name="harga_pokok" placeholder="Input Harga Pokok" value="<?= $obat['harga_pokok']; ?>">
+                                            <input type="text" class="form-control" name="harga_pokok" id="harga_pokok" placeholder="Input Harga Pokok" value="<?= $obat['harga_pokok']; ?>">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -168,7 +204,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control" name="harga_jual" placeholder="Input Harga Jual" value="<?= $obat['harga_jual']; ?>">
+                                            <input type="text" class="form-control" name="harga_jual" id="harga_jual" placeholder="Input Harga Jual" value="<?= $obat['harga_jual']; ?>">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -178,52 +214,195 @@
                             </div>
                             <div class="col-12">
                                 <div class="float-sm-right">
-                                    <a type="button" class="btn btn-secondary" href="<?= site_url('daftar_obat'); ?>">Close</a>
+                                    <button type="button" class="btn btn-secondary prev-tab" data-prev="#detail-obat-tab">Previous</button>
+                                    <a type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#modalClose">Close</a>
+                                    <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Satuan End -->
-                    <div class="tab-pane fade" id="detail-supplier" role="tabpanel" aria-labelledby="detail-supplier-tab">
-                        <div class="col-6">
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Supplier</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control select2" style="width: 100%;" name="id_supplier">
-                                        <option selected="selected" value="<?= $supplierId['id']; ?>" hidden><?= $supplierId['nama_supplier']; ?></option>
-                                        <?php foreach ($supplier as $sup) : ?>
-                                            <option value="<?= $sup['id']; ?>"><?= $sup['nama_supplier']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Pabrik</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control select2" style="width: 100%;" name="id_pabrik">
-                                        <option selected="selected" value="<?= $pabrikId['id']; ?>" hidden><?= $pabrikId['nama_pabrik']; ?></option>
-                                        <?php foreach ($pabrik as $pab) : ?>
-                                            <option value="<?= $pab['id']; ?>"><?= $pab['nama_pabrik']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="float-sm-right">
-                                <a type="button" class="btn btn-secondary" href="<?= site_url('daftar_obat'); ?>">Close</a>
-                                <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="tab-pane fade" id="custom-tabs-four-settings" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-
-                    </div> -->
                 </div>
             </div>
         </form>
         <!-- /.card -->
     </div>
+    <div class="modalTambah" style="display: none;"></div>
 </div>
 
+<!-- --------------------------------------------------------- Modal Close ---------------------------------------------------------------- -->
+<div class="modal fade" id="modalClose" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Close Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 needs-validation" method="get" action="<?= site_url('/daftar_obat'); ?>">
+                    <?php csrf_field() ?>
+                    <div class="form-group">
+                        <h5>Apakah anda yakin untuk tidak melanjutkan pengisian data?</h5>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="submit" class="btn bg-gradient-danger">Confirm</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php $this->endSection(); ?>
+
+<?php $this->section('script') ?>
+<script src="<?= base_url('assets/plugins/autoNumeric.js') ?>"></script>
+<script>
+    $(document).ready(function() {
+        // Tab navigation
+        $('.next-tab').click(function() {
+            var nextTab = $(this).data('next');
+            $(nextTab).tab('show');
+        });
+
+        $('.prev-tab').click(function() {
+            var prevTab = $(this).data('prev');
+            $(prevTab).tab('show');
+        });
+
+        // Simpan input ke LocalStorage setiap kali pengguna mengetik
+        $('input, select').on('input change', function() {
+            var name = $(this).attr('name'); // Ambil nama input
+            var value = $(this).val(); // Ambil nilai input
+            localStorage.setItem(name, value); // Simpan di LocalStorage
+        });
+
+        // Saat halaman dimuat, isi input dengan data dari LocalStorage
+        $('input, select').each(function() {
+            var name = $(this).attr('name'); // Ambil nama input
+            var value = localStorage.getItem(name); // Ambil nilai dari LocalStorage
+            if (value) {
+                $(this).val(value); // Set nilai input
+            }
+        });
+
+        // Hapus data dari LocalStorage setelah form dikirim
+        $('form').on('submit', function() {
+            localStorage.clear(); // Bersihkan seluruh LocalStorage
+        });
+
+        $('#harga_pokok').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0'
+        });
+        $('#harga_jual').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0'
+        });
+        $('#stokObat').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0'
+        });
+        $('#stokMin').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0'
+        });
+
+        $('#btnTambahGolongan').click(function(e) {
+            e.preventDefault();
+            tambahGolongan();
+        });
+        $('#btnTambahKategori').click(function(e) {
+            e.preventDefault();
+            tambahKategori();
+        });
+        $('#btnTambahEtiket').click(function(e) {
+            e.preventDefault();
+            tambahEtiket();
+        });
+        $('#btnTambahSatuan').click(function(e) {
+            e.preventDefault();
+            tambahSatuan();
+        });
+    });
+
+    function tambahGolongan() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('/tambahGolongan'); ?>",
+            dataType: "json",
+            success: function(response) {
+                $('.modalTambah').html(response.modalTambah).show();
+                $('#modalTambahGolongan').on('shown.bs.modal', function(event) {
+                    $('#inputGolongan').focus();
+                });
+                $('#modalTambahGolongan').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    }
+
+    function tambahKategori() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('/tambahKategori'); ?>",
+            dataType: "json",
+            success: function(response) {
+                $('.modalTambah').html(response.modalTambah).show();
+                $('#modalTambahKategori').on('shown.bs.modal', function(event) {
+                    $('#inputKategori').focus();
+                });
+                $('#modalTambahKategori').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    }
+
+    function tambahEtiket() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('/tambahEtiket'); ?>",
+            dataType: "json",
+            success: function(response) {
+                $('.modalTambah').html(response.modalTambah).show();
+                $('#modalTambahEtiket').on('shown.bs.modal', function(event) {
+                    $('#inputEtiket').focus();
+                });
+                $('#modalTambahEtiket').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    }
+
+    function tambahSatuan() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('/tambahSatuan'); ?>",
+            dataType: "json",
+            success: function(response) {
+                $('.modalTambah').html(response.modalTambah).show();
+                $('#modalTambahSatuan').on('shown.bs.modal', function(event) {
+                    $('#inputSatuan').focus();
+                });
+                $('#modalTambahSatuan').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    }
+</script>
 <?php $this->endSection(); ?>

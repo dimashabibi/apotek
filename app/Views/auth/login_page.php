@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="<?= base_url('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css') ?>">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="<?= base_url('assets/plugins/toastr/toastr.min.css'); ?>">
 </head>
 
 <body class="hold-transition login-page">
@@ -54,30 +56,19 @@
                 </label>
               </div>
             </div>
-            <!-- button sign in -->
-            <div class="col-4">
-              <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
-            </div>
-            <!-- button sign in -->
+          </div>
+          <div class="social-auth-links text-center">
+            <button name="submit" class="btn btn-block btn-primary">
+              Login
+            </button>
           </div>
         </form>
         <!-- form login end -->
-
-        <!-- <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div> -->
-        <!-- /.social-auth-links -->
-
         <p class="mb-1">
-          <a href="forgot-password.html">I forgot my password</a>
+          <a href="<?= site_url('lupa_password'); ?>">I forgot my password</a>
         </p>
         <p class="mb-0">
-          <a href="<?= site_url('register') ?>" class="text-center">Register a new membership</a>
+          <a href="<?= site_url('register') ?>" class="text-center">Belum punya akun?</a>
         </p>
       </div>
       <!-- /.card-body -->
@@ -92,6 +83,18 @@
   <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
   <!-- AdminLTE App -->
   <script src="<?= base_url('assets/js/adminlte.min.js ') ?>"></script>
+  <!-- Toastr -->
+  <script src="<?= base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
+  <?php if (!empty(session()->getFlashdata('success'))) : ?>
+    <script>
+      toastr.success('<?= session()->getFlashdata('success'); ?>')
+    </script>
+  <?php endif; ?>
+  <?php if (!empty(session()->getFlashdata('error'))) : ?>
+    <script>
+      toastr.error('<?= session()->getFlashdata('error'); ?>')
+    </script>
+  <?php endif; ?>
 </body>
 
 </html>

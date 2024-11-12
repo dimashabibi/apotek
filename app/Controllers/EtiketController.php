@@ -24,7 +24,7 @@ class EtiketController extends BaseController
             'etiket'            => $this->etiketModel->findAll(),
         ];
 
-        return view('item/daftar_etiket', $data);
+        return view('etiket/daftar_etiket', $data);
     }
 
     //-------------------------- Tambah etiket Obat ----------------------------------------
@@ -58,5 +58,40 @@ class EtiketController extends BaseController
         $this->etiketModel->delete($id);
         session()->setFlashdata('success', 'Data etiket berhasil dihapus');
         return redirect()->to(base_url('/daftar_etiket'));
+    }
+
+    // ------------------------------------------------------------------------- tambah Etiket Controller
+    public function tambahEtiket()
+    {
+        if ($this->request->isAJAX()) {
+
+            $msg = [
+                'modalTambah' => view('item/modal_tambah')
+            ];
+
+            return $this->response->setJSON($msg);
+        }
+    }
+    // tambah Etiket  end
+
+    // ------------------------------------------------------------------------- simpan Etiket Controller
+    public function simpanEtiket()
+    {
+        if ($this->request->isAJAX()) {
+
+            $nama_etiket = $this->request->getVar('nama_etiket');
+            $ket_etiket = $this->request->getVar('ket_etiket');
+
+            $insertData = [
+                'nama_etiket' => $nama_etiket,
+                'ket_etiket' => $ket_etiket,
+            ];
+
+            $this->etiketModel->insert($insertData);
+
+            $msg = ['success' => 'berhasil'];
+
+            return $this->response->setJSON($msg);
+        }
     }
 }

@@ -8,34 +8,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Top Navigation</title>
-
+    <title><?= $title; ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/favicon.png'); ?>" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="<?= base_url('assets/plugins/fontawesome-free/css/all.min.css'); ?>">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css'); ?>">
+    <!-- Font Jquery-ui -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.css'); ?>">
     <!-- Toastr -->
     <link rel="stylesheet" href="<?= base_url('assets/plugins/toastr/toastr.min.css'); ?>">
 </head>
 
-<body class="hold-transition layout-top-nav">
+<body class="hold-transition layout-top-nav" onload="startTime()">
     <div class="wrapper">
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-
             <a href="<?= base_url('assets'); ?>/index3.html" class="navbar-brand me-3">
-                <img src="<?= base_url('assets/img/logo.png'); ?>" width="150px">
-                <span class="brand-text">Apotek <strong>Sumbersekar</strong></span>
+                <img src="<?= base_url('assets/img/logo_apotek.png'); ?>" width="150px">
             </a>
+            <address class="ms-3">
+                Apotek <strong>Sumbersekar</strong><br>
+                Jl. Raya Sumbersekar No.2, RT.05/RW.02,<br>
+                Krajan, Sumbersekar, Kec. Dau, Kabupaten Malang<br>
+                Jawa Timur 65151<br>
+                Phone: 085175126445
+            </address>
 
-            <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+            <div class=" navbar-collapse order-3" id="">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
 
@@ -43,223 +46,589 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container">
                     <!-- Right navbar links -->
                     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-
                         <li class="nav-item ms-3">
-                            <a href="<?= site_url('home'); ?>" class="btn btn-success"><i class="fas fa-home"></i></a>
+                            <a href="<?= site_url('home'); ?>" id="home" class="btn btn-success"><i class="fas fa-home"></i> (Home)</a>
                         </li>
                     </ul>
                 </div>
+            </div>
         </nav>
         <!-- /.navbar -->
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="" class="text-capitalize">no faktur</label>
+                                            <input type="text" class="form-control text-danger text-bold" id="no_faktur" name="no_faktur" value="<?= $no_faktur; ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    date_default_timezone_set('Asia/Jakarta');
+                                    ?>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="" class="text-capitalize">tanggal</label>
+                                            <input name="tanggal" id="tanggal" class="form-control text-bold" value="<?= date('d F Y'); ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="" class="text-capitalize">jam</label>
+                                            <input name="jam" id="jam" class="form-control text-bold" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="" class="text-capitalize">Nama Kasir</label>
+                                            <input class="form-control text-bold" id="nama_kasir" name="nama_kasir" value="<?= session()->get('nama_user'); ?>" readonly>
+                                        </div>
+                                    </div>
 
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="card card-primary card-outline">
-                        <div class="card-header"></div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="" class="text-capitalize">no faktur</label>
-                                        <input type="text" class="form-control text-danger text-bold" id="no_faktur" name="no_faktur" value="<?= $no_faktur; ?>">
-                                    </div>
+                                    <!-- row card -->
                                 </div>
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="" class="text-capitalize">tanggal</label>
-                                        <label for="" class="form-control"><?= date('d F Y'); ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="" class="text-capitalize">jam</label>
-                                        <label for="" class="form-control"><?= date("h:i:sa"); ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="" class="text-capitalize">Nama Kasir</label>
-                                        <label for="" class="form-control"><?= session()->get('username') ?></label>
-                                    </div>
-                                </div>
-
-                                <!-- row card -->
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="card card-primary card-outline">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-body bg-black text-right collor-pallete">
-                            <label class="display-4 text-green">Rp. 120,000,- </label>
+                    <div class="col-sm-5">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                            </div>
+                            <!-- -------------------------------------------- display total bayar ------------------------------------------------------- -->
+
+                            <div class="card-body bg-black text-right collor-pallete" style="height: 125px;">
+                                <input id="totalbayar" name="totalbayar" class="form-control form-control-lg form-control-border text-right text-green display-4" value="0" width="100%" style="background-color: black; font-size:60px; height: 90px;" readonly>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="card card-primary card-outline">
-                        <div class="card-body">
-                            <?= form_open('/dataDetail'); ?>
-                            <div class="row">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Input Barcode" name="barcode_obat" readonly>
+                    <!-- ----------------------------------------- Input Produk ----------------------------------------------------- -->
+
+                    <div class="col-sm-12">
+                        <div class="card card-primary card-outline">
+                            <div class="card-body">
+                                <?= form_open('/dataDetail'); ?>
+                                <div class="row">
+                                    <input type="hidden" id="no_faktur" name="no_faktur" value="<?= $no_faktur; ?>">
+                                    <input type="hidden" id="nama_kategori" name="nama_kategori">
+                                    <input type="hidden" id="nama_satuan" name="nama_satuan">
+                                    <div class="col-3">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Ketik Barcode/Nama Obat/Kode Rak" name="barcode_obat" id="barcode_obat">
+                                            <span class="input-group-append">
+                                                <button id="search_obat" class="btn btn-flat btn-primary"><i class="fas fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Nama Obat" id="nama_obat" name="nama_obat" readonly>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Kode Rak" id="kode_rak" name="kode_rak" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Harga Jual" id="harga_jual" name="harga_jual" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="input-group">
+                                            <input id="qty" type="number" min="1" value="1" class="form-control text-center" placeholder="QTY" name="qty">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="reset" id="reset_obat" class="btn btn-warning btn-flat"><i class="fas fa-sync"></i><span> (CTRL+Backspace)</span></button>
+                                        <button
+                                            type="button" id="hapus_tab" name="hapus_tab" class="btn btn-danger btn-flat"><i class="fas fa-trash-alt"></i>
+                                            <span>(del)</span>
+                                        </button>
+                                        <button class="btn btn-success btn-flat" id="saveTransaksi"><i class="fas fa-cash-register"></i> <span>(F9)</span></button>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Nama Obat" id="nama_obat" name="nama_obat" autocomplete="off">
-                                        <span class="input-group-append">
-                                            <button class="btn btn-flat btn-primary"><i class="fas fa-search"></i></button>
-                                        </span>
-                                        <span class="input-group-append">
-                                            <button class="btn btn-flat btn-danger"><i class="fas fa-times"></i></button>
-                                        </span>
-                                    </div>
+                                <?= form_close(); ?>
+
+
+                                <!-- Detail Transaksi -->
+                                <div class="col-12 mt-4 dataDetailtransaksi">
+
                                 </div>
-                                <div class="col-1">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Kategori" name="nama_kategori" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Satuan" name="nama_satuan" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Harga Jual" name="harga_jual" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <div class="input-group">
-                                        <input id="qty" type="number" min="1" value="1" class="form-control text-center" placeholder="QTY" name="qty">
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <button type="submit" class="btn btn-primary btn-flat"><i class="fas fa-cart-plus"></i> <span>Add</span></button>
-                                    <button type="reset" class="btn btn-warning btn-flat"><i class="fas fa-sync"></i> <span>clear</span></button>
-                                    <button class="btn btn-success btn-flat"><i class="fas fa-cash-register"></i> <span>Pembayaran</span></button>
-                                </div>
+
+
                             </div>
-                            <?= form_close(); ?>
-
-
-                            <!-- row card -->
-
-                            <div class="col-12 mt-4 dataDetailtransaksi">
-
-                            </div>
-                            <!-- card body -->
                         </div>
+                        <!-- row -->
                     </div>
-                    <!-- row -->
                 </div>
+                <div class="viewmodal" style="display: none;"></div>
+                <div class="viewmodalpembayaran" style="display: none;"></div>
             </div>
-            <!-- /.content-wrapper -->
-
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
-
-            <!-- Main Footer -->
-            <footer class="main-footer">
-                <!-- To the right -->
-                <div class="float-right d-none d-sm-inline">
-                    Anything you want
-                </div>
-                <!-- Default to the left -->
-                <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-            </footer>
         </div>
-        <!-- ./wrapper -->
 
-        <!-- REQUIRED SCRIPTS -->
 
-        <!-- jQuery -->
-        <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
-        <!-- Bootstrap 4 -->
-        <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-        <!-- AdminLTE App -->
-        <script src="<?= base_url('assets/js/adminlte.min.js'); ?>"></script>
-        <!-- toastr -->
-        <script src="<?= base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
 
-        <!-- search  -->
-        <script>
-            $(document).ready(function() {
-                dataDetailtransaksi();
-                $('#nama_obat').focus();
-                $('#nama_obat').keydown(function(e) {
-                    if (e.keyCode == 13) { // Ketika tombol Enter ditekan
-                        e.preventDefault();
-                        let nama_obat = $('#nama_obat').val(); // Ambil nilai input di dalam event
-                        if (nama_obat == '') {
-                            toastr.error('Harap menginput nama obat');
-                        } else {
-                            cekObat(nama_obat);
+
+        <!-- /.content-wrapper -->
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+                Anything you want
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
+    <!-- jQuery UI -->
+    <script src="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.js'); ?>"></script>
+    <!-- Bootstrap 4 -->
+    <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+    <!-- AdminLTE App -->
+    <script src="<?= base_url('assets/js/adminlte.min.js'); ?>"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- toastr -->
+    <script src="<?= base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
+
+
+    <!-- search  -->
+    <script>
+        $(document).ready(function() {
+
+            hitungTotalBayar();
+            dataDetailtransaksi();
+            $('#barcode_obat').focus();
+
+
+            // key code function start document
+            $(document).keydown(function(e) {
+
+                // back home (home)
+                if (e.keyCode == 36) {
+                    e.preventDefault();
+                    window.location.href = '<?= site_url('/home'); ?>';
+                }
+                // back home end
+
+                // hapus input (ctrl + backspace)
+                if (e.ctrlKey && e.keyCode === 8) {
+                    e.preventDefault();
+                    Kosong();
+                }
+                // hapus input end
+
+                // focus input (ESC)
+                if (e.keyCode == 27) {
+                    e.preventDefault();
+                    $('#barcode_obat').focus();
+
+                }
+                // focus input end
+
+                // focus qty (Q)
+                if (e.keyCode == 81) {
+                    e.preventDefault();
+                    $('#qty').focus();
+
+                }
+                // focus qty end
+
+                // pembayaran (f9)
+                if (e.keyCode == 120) {
+                    e.preventDefault();
+                    pembayaran();
+
+                }
+                // pembayaran end
+
+                // hapus tab (delete)
+                if (e.keyCode === 46) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: "Hapus Table Transaksi?",
+                        html: "Yakin Batalkan Transaksi?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, Hapus !",
+                        cancelButtonText: "Tidak",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "post",
+                                url: "<?= site_url('/batalTransaksi'); ?>",
+                                data: {
+                                    no_faktur: $('#no_faktur').val()
+                                },
+                                dataType: "json",
+                                success: function(response) {
+                                    if (response.success == 'berhasil') {
+                                        window.location.reload();
+
+                                    }
+
+                                },
+                                error: function(xhr, status, error) {
+                                    alert("Error: " + error);
+                                }
+                            });
                         }
+                    });
+                }
+                // hapus tab end
+            });
+            // keycode function end
+
+            // kembali ke input barcode dari input qty (ESC)
+            $('#qty').keydown(function(e) {
+                if (e.keyCode == 27) {
+                    e.preventDefault();
+                    $('#barcode_obat').focus();
+
+                }
+
+            });
+            // qty button end
+
+            // button transaksi klik
+            $('#saveTransaksi').click(function(e) {
+                e.preventDefault();
+                pembayaran();
+
+            });
+            // button home
+
+            //hapus tab button
+            $('#hapus_tab').click(function(e) {
+                Swal.fire({
+                    title: "Hapus Table Transaksi?",
+                    html: "Yakin Batalkan Transaksi?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Hapus !",
+                    cancelButtonText: "Tidak",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "post",
+                            url: "<?= site_url('/batalTransaksi'); ?>",
+                            data: {
+                                no_faktur: $('#no_faktur').val()
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                if (response.success == 'berhasil') {
+                                    window.location.reload();
+
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                alert("Error: " + error);
+                            }
+                        });
                     }
                 });
             });
+            // hapus tab button end
 
-            function cekObat(nama_obat) {
-                $.ajax({
-                    url: '<?= base_url('/cekObat'); ?>', // Ganti dengan URL server Anda
-                    type: 'GET',
-                    data: {
-                        nama_obat: nama_obat, // Mengirim nilai yang diambil dari input
-                    },
-                    success: function(response) {
-                        if (response.harga_jual == '') {
-                            toastr.error('Obat tidak terdaftar');
-                        } else {
-                            // Mengisi input berdasarkan respons
-                            $('input[name="barcode_obat"]').val(response.barcode_obat);
-                            $('input[name="nama_kategori"]').val(response.nama_kategori);
-                            $('input[name="nama_satuan"]').val(response.nama_satuan);
-                            $('input[name="harga_jual"]').val(response.harga_jual);
-                            $('#qty').focus();
+            $('#barcode_obat').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: '<?= base_url('/autofill'); ?>',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            barcode_obat: request.term
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            if (data.success === 'berhasil') {
+                                response($.map(data.data, function(item) {
+                                    return {
+                                        label: item.label, // Label shown in the autocomplete
+                                        value: item.value, // Value set in the input field
+                                        id: item.id,
+                                        harga_jual: item.harga_jual,
+                                        kode_rak: item.kode_rak,
+                                        nama_obat: item.nama_obat,
+                                    };
+                                }));
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Error: " + error);
+                            dataDetailtransaksi();
                         }
+                    });
+                },
+                minLength: 1, // Trigger autocomplete after typing 2 characters
+                select: function(event, ui) {
+                    // Hanya mengambil data dari item yang dipilih
+                    console.log("Data yang dipilih:", ui.item);
+                    $('#barcode_obat').val(ui.item.value);
+                    $('#nama_obat').val(ui.item.nama_obat);
+                    $('#harga_jual').val(ui.item.harga_jual);
+                    $('#kode_rak').val(ui.item.kode_rak);
+                    $('#barcode_obat').prop('disabled', true);
+                    $('#qty').focus();
+                    dataDetailtransaksi();
+                    return false;
+
+                }
+            });
+
+            // search obat (enter)
+            $('#searh_obat').keydown(function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    cekObat();
+
+                }
+            });
+
+            // button search klik
+            $('#search_obat').click(function(e) {
+                e.preventDefault();
+                cekObat();
+
+            });
+
+
+        });
+
+        // -----------------------------------------------------  Data Detail Transaksi
+        function dataDetailtransaksi() {
+            $.ajax({
+                type: "post",
+                url: '<?= base_url('/dataDetail'); ?>',
+                data: {
+                    no_faktur: $('#no_faktur').val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    $('.dataDetailtransaksi').html('<i class="fa fa-spin fa-spinner"></i>'); // Tampilkan spinner
+                },
+                success: function(response) {
+                    if (response.data) {
+                        $('.dataDetailtransaksi').html(response.data); // Inject data ke tampilan
+                    } else {
+                        toastr.error('Tidak ada data detail transaksi');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        }
+        // data detaile transaksi end
+
+        // --------------------------------------------------------  Cek Obat
+        function cekObat() {
+
+            let barcode = $('#barcode_obat').val();
+
+            if (barcode.length == 0) {
+                $.ajax({
+                    url: '<?= base_url('/cekObat'); ?>',
+                    type: "post",
+                    dataType: 'json',
+                    success: function(response) {
+                        $('.viewmodal').html(response.viewmodal).show();
+                        $('#modalObat').modal('show');
+                        modalIsOpen = true;
+
+
                     },
                     error: function(xhr, status, error) {
-                        console.log("Error: " + error);
+                        alert("Error: " + error);
                     }
                 });
-            }
-
-            function dataDetailtransaksi() {
+            } else {
                 $.ajax({
                     type: "post",
-                    url: '<?= base_url('/dataDetail'); ?>',
+                    url: '<?= site_url('/simpanTemp'); ?>',
                     data: {
-                        no_faktur: $('#no_faktur').val()
+                        barcode_obat: barcode,
+                        nama_obat: $('#nama_obat').val(),
+                        kode_rak: $('#kode_rak').val(),
+                        nama_kategori: $('#nama_kategori').val(),
+                        nama_satuan: $('#nama_satuan').val(),
+                        harga_jual: $('#harga_jual').val(),
+                        qty: $('#qty').val(),
+                        no_faktur: $('#no_faktur').val(),
                     },
-                    dataType: 'json',
-                    beforeSend: function() {
-                        $('.dataDetailtransaksi').html('<i class="fa fa-spin fa-spinner"></i>'); // Tampilkan spinner
-                    },
+                    dataType: "json",
                     success: function(response) {
-                        if (response.data) {
-                            $('.dataDetailtransaksi').html(response.data); // Inject data ke tampilan
-                        } else {
-                            toastr.error('Tidak ada data detail transaksi');
+                        if (response.totaldata == 'banyak') {
+                            $.ajax({
+                                type: "post",
+                                url: '<?= base_url('/cekObat'); ?>',
+                                dataType: 'json',
+                                data: {
+                                    keyword: barcode
+                                },
+                                success: function(response) {
+                                    $('.viewmodal').html(response.viewmodal).show();
+                                    $('#modalObat').modal('show');
+                                },
+                                error: function(xhr, status, error) {
+                                    alert("Error: " + error);
+                                }
+                            });
+                        };
+                        if (response.success == 'berhasil') {
+                            dataDetailtransaksi();
+                            Kosong();
                         }
+                        if (response.error) {
+                            toastr.error().html(response.error);
+                            dataDetailtransaksi();
+                            Kosong();
+                        }
+
                     },
                     error: function(xhr, status, error) {
-                        toastr.error('gamasuk jir');
+                        alert("Error: " + error);
                     }
                 });
             }
-        </script>
+        }
+        $('#modalObat').on('hidden.bs.modal', function() {
+            modalIsOpen = false;
+        });
+        // cek obat end
+
+        // --------------------------------------------------------  Function Kosong
+        function Kosong() {
+            $('#kode_rak').val('');
+            $('#barcode_obat').val('');
+            $('#nama_obat').val('');
+            $('#nama_kategori').val('');
+            $('#nama_satuan').val('');
+            $('#harga_jual').val('');
+            $('#qty').val('1');
+            $('#barcode_obat').prop('disabled', false);
+            $('#barcode_obat').focus();
+
+            hitungTotalBayar();
+        }
+        // kosong end
+
+        // --------------------------------------------------------  Function Hitung Total Bayar
+        function hitungTotalBayar() {
+
+            $.ajax({
+                type: "post",
+                url: '<?= base_url('/hitungTotalBayar'); ?>',
+                dataType: 'json',
+                data: {
+                    no_faktur: $('#no_faktur').val()
+                },
+                success: function(response) {
+                    if (response.totalbayar) {
+                        $('#totalbayar').val(response.totalbayar)
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        }
+        // hitung end
+
+        let modalOpened = false;
+
+        function pembayaran() {
+            if (modalOpened) return;
+            let no_faktur = $('#no_faktur').val();
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('/pembayaran'); ?>",
+                data: {
+                    no_faktur: no_faktur,
+                    tglTransaksi: $('#tanggal').val(),
+                    jamTransaksi: $('#jam').val(),
+                    namaKasir: $('#nama_kasir').val(),
+
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.error) {
+                        toastr.error(response.error);
+                    }
+                    if (response.data) {
+                        $('.viewmodalpembayaran').html(response.data).show();
+                        $('#modalPembayaran').on('shown.bs.modal', function(event) {
+                            $('#jumlah_uang').focus();
+                        });
+                        $('#modalPembayaran').modal('show');
+                        modalOpened = true;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        }
+        $('#modalPembayaran').on('hidden.bs.modal', function() {
+            modalOpened = false;
+        });
+
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+
+            // Mengubah value dari input dengan id 'jam'
+            document.getElementById('jam').value = h + ':' + m + ':' + s;
+
+            // Mengatur interval pembaruan menjadi 1000ms (1 detik)
+            setTimeout(function() {
+                startTime();
+            }, 1000);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = '0' + i;
+            }
+            return i;
+        }
+
+        // Memulai fungsi saat halaman dimuat
+        window.onload = function() {
+            startTime();
+        };
+    </script>
 </body>
 
 </html>

@@ -23,7 +23,7 @@ class SatuanController extends BaseController
             'submenu'           => 'satuan',
             'satuan'            => $this->satuanModel->findAll()
         ];
-        return view('item/daftar_satuan', $data);
+        return view('satuan/daftar_satuan', $data);
     }
 
     //-------------------------- Tambah Satuan Obat ----------------------------------------
@@ -55,5 +55,38 @@ class SatuanController extends BaseController
         $this->satuanModel->delete($id);
         session()->setFlashdata('success', 'Data satuan berhasil dihapus');
         return redirect()->to(base_url('/daftar_satuan'));
+    }
+
+    // ------------------------------------------------------------------------- tambah Satuan Controller
+    public function tambahSatuan()
+    {
+        if ($this->request->isAJAX()) {
+
+            $msg = [
+                'modalTambah' => view('item/modal_tambah')
+            ];
+
+            return $this->response->setJSON($msg);
+        }
+    }
+    // tambah Satuan  end
+
+    // ------------------------------------------------------------------------- simpan Satuan Controller
+    public function simpanSatuan()
+    {
+        if ($this->request->isAJAX()) {
+
+            $nama_satuan = $this->request->getVar('nama_satuan');
+
+            $insertData = [
+                'nama_satuan' => $nama_satuan,
+            ];
+
+            $this->satuanModel->insert($insertData);
+
+            $msg = ['success' => 'berhasil'];
+
+            return $this->response->setJSON($msg);
+        }
     }
 }

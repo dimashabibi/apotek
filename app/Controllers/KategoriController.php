@@ -27,11 +27,10 @@ class KategoriController extends BaseController
             'title'             => 'Kategori Page',
             'menu'              => 'master_data',
             'submenu'           => 'kategori',
-            'obat'              => $this->kategoriModel->getNestedObat($kategori_id),
             'kategori'          => $this->kategoriModel->findAll(),
         ];
 
-        return view('item/daftar_kategori', $data);
+        return view('kategori/daftar_kategori', $data);
     }
 
     //-------------------------- tambah Kategori Obat ----------------------------------------
@@ -64,5 +63,40 @@ class KategoriController extends BaseController
         $this->kategoriModel->delete($id);
         session()->setFlashdata('success', 'Kategori berhasil dihapus');
         return redirect()->to(base_url('/daftar_kategori'));
+    }
+
+    // ------------------------------------------------------------------------- tambah kateori Controller
+    public function tambahKategori()
+    {
+        if ($this->request->isAJAX()) {
+
+            $msg = [
+                'modalTambah' => view('item/modal_tambah')
+            ];
+
+            return $this->response->setJSON($msg);
+        }
+    }
+    // tambah kateori  end
+
+    // ------------------------------------------------------------------------- simpan kateori Controller
+    public function simpanKategori()
+    {
+        if ($this->request->isAJAX()) {
+
+            $nama_kategori = $this->request->getVar('nama_kategori');
+            $ket_kategori = $this->request->getVar('ket_kategori');
+
+            $insertData = [
+                'nama_kategori' => $nama_kategori,
+                'ket_kategori' => $ket_kategori,
+            ];
+
+            $this->kategoriModel->insert($insertData);
+
+            $msg = ['success' => 'berhasil'];
+
+            return $this->response->setJSON($msg);
+        }
     }
 }

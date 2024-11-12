@@ -8,7 +8,7 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-capitalize">halaman daftar obat</h1>
             </div><!-- /.col -->
-            <div class="col-sm-6">
+            <div class=" col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#" class="text-capitalize">obat</a></li>
                     <li class="breadcrumb-item text-capitalize active">daftar obat</li>
@@ -38,12 +38,12 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Kode Rak</th>
                             <th>Barcode Obat</th>
                             <th>Nama Obat</th>
                             <th>Gol Obat</th>
                             <th>Kategori</th>
-                            <th>Supplier</th>
-                            <th>Pabrik</th>
+                            <th>Konsinyasi</th>
                             <th>Stok Min</th>
                             <th>Stok Tersedia</th>
                             <th>Satuan</th>
@@ -58,28 +58,35 @@
                         <?php foreach ($obat as $row): ?>
                             <tr>
                                 <td><?= $i++; ?></td>
+                                <td><?= $row['kode_rak']; ?></td>
                                 <td><?= $row['barcode_obat']; ?></td>
                                 <td><?= $row['nama_obat']; ?></td>
                                 <td><?= $row['nama_golongan']; ?></td>
                                 <td><?= $row['nama_kategori']; ?></td>
-                                <td><?= $row['nama_supplier']; ?></td>
-                                <td><?= $row['nama_pabrik']; ?></td>
+                                <td><?= $row['konsinyasi']; ?></td>
                                 <td><?= number_format($row['stok_min']); ?></td>
-                                <td><?= number_format($row['stok_obat']); ?></td>
+                                <?php if ($row['stok_obat'] == 0) : ?>
+                                    <td class="bg-danger"><?= number_format($row['stok_obat']); ?></td>
+                                <?php elseif ($row['stok_obat'] <= $row['stok_min']) : ?>
+                                    <td class="bg-warning"><?= number_format($row['stok_obat']); ?></td>
+                                <?php else: ?>
+                                    <td><?= number_format($row['stok_obat']); ?></td>
+                                <?php endif; ?>
                                 <td><?= $row['nama_satuan']; ?></td>
-                                <td><?= $row['harga_pokok']; ?></td>
-                                <td><?= $row['harga_jual']; ?></td>
+                                <td><?= "Rp" . " " . " " .  number_format($row['harga_pokok'], 0, ",", "."); ?></td>
+                                <td><?= "Rp" . " " . " " . number_format($row['harga_jual'], 0, ",", "."); ?></td>
                                 <td><?= $row['nama_etiket']; ?></td>
-                                <td>
-                                    <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('edit_obat/' . $row['id']); ?>">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
-                                        data-target="#modalDelete<?= $row['id']; ?>">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                <td class="text-right py-0 align-middle">
+                                    <div class="btn-group btn-group-sm">
+                                        <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('edit_obat/' . $row['id']); ?>">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
+                                            data-target="#modalDelete<?= $row['id']; ?>">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
-
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -91,6 +98,10 @@
     </div>
     <!-- /.col -->
 </div>
+
+<!-- /.row -->
+
+
 
 <!-- /.row -->
 
@@ -114,7 +125,7 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" name="submit" class="btn bg-gradient-danger">Delete</button>
                 </div>
                 </form>

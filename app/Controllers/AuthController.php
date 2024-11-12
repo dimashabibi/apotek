@@ -37,9 +37,10 @@ class AuthController extends BaseController
                     'nama_user' => $datauser['nama_user'],
                     'username'  => $datauser['username'],
                     'password'  => $datauser['password'],
+                    'role'      => $datauser['role'],
                     'logged_in' => true,
                 ]);
-                session()->setFlashdata('success', 'Login Berhasil');
+                session()->setFlashdata('success', 'Login Berhasil, Selamat Bekerja. Semangat!!!');
                 return redirect()->to(base_url('/home'));
             } else {
                 session()->setFlashdata('error', 'Login Gagal');
@@ -63,10 +64,12 @@ class AuthController extends BaseController
         $usermodel->insert([
             'nama_user' => $this->request->getVar('nama_user'),
             'username'  => $this->request->getVar('username'),
+            'email'     => $this->request->getVar('email'),
             'password'  => password_hash($this->request->getVar('password'), PASSWORD_BCRYPT),
+            'role'      => 'admin',
         ]);
         session()->getFlashdata('success', 'Register Berhasil');
-        return redirect()->to(base_url('/login'));
+        return redirect()->to(base_url('/'));
     }
 
     //------------------------------- Logout Controller -----------------------------------------
@@ -74,5 +77,11 @@ class AuthController extends BaseController
     {
         session()->destroy();
         return redirect()->to(base_url('/'));
+    }
+
+    //------------------------------- Register Controller -----------------------------------------
+    public function lupa_password()
+    {
+        return view('auth/lupa_password');
     }
 }

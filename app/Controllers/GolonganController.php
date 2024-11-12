@@ -24,7 +24,7 @@ class GolonganController extends BaseController
             'golongan'          => $this->golonganModel->findAll(),
         ];
 
-        return view('item/daftar_golongan', $data);
+        return view('golongan/daftar_golongan', $data);
     }
 
     //-------------------------- Tambah Golongan Obat ----------------------------------------
@@ -58,5 +58,41 @@ class GolonganController extends BaseController
         $this->golonganModel->delete($id);
         session()->setFlashdata('success', 'Data golongan berhasil dihapus');
         return redirect()->to(base_url('/daftar_golongan'));
+    }
+    // delete golongan end
+
+    // ------------------------------------------------------------------------- tambah golongan Controller
+    public function tambahGolongan()
+    {
+        if ($this->request->isAJAX()) {
+
+            $msg = [
+                'modalTambah' => view('item/modal_tambah')
+            ];
+
+            return $this->response->setJSON($msg);
+        }
+    }
+    // tambah golongan  end
+
+    // ------------------------------------------------------------------------- simpan golongan Controller
+    public function simpanGolongan()
+    {
+        if ($this->request->isAJAX()) {
+
+            $nama_golongan = $this->request->getVar('nama_golongan');
+            $ket_golongan = $this->request->getVar('ket_golongan');
+
+            $insertData = [
+                'nama_golongan' => $nama_golongan,
+                'ket_golongan' => $ket_golongan,
+            ];
+
+            $this->golonganModel->insert($insertData);
+
+            $msg = ['success' => 'berhasil'];
+
+            return $this->response->setJSON($msg);
+        }
     }
 }
