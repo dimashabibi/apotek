@@ -35,13 +35,34 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputGolongan" class="col-sm-2 col-form-label text-capitalize">Nama golongan</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputGolongan" placeholder="Nama Golongan" name="nama_golongan" autofocus>
+                            <input
+                                type="text"
+                                class="form-control <?= (session()->get('errors')['nama_golongan'] ?? false) ? 'is-invalid' : ''; ?>"
+                                id="inputGolongan"
+                                placeholder="Nama Golongan"
+                                name="nama_golongan"
+                                value="<?= old('nama_golongan'); ?>"
+                                autofocus>
+                            <?php if (session()->get('errors')['nama_golongan'] ?? false) : ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['nama_golongan']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="golongan" class="col-sm-2 col-form-label text-capitalize">Keterangan golongan</label>
                         <div class="col-sm-8">
-                            <textarea name="ket_golongan" id="" class="form-control" placeholder="keterangan"></textarea>
+                            <textarea
+                                name="ket_golongan"
+                                id="golongan"
+                                class="form-control <?= (session()->get('errors')['ket_golongan'] ?? false) ? 'is-invalid' : ''; ?>"
+                                placeholder="Keterangan"><?= old('ket_golongan'); ?></textarea>
+                            <?php if (session()->get('errors')['ket_golongan'] ?? false) : ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['ket_golongan']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -49,9 +70,11 @@
                 <div class="card-footer text-center">
                     <button type="submit" class="btn btn-lg btn-info">
                         <span><i class="fas fa-save"></i></span>
-                        Save</button>
+                        Save
+                    </button>
                 </div>
             </form>
+
         </div>
         <!-- /.card-footer -->
     </div>
@@ -123,12 +146,32 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="inputNamaGolongan">Nama Golongan</label>
-                                        <input type="text" class="form-control" id="inputNamaGolongan"
-                                            placeholder="Input Nama Golongan" name="nama_golongan" value="<?= $edit['nama_golongan']; ?>" autofocus>
+                                        <input
+                                            type="text"
+                                            class="form-control <?= (session()->get('errors')['nama_golongan'] ?? false) ? 'is-invalid' : ''; ?>"
+                                            id="inputNamaGolongan"
+                                            placeholder="Input Nama Golongan"
+                                            name="nama_golongan"
+                                            value="<?= old('nama_golongan') ? old('nama_golongan') : $edit['nama_golongan']; ?>"
+                                            autofocus>
+                                        <?php if (session()->get('errors')['nama_golongan'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['nama_golongan']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
-                                        <label for="golongan" class="text-capitalize">Keterangan golongan</label>
-                                        <textarea name="ket_golongan" id="" class="form-control" placeholder="keterangan"><?= $edit['ket_golongan']; ?></textarea>
+                                        <label for="keteranganGolongan" class="text-capitalize">Keterangan Golongan</label>
+                                        <textarea
+                                            name="ket_golongan"
+                                            id="keteranganGolongan"
+                                            class="form-control <?= (session()->get('errors')['ket_golongan'] ?? false) ? 'is-invalid' : ''; ?>"
+                                            placeholder="Keterangan"><?= old('ket_golongan') ? old('ket_golongan') : $edit['ket_golongan']; ?></textarea>
+                                        <?php if (session()->get('errors')['ket_golongan'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['ket_golongan']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

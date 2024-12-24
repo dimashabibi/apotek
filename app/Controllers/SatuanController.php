@@ -30,22 +30,60 @@ class SatuanController extends BaseController
 
     public function tambah_satuan()
     {
-        $this->satuanModel->insert([
-            'nama_satuan' => $this->request->getVar('nama_satuan')
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_satuan' => [
+                'label'  => 'Nama Satuan',
+                'rules'  => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nama Satuan belum diinput',
+                    'max_length' => 'Maksimal 50 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data satuan berhasil ditambah');
-        return redirect()->to(base_url('/daftar_satuan'));
+
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->satuanModel->insert([
+                'nama_satuan' => $this->request->getVar('nama_satuan')
+            ]);
+            session()->setFlashdata('success', 'Data satuan berhasil ditambah');
+            return redirect()->to(base_url('/daftar_satuan'));
+        }
     }
 
     //-------------------------- Edit Satuan Obat ----------------------------------------
 
     public function edit_satuan($id)
     {
-        $this->satuanModel->update($id, [
-            'nama_satuan' => $this->request->getVar('nama_satuan')
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_satuan' => [
+                'label'  => 'Nama Satuan',
+                'rules'  => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nama Satuan belum diinput',
+                    'max_length' => 'Maksimal 50 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data satuan berhasil diubah');
-        return redirect()->to(base_url('/daftar_satuan'));
+
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->satuanModel->update($id, [
+                'nama_satuan' => $this->request->getVar('nama_satuan')
+            ]);
+            session()->setFlashdata('success', 'Data satuan berhasil diubah');
+            return redirect()->to(base_url('/daftar_satuan'));
+        }
     }
 
     //-------------------------- Delete Satuan Obat ----------------------------------------

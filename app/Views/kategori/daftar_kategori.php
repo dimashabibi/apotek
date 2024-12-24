@@ -35,13 +35,20 @@
           <div class="form-group row justify-content-center">
             <label for="inputKategori" class="col-sm-2 col-form-label">Nama Kategori</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="inputKategori" placeholder="Nama Kategori" name="nama_kategori" autofocus>
+              <input type="text" class="form-control <?= (session()->get('errors')['nama_kategori'] ?? false) ? 'is-invalid' : ''; ?>" id="inputKategori" placeholder="Nama Kategori" name="nama_kategori"
+                value="<?= old('nama_kategori'); ?>" autofocus>
+              <?php if (session()->get('errors')['nama_kategori'] ?? false): ?>
+                <div class="invalid-feedback">
+                  <?= session()->get('errors')['nama_kategori']; ?>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group row justify-content-center">
             <label for="kategori" class="col-sm-2 col-form-label">Keterangan Kategori</label>
             <div class="col-sm-8">
-              <textarea name="ket_kategori" id="" class="form-control" placeholder="keterangan"></textarea>
+              <textarea name="ket_kategori" id="" class="form-control <?= (session()->get('errors')['ket_kategori'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="keterangan">
+                <?= old('ket_kategori'); ?></textarea>
             </div>
           </div>
         </div>
@@ -123,12 +130,22 @@
                 <div class="col-md">
                   <div class="form-group">
                     <label for="inputNamaKategori">Nama Kategori</label>
-                    <input type="text" class="form-control" id="inputNamaKategori"
-                      placeholder="Input Nama Kategori" name="nama_kategori" value="<?= $edit['nama_kategori']; ?>" autofocus>
+                    <input type="text" class="form-control <?= (session()->get('errors')['nama_kategori'] ?? false) ? 'is-invalid' : ''; ?>" id="inputNamaKategori"
+                      placeholder="Input Nama Kategori" name="nama_kategori" value="<?= (old('nama_kategori') ? old('nama_kategori') : $edit['nama_kategori']); ?>" autofocus>
+                    <?php if (session()->get('errors')['nama_kategori'] ?? false) : ?>
+                      <div class="invalid-feedback">
+                        <?= session()->get('errors')['nama_kategori']; ?>
+                      </div>
+                    <?php endif; ?>
                   </div>
                   <div class="form-group">
                     <label for="golongan" class="text-capitalize">Keterangan kategori</label>
-                    <textarea name="ket_kategori" id="" class="form-control" placeholder="keterangan"><?= $edit['ket_kategori']; ?></textarea>
+                    <textarea name="ket_kategori" id="" class="form-control <?= (session()->get('errors')['ket_kategori'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="keterangan"><?= old('ket_kategori') ? old('ket_kategori') : $edit['ket_kategori']; ?></textarea>
+                    <?php if (session()->get('errors')['ket_kategori'] ?? false) : ?>
+                      <div class="invalid-feedback">
+                        <?= session()->get('errors')['ket_kategori']; ?>
+                      </div>
+                    <?php endif; ?>
                   </div>
                 </div>
               </div>

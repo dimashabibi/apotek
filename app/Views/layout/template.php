@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css'); ?>">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css'); ?>">
+    <!-- Font Jquery-ui -->
+    <link rel="stylesheet" href="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.css'); ?>">
 
 
 
@@ -77,6 +79,7 @@
     <!-- REQUIRED SCRIPTS -->
 
     <!-- SweetAlert2 -->
+     
     <script src="<?= base_url('assets/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
 
     <?php if (!empty(session()->getFlashdata('success'))) : ?>
@@ -111,8 +114,13 @@
 
     <!-- jQuery -->
     <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
+    <!-- jQuery UI -->
+    <script src="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.js'); ?>"></script>
     <!-- Bootstrap -->
     <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+    <!-- jquery-validation -->
+    <script src="<?= base_url('assets/plugins/jquery-validation/jquery.validate.min.js'); ?>"></script>
+    <script src="<?= base_url('assets/plugins/jquery-validation/additional-methods.min.js'); ?>"></script>
     <!-- Moment.js -->
     <script src="<?= base_url('assets/plugins/moment/moment.min.js'); ?>"></script>
     <!-- date-range-picker -->
@@ -129,6 +137,6 @@
     <script src="<?= base_url('assets/js/adminlte.js'); ?>"></script>
 
 
-</body>     
+</body>
 
 </html>

@@ -128,15 +128,33 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= site_url('laporan_harian'); ?>" class="nav-link <?= $submenu == 'harian' ? 'active' : ''; ?>">
+                            <a href="<?= site_url('laporan_pembelian'); ?>" class="nav-link <?= $submenu == 'pembelian' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan harian</p>
+                                <p class="text-capitalize">Laporan pembelian</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_transaksi'); ?>" class="nav-link <?= $submenu == 'transaksi' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p class="text-capitalize">Laporan transaksi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= site_url('laporan_harian'); ?>" class="nav-link <?= $submenu == 'harian' ? 'active' : ''; ?>">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p class="text-capitalize">Laporan harian</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= site_url('laporan_bulanan'); ?>" class="nav-link <?= $submenu == 'bulanan' ? 'active' : ''; ?>">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p class="text-capitalize">Laporan bulanan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= site_url('laporan_tahunan'); ?>" class="nav-link <?= $submenu == 'tahunan' ? 'active' : ''; ?>">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p class="text-capitalize">Laporan tahunan</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -151,9 +169,20 @@
                                 <p class="text-capitalize">Laporan stok menipis</p>
                             </a>
                         </li>
+
                     </ul>
                 </li>
                 <!-- Laporan End -->
+
+                <!-- Setting Start -->
+                <li class="nav-header">Hutang</li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/hutang'); ?>" class="nav-link <?= $menu == 'hutang' ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p class="text-capitalize">Hutang</p>
+                    </a>
+                </li>
+                <!-- Setting End -->
 
                 <!-- Setting Start -->
                 <li class="nav-header">Setting</li>

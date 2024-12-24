@@ -10,5 +10,13 @@ class GolonganModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['nama_golongan', 'ket_golongan'];
+    protected $allowedFields    = [
+        'nama_golongan',
+        'ket_golongan',
+        'created_at',
+        'deleted_at'
+    ];
+    protected $useSoftDeletes = true;
+    protected $deletedField = 'deleted_at';
+
 }

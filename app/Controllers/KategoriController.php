@@ -22,7 +22,6 @@ class KategoriController extends BaseController
 
     public function daftar_kategori()
     {
-        $kategori_id = null;
         $data = [
             'title'             => 'Kategori Page',
             'menu'              => 'master_data',
@@ -36,25 +35,77 @@ class KategoriController extends BaseController
     //-------------------------- tambah Kategori Obat ----------------------------------------
     public function tambah_kategori()
     {
-        $this->kategoriModel->insert([
-            'nama_kategori' => $this->request->getVar('nama_kategori'),
-            'ket_kategori'  => $this->request->getVar('ket_kategori'),
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_kategori' => [
+                'label'  => 'Nama Kategori',
+                'rules'  => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nama Kategori belum diinput',
+                    'max_length' => 'Maksimal 50 karakter',
+                ],
+            ],
+            'ket_kategori' => [
+                'label'  => 'Nama Kategori',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
 
-        session()->setFlashdata('success', 'Kategori berhasil ditambah');
-        return redirect()->to(base_url('/daftar_kategori'));
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->kategoriModel->insert([
+                'nama_kategori' => $this->request->getVar('nama_kategori'),
+                'ket_kategori'  => $this->request->getVar('ket_kategori'),
+            ]);
+
+            session()->setFlashdata('success', 'Kategori berhasil ditambah');
+            return redirect()->to(base_url('/daftar_kategori'));
+        }
     }
 
     //-------------------------- edit Kategori Obat ----------------------------------------
     public function edit_kategori($id)
     {
-        $this->kategoriModel->update($id, [
-            'nama_kategori' => $this->request->getVar('nama_kategori'),
-            'ket_kategori'  => $this->request->getVar('ket_kategori'),
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_kategori' => [
+                'label'  => 'Nama Kategori',
+                'rules'  => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nama Kategori belum diinput',
+                    'max_length' => 'Maksimal 50 karakter',
+                ],
+            ],
+            'ket_kategori' => [
+                'label'  => 'Keterangan',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
 
-        session()->setFlashdata('success', 'Kategori berhasil diubah');
-        return redirect()->to(base_url('/daftar_kategori'));
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->kategoriModel->update($id, [
+                'nama_kategori' => $this->request->getVar('nama_kategori'),
+                'ket_kategori'  => $this->request->getVar('ket_kategori'),
+            ]);
+
+            session()->setFlashdata('success', 'Kategori berhasil ditambah');
+            return redirect()->to(base_url('/daftar_kategori'));
+        }
     }
 
     //-------------------------- Delete Kategori Obat ----------------------------------------

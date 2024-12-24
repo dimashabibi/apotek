@@ -27,9 +27,18 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Daftar Obat</h3>
+
                 <a type="button" class="btn-sm btn-primary float-sm-right" href="<?= site_url('create_obat'); ?>">
                     <i class="fas fa-solid fa-plus nav-icon"></i>
                     Tambah Obat
+                </a>
+                <a type="button" class="btn-sm btn-success float-sm-right mr-2" href="<?= site_url('exportExcel'); ?>">
+                    <i class="fas fa-file-excel nav-icon"></i>
+                    Export Excel
+                </a>
+                <a type="button" class="btn-sm btn-info float-sm-right mr-2" href="<?= site_url('import_obat'); ?>">
+                    <i class="fas fa-file-upload nav-icon"></i>
+                    Import Excel
                 </a>
             </div>
             <!-- /.card-header -->
@@ -40,6 +49,7 @@
                             <th>No</th>
                             <th>Kode Rak</th>
                             <th>Barcode Obat</th>
+                            <th>Merk Obat</th>
                             <th>Nama Obat</th>
                             <th>Gol Obat</th>
                             <th>Kategori</th>
@@ -60,6 +70,7 @@
                                 <td><?= $i++; ?></td>
                                 <td><?= $row['kode_rak']; ?></td>
                                 <td><?= $row['barcode_obat']; ?></td>
+                                <td><?= $row['merk_obat']; ?></td>
                                 <td><?= $row['nama_obat']; ?></td>
                                 <td><?= $row['nama_golongan']; ?></td>
                                 <td><?= $row['nama_kategori']; ?></td>
@@ -138,6 +149,8 @@
 <?= $this->section('script'); ?>
 <script>
     $(function() {
+        $('body').addClass('sidebar-collapse');
+        
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": false,

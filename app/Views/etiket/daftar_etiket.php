@@ -35,13 +35,20 @@
                     <div class="form-group row justify-content-center">
                         <label for="InputEtiket" class="col-sm-2 col-form-label text-capitalize">Nama etiket</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket" autofocus>
+                            <input type="text" class="form-control <?= (session()->get('errors')['nama_etiket'] ?? false) ? 'is-invalid' : ''; ?>" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket" value="<?= old('nama_etiket'); ?>" autofocus>
+                            <?php if (session()->get('errors')['nama_etiket'] ?? false) : ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['nama_etiket']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="etiket" class="col-sm-2 col-form-label text-capitalize">Keterangan etiket</label>
                         <div class="col-sm-8">
-                            <textarea name="ket_etiket" id="" class="form-control" placeholder="keterangan"></textarea>
+                            <textarea name="ket_etiket" id="" class="form-control <?= (session()->get('errors')['ket_etiket'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="keterangan">
+                                <?= old('ket_etiket'); ?>
+                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -123,12 +130,12 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="inputNamaEtiket" class="text-capitalize">Nama etiket</label>
-                                        <input type="text" class="form-control" id="inputNamaEtiket"
-                                            placeholder="Input Nama Etiket" name="nama_etiket" value="<?= $edit['nama_etiket']; ?>" autofocus>
+                                        <input type="text" class="form-control <?= (session()->get('errors')['nama_etiket'] ?? false) ? 'is-invalid' : ''; ?>" id="inputNamaEtiket"
+                                            placeholder="Input Nama Etiket" name="nama_etiket" value="<?= old('nama_etiket') ? old('nama_etiket') : $edit['nama_etiket']; ?>" autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="etiket" class="text-capitalize">Keterangan etiket</label>
-                                        <textarea name="ket_etiket" id="" class="form-control" placeholder="keterangan"><?= $edit['ket_etiket']; ?></textarea>
+                                        <textarea name="ket_etiket" id="" class="form-control <?= (session()->get('errors')['ket_etiket'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="keterangan"><?= $edit['ket_etiket']; ?><?= old('ket_etiket') ? old('ket_etiket') : $edit['ket_etiket']; ?></textarea>
                                     </div>
                                 </div>
                             </div>

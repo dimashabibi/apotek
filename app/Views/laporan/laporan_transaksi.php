@@ -79,7 +79,10 @@
                     <div class="form-group">
                         <label>Search:</label>
                         <div class="input-group">
-                            <input type="search" class="form-control" name="keyword" id="keyword" placeholder="Input no faktur" autocomplete="off">
+                            <input type="search" class="form-control" name="keyword" id="keyword"
+                                placeholder="Input no faktur"
+                                autocomplete="off"
+                                value="<?= $keyword ?? ''; ?>">
                             <span class="input-group-append">
                                 <button type="submit" class="btn btn-default">
                                     <i class="fa fa-search"></i>
@@ -87,6 +90,29 @@
                             </span>
                         </div>
                         <small id="emailHelp" class="form-text text-black">* klik search/tekan enter tanpa input untuk mengembalikan table</small>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Filter Tanggal:</label>
+                        <div class="row">
+                            <div class="col-5">
+                                <input type="date" class="form-control" name="start_date" id="start_date"
+                                    value="<?= $start_date ?? ''; ?>">
+                                <small class="form-text text-muted">Tanggal Mulai</small>
+                            </div>
+                            <div class="col-5">
+                                <input type="date" class="form-control" name="end_date" id="end_date"
+                                    value="<?= $end_date ?? ''; ?>">
+                                <small class="form-text text-muted">Tanggal Akhir</small>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,7 +159,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $j = 1; ?>
-                                    <?php foreach ($detail_transaksi_faktur as $value): ?>
+                                    <?php foreach ($detail_transaksi as $value): ?>
                                         <?php if ($value['no_faktur'] == $faktur['no_faktur']): ?>
                                             <tr>
                                                 <td class="text-center text-bold"><?= $j++; ?></td>
@@ -157,7 +183,7 @@
                                         <th colspan="8"><strong>TOTAL BERSIH</strong></th>
                                         <th><strong><?php
                                                     $sub_qty = 0;
-                                                    foreach ($detail_transaksi_faktur as $value) {
+                                                    foreach ($detail_transaksi as $value) {
                                                         if ($value['no_faktur'] == $faktur['no_faktur']) {
                                                             $sub_qty += $value['qty'];
                                                         }
@@ -183,13 +209,7 @@
         </div>
     </div>
     <!-- /.col -->
-    <div class="row">
-        <div class="col" style="margin-left: 615px;">
 
-            <?= $pager->links('faktur', 'laporan_pagination'); ?>
-
-        </div>
-    </div>
 </div>
 <?= $this->endSection(); ?>
 

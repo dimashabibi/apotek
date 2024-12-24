@@ -49,82 +49,116 @@
                         <div class="form-group row">
                             <label for="namaObat" class="col-sm-2 col-form-label">Nama Obat</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="namaObat"
-                                    placeholder="Input Nama Obat" name="nama_obat" value="<?= $obat['nama_obat']; ?>">
+                                <input type="text" class="form-control <?= (session()->get('errors')['nama_obat'] ?? false) ? 'is-invinvalidadi' : ''; ?>" id="namaObat"
+                                    placeholder="Input Nama Obat" name="nama_obat" value="<?= (old('nama_obat') ? old('nama_obat') : $obat['nama_obat']); ?>">
+                                <?php if (session()->get('errors')['nama_obat'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['nama_obat']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="merkObat" class="col-sm-2 col-form-label">Merk Obat</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="merkObat"
-                                    placeholder="Input Merk Obat" name="merk_obat" value="<?= $obat['merk_obat']; ?>">
+                                <input type="text" class="form-control <?= (session()->get('errors')['merk_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="merkObat"
+                                    placeholder="Input Merk Obat" name="merk_obat" value="<?= (old('merk_obat') ? old('merk_obat') : $obat['merk_obat']); ?>">
+                                <?php if (session()->get('errors')['merk_obat'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['merk_obat']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Golongan Obat</label>
                             <div class="input-group col-sm-10">
-                                <select class="form-control select2" name="id_golongan">
-                                    <option selected="selected" value="<?= $golonganId['id']; ?>" hidden><?= $golonganId['nama_golongan']; ?></option>
+                                <select class="form-control select2 <?= (session()->get('errors')['id_golongan'] ?? false) ? 'is-invalid' : ''; ?>" name="id_golongan">
+                                    <option value="" hidden <?= old('id_golongan') === null ? 'selected' : ''; ?>>Pilih Golongan</option>
                                     <?php foreach ($golongan as $gol) : ?>
-                                        <option value="<?= $gol['id']; ?>"><?= $gol['nama_golongan']; ?></option>
+                                        <option value="<?= $gol['id']; ?>" <?= (old('id_golongan') ? old('id_golongan') : $obat['id_golongan']) == $gol['id'] ? 'selected' : ''; ?>>
+                                            <?= $gol['nama_golongan']; ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <span class="input-group-append">
+                                <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btnTambahGolongan" id="btnTambahGolongan">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                </span>
+                                </div>
+                                <?php if (session()->get('errors')['id_golongan'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['id_golongan']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
+
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Kategori</label>
                             <div class="input-group col-sm-10">
-                                <select class="form-control select2" name="id_kategori">
-                                    <option selected="selected" value="<?= $kategoriId['id']; ?>" hidden><?= $kategoriId['nama_kategori']; ?></option>
+                                <select class="form-control select2 <?= (session()->get('errors')['id_kategori'] ?? false) ? 'is-invalid' : ''; ?>" name="id_kategori">
+                                    <option value="" hidden <?= old('id_kategori') === null ? 'selected' : ''; ?>>Pilih kategori</option>
                                     <?php foreach ($kategori as $kat) : ?>
-                                        <option value="<?= $kat['id']; ?>"><?= $kat['nama_kategori']; ?></option>
+                                        <option value="<?= $kat['id']; ?>" <?= (old('id_kategori') ? old('id_kategori') : $obat['id_kategori']) == $kat['id'] ? 'selected' : ''; ?>>
+                                            <?= $kat['nama_kategori']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <span class="input-group-append">
+                                <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btnTambahKategori" id="btnTambahKategori">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                </span>
+                                </div>
+                                <?php if (session()->get('errors')['id_kategori'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['id_kategori']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Etiket/Aturan Pemakaian</label>
                             <div class="input-group col-sm-10">
-                                <select class="form-control select2" name="id_etiket">
-                                    <option selected="selected" value="<?= $etiketId['id']; ?>" hidden><?= $etiketId['nama_etiket']; ?></option>
+                                <select class="form-control select2 <?= (session()->get('errors')['id_etiket'] ?? false) ? 'is-invalid' : ''; ?>" name="id_etiket">
+                                    <option value="" hidden <?= old('id_etiket') === null ? 'selected' : ''; ?>>Pilih Etiket</option>
                                     <?php foreach ($etiket as $et) : ?>
-                                        <option value="<?= $et['id']; ?>"><?= $et['nama_etiket']; ?></option>
+                                        <option value="<?= $et['id']; ?>" <?= (old('id_etiket') ? old('id_etiket') : $obat['id_etiket']) == $et['id'] ? 'selected' : ''; ?>>
+                                            <?= $et['nama_etiket']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <span class="input-group-append">
+                                <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btnTambahEtiket" id="btnTambahEtiket">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                </span>
+                                </div>
+                                <?php if (session()->get('errors')['id_etiket'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['id_etiket']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <div class="input-group">
-                                <label class="col-sm-2 col-form-label">Konsinyasi</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control select2" name="konsinyasi">
-                                        <option selected="selected" value="<?= $obat['konsinyasi']; ?>" hidden><?= $obat['konsinyasi']; ?></option>
-                                        <option value="konsinyasi">Konsinyasi</option>
-                                        <option value="non konsinyasi">Non Konsinyasi</option>
-                                    </select>
-                                </div>
+                            <label class="col-sm-2 col-form-label">Konsinyasi</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2 <?= (session()->get('errors')['konsinyasi'] ?? false) ? 'is-invalid' : ''; ?>" name="konsinyasi">
+                                    <option value="" hidden <?= old('konsinyasi') === null && empty($obat['konsinyasi']) ? 'selected' : ''; ?>>Pilih Konsinyasi</option>
+                                    <option value="konsinyasi" <?= (old('konsinyasi') ? old('konsinyasi') : $obat['konsinyasi']) == 'konsinyasi' ? 'selected' : ''; ?>>Konsinyasi</option>
+                                    <option value="non konsinyasi" <?= (old('konsinyasi') ? old('konsinyasi') : $obat['konsinyasi']) == 'non konsinyasi' ? 'selected' : ''; ?>>Non Konsinyasi</option>
+                                </select>
+                                <?php if (session()->get('errors')['konsinyasi'] ?? false): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session()->get('errors')['konsinyasi']; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
+
 
                         <div class="col-12">
                             <div class="float-sm-right">
@@ -143,41 +177,62 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Satuan</label>
                                     <div class="input-group col-sm-10">
-                                        <select class="form-control select2" name="id_satuan">
-                                            <option selected="selected" value="<?= $satuanId['id']; ?>" hidden><?= $satuanId['nama_satuan']; ?></option>
+                                        <select class="form-control select2 <?= (session()->get('errors')['id_satuan'] ?? false) ? 'is-invalid' : ''; ?>" name="id_satuan">
+                                            <option value="" hidden <?= old('id_satuan') === null ? 'selected' : ''; ?>>Pilih Satuan</option>
                                             <?php foreach ($satuan as $sat) : ?>
-                                                <option value=" <?= $sat['id']; ?>"><?= $sat['nama_satuan']; ?></option>
+                                                <option value="<?= $sat['id']; ?>" <?= (old('id_satuan') ? old('id_satuan') : $obat['id_satuan']) == $sat['id'] ? 'selected' : ''; ?>>
+                                                    <?= $sat['nama_satuan']; ?></option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <span class="input-group-append">
+                                        <div class="input-group-append">
                                             <button type="button" class="btn btn-primary btnTambahSatuan" id="btnTambahSatuan">
                                                 <i class="fa fa-plus"></i>
                                             </button>
-                                        </span>
+                                        </div>
+                                        <?php if (session()->get('errors')['id_satuan'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['id_satuan']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="stokObat" class="col-sm-2 col-form-label">Stok Obat</label>
                                     <div class="col-sm-10">
-                                        <input type="text" inputmode="numeric" class="form-control" id="stokObat"
-                                            placeholder="Input Stok Obat" name="stok_obat" value="<?= $obat['stok_obat']; ?>">
+                                        <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['stok_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="stokObat"
+                                            placeholder="Input Stok Obat" name="stok_obat" value="<?= (old('stok_obat') ? old('stok_obat') : $obat['stok_obat']); ?>">
+                                        <?php if (session()->get('errors')['stok_obat'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['stok_obat']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="stokMin" class="col-sm-2 col-form-label">Stok Minimal</label>
                                     <div class="col-sm-10">
-                                        <input type="text" inputmode="numeric" class="form-control" id="stokMin"
-                                            placeholder="Input Stok Minimal" name="stok_min" value="<?= $obat['stok_min']; ?>">
+                                        <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['stok_min'] ?? false) ? 'is-invalid' : ''; ?>" id="stokMin"
+                                            placeholder="Input Stok Minimal" name="stok_min" value="<?= (old('stok_min') ? old('stok_min') : $obat['stok_min']); ?>">
+                                        <?php if (session()->get('errors')['stok_min'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['stok_min']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="stokMin" class="col-sm-2 col-form-label">Kode Rak</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="kodeRak"
-                                            placeholder="Input Kode Rak" name="kode_rak" value="<?= $obat['kode_rak']; ?>" autocomplete="off">
+                                        <input type="text" class="form-control <?= (session()->get('errors')['kode_rak'] ?? false) ? 'is-invalid' : ''; ?>" id="kodeRak"
+                                            placeholder="Input Kode Rak" name="kode_rak" value="<?= (old('kode_rak') ? old('kode_rak') : $obat['kode_rak']); ?>" autocomplete="off">
+                                        <?php if (session()->get('errors')['kode_rak'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['kode_rak']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -190,13 +245,28 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control" name="harga_pokok" id="harga_pokok" placeholder="Input Harga Pokok" value="<?= $obat['harga_pokok']; ?>">
+                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_pokok'] ?? false) ? 'is-invalid' : ''; ?>" name="harga_pokok" id="harga_pokok" placeholder="Input Harga Pokok" value="<?= (old('harga_pokok') ? old('harga_pokok') : $obat['harga_pokok']); ?>">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
+                                            <?php if (session()->get('errors')['harga_pokok'] ?? false): ?>
+                                                <div class="invalid-feedback">
+                                                    <?= session()->get('errors')['harga_pokok']; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="stokMin" class="col-sm-2 col-form-label">Markup</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="markup" placeholder="Input Markup" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label for="stokMin" class="col-sm-2 col-form-label">Harga Jual</label>
                                     <div class="col-sm-10">
@@ -204,10 +274,15 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control" name="harga_jual" id="harga_jual" placeholder="Input Harga Jual" value="<?= $obat['harga_jual']; ?>">
+                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_jual'] ?? false) ? 'is-invalid' : ''; ?>" name="harga_jual" id="harga_jual" placeholder="Input Harga Jual" value="<?= (old('harga_jual') ? old('harga_jual') : $obat['harga_jual']); ?>">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
+                                            <?php if (session()->get('errors')['harga_jual'] ?? false): ?>
+                                                <div class="invalid-feedback">
+                                                    <?= session()->get('errors')['harga_jual']; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -315,6 +390,31 @@
             mDec: '0'
         });
 
+        $('#markup').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0',
+            aSign: " %",
+            pSign: "s"
+
+        });
+
+        $('#markup').keyup(function(e) {
+            e.preventDefault();
+            hitungHargajual();
+        });
+
+        $('#harga_jual').keyup(function(e) {
+            e.preventDefault();
+            hitungMarkup();
+        });
+
+        $('#harga_pokok').keyup(function(e) {
+            e.preventDefault();
+            ambilHarga();
+            hitungHargajual();
+        });
+
         $('#btnTambahGolongan').click(function(e) {
             e.preventDefault();
             tambahGolongan();
@@ -332,6 +432,42 @@
             tambahSatuan();
         });
     });
+
+    function ambilHarga() {
+        let hargaPokok = ($('#harga_pokok').val() == "") ? 0 : $('#harga_pokok').autoNumeric('get');
+        $('#harga_jual').autoNumeric('set', hargaPokok);
+    }
+
+    function hitungHargajual() {
+        let hargaPokok = ($('#harga_pokok').val() == "") ? 0 : $('#harga_pokok').autoNumeric('get');
+        let hargaJual = ($('#harga_jual').val() == "") ? 0 : $('#harga_jual').autoNumeric('get');
+        let markUp = ($('#markup').val() == "") ? 0 : $('#markup').autoNumeric('get');
+
+        let persen = parseFloat(markUp) / 100;
+
+        let nilaiMarkup = parseFloat(hargaPokok) * persen;
+
+        let hasil = parseFloat(hargaPokok) + nilaiMarkup;
+
+        $('#harga_jual').val(hasil);
+        let hargajual = ($('#harga_jual').val() == "") ? 0 : $('#harga_jual').autoNumeric('get');
+        $('#harga_jual').autoNumeric('set', hargajual);
+    }
+
+    function hitungMarkup() {
+        let hargaPokok = ($('#harga_pokok').val() == "") ? 0 : $('#harga_pokok').autoNumeric('get');
+        let hargaJual = ($('#harga_jual').val() == "") ? 0 : $('#harga_jual').autoNumeric('get');
+
+
+        let penambahan = parseFloat(hargaJual) - parseFloat(hargaPokok);
+        let hasil = (penambahan / parseFloat(hargaPokok)) * 100;
+
+        $('#markup').val(hasil);
+        let markUp = ($('#markup').val() == "") ? 0 : $('#markup').autoNumeric('get');
+        $('#markup').autoNumeric('set', markUp);
+
+        return markUp;
+    }
 
     function tambahGolongan() {
         $.ajax({

@@ -31,24 +31,76 @@ class GolonganController extends BaseController
 
     public function tambah_golongan()
     {
-        $this->golonganModel->insert([
-            'nama_golongan' => $this->request->getVar('nama_golongan'),
-            'ket_golongan'  => $this->request->getVar('ket_golongan')
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_golongan' => [
+                'label'  => 'Nama Golongan',
+                'rules'  => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama Golongan belum diinput',
+                    'max_length' => 'Maksimal 100 karakter',
+                ],
+            ],
+            'ket_golongan' => [
+                'label'  => 'Keterangan',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data golongan berhasil ditambah');
-        return redirect()->to(base_url('/daftar_golongan'));
+
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->golonganModel->insert([
+                'nama_golongan' => $this->request->getVar('nama_golongan'),
+                'ket_golongan'  => $this->request->getVar('ket_golongan')
+            ]);
+            session()->setFlashdata('success', 'Data golongan berhasil ditambah');
+            return redirect()->to(base_url('/daftar_golongan'));
+        }
     }
 
     //-------------------------- Edit Golongan Obat ----------------------------------------
 
     public function edit_golongan($id)
     {
-        $this->golonganModel->update($id, [
-            'nama_golongan' => $this->request->getVar('nama_golongan'),
-            'ket_golongan'  => $this->request->getVar('ket_golongan')
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'nama_golongan' => [
+                'label'  => 'Nama Golongan',
+                'rules'  => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama Golongan belum diinput',
+                    'max_length' => 'Maksimal 100 karakter',
+                ],
+            ],
+            'ket_golongan' => [
+                'label'  => 'Keterangan',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data golongan berhasil diubah');
-        return redirect()->to(base_url('/daftar_golongan'));
+
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->golonganModel->update($id, [
+                'nama_golongan' => $this->request->getVar('nama_golongan'),
+                'ket_golongan'  => $this->request->getVar('ket_golongan')
+            ]);
+            session()->setFlashdata('success', 'Data golongan berhasil diubah');
+            return redirect()->to(base_url('/daftar_golongan'));
+        }
     }
 
     //-------------------------- Delete Golongan Obat ----------------------------------------

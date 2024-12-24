@@ -35,7 +35,12 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputSatuan" class="col-sm-2 col-form-label">Nama Satuan</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputSatuan" placeholder="Nama Satuan" name="nama_satuan" autofocus>
+                            <input type="text" class="form-control <?= (session()->get('errors')['nama_satuan'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('nama_satuan'); ?>" id="inputSatuan" placeholder="Nama Satuan" name="nama_satuan" autofocus>
+                            <?php if (session()->get('errors')['nama_satuan'] ?? false) : ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['nama_satuan']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -115,8 +120,13 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="inputSatuan" class="text-capitalize">Nama Satuan</label>
-                                        <input type="text" class="form-control" id="inputSatuan"
-                                            placeholder="Input Nama Satuan" name="nama_satuan" autofocus value="<?= $edit['nama_satuan']; ?>">
+                                        <input type="text" class="form-control <?= (session()->get('errors')['nama_satuan'] ?? false) ? 'is-invalid' : ''; ?>" id="inputSatuan"
+                                            placeholder="Input Nama Satuan" name="nama_satuan" autofocus value="<?= old('nama_satuan') ? old('nama_satuan') : $edit['nama_satuan']; ?>">
+                                        <?php if (session()->get('errors')['nama_satuan'] ?? false) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['nama_satuan']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

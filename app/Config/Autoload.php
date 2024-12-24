@@ -41,6 +41,8 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         APP_NAMESPACE => APPPATH,
+        'Escpos'      => APPPATH . 'ThirdParty/Mike42/Escpos',
+
     ];
 
     /**
@@ -60,7 +62,9 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
-    public $classmap = [];
+    public $classmap = [
+        'PHPExcel'    => APPPATH . 'ThirdParty/PHPExcel/PHPExcel.php'
+    ];
 
     /**
      * -------------------------------------------------------------------

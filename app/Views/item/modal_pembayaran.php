@@ -162,8 +162,22 @@
                                 cancelButtonText: "Tidak"
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    alert('setak struk');
-                                    window.location.reload();
+                                    $.ajax({
+                                        type: "post",
+                                        url: "<?= site_url('/cetakStruk'); ?>",
+                                        data: {
+                                            no_faktur: response.no_faktur
+                                        },
+                                        dataType: "json",
+                                        success: function(response) {
+                                            alert(response);
+                                            window.location.reload();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            let errorMessage = ` Status: ${status} Error: ${error} Response: ${xhr.responseText}`;
+                                            alert("Terjadi kesalahan:\n" + errorMessage);
+                                        }
+                                    });
                                 } else {
                                     window.location.reload();
                                 }
@@ -171,7 +185,8 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert("Error: " + error);
+                        let errorMessage = ` Status: ${status} Error: ${error} Response: ${xhr.responseText}`;
+                        alert("Terjadi kesalahan:\n" + errorMessage);
                     }
                 });
 

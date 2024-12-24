@@ -119,7 +119,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input type="hidden" id="no_faktur" name="no_faktur" value="<?= $no_faktur; ?>">
                                     <input type="hidden" id="nama_kategori" name="nama_kategori">
                                     <input type="hidden" id="nama_satuan" name="nama_satuan">
-                                    <div class="col-3">
+                                    <input type="hidden" class="form-control" placeholder="Harga Jual" id="harga_jual" name="harga_jual">
+                                    <div class="col-4">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Ketik Barcode/Nama Obat/Kode Rak" name="barcode_obat" id="barcode_obat">
                                             <span class="input-group-append">
@@ -130,17 +131,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="col-2">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Nama Obat" id="nama_obat" name="nama_obat" readonly>
-
                                         </div>
                                     </div>
                                     <div class="col-2">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Kode Rak" id="kode_rak" name="kode_rak" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Harga Jual" id="harga_jual" name="harga_jual" readonly>
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -158,19 +153,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
                                 <?= form_close(); ?>
-
-
                                 <!-- Detail Transaksi -->
-                                <div class="col-12 mt-4 dataDetailtransaksi">
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <!-- row -->
-                    </div>
-                </div>
+                                <div class="col-12 mt-4 dataDetailtransaksi"></div>
+                            </div> <!-- card-body -->
+                        </div> <!-- card -->
+                    </div> <!-- col-12 -->
+                </div> <!-- row -->
                 <div class="viewmodal" style="display: none;"></div>
                 <div class="viewmodalpembayaran" style="display: none;"></div>
             </div>
@@ -204,6 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
     <!-- jQuery UI -->
     <script src="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.js'); ?>"></script>
+    <script src="<?= base_url('assets/plugins/jquery-ui/jquery-ui.min.css'); ?>"></script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- AdminLTE App -->
@@ -218,8 +207,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script>
         $(document).ready(function() {
 
-            hitungTotalBayar();
             dataDetailtransaksi();
+            hitungTotalBayar();
             $('#barcode_obat').focus();
 
 
@@ -247,14 +236,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 }
                 // focus input end
-
-                // focus qty (Q)
-                if (e.keyCode == 81) {
-                    e.preventDefault();
-                    $('#qty').focus();
-
-                }
-                // focus qty end
 
                 // pembayaran (f9)
                 if (e.keyCode == 120) {
@@ -310,7 +291,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     $('#barcode_obat').focus();
 
                 }
-
             });
             // qty button end
 
@@ -318,9 +298,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#saveTransaksi').click(function(e) {
                 e.preventDefault();
                 pembayaran();
-
+            });
+            $('#saveTransaksi').keydown(function(e) {
+                if (keyCode == 120) {
+                    e.preventDefault();
+                    pembayaran();
+                }
             });
             // button home
+
+            $('#reset_obat').click(function(e) {
+                e.preventDefault();
+                Kosong();
+            });
+
+            // search obat (enter)
+            $('#qty').keydown(function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    cekObat();
+
+                }
+            });
+
+            // button search klik
+            $('#search_obat').click(function(e) {
+                e.preventDefault();
+                cariObat();
+            });
+
+
 
             //hapus tab button
             $('#hapus_tab').click(function(e) {
@@ -367,14 +374,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             barcode_obat: request.term
                         },
                         success: function(data) {
-                            console.log(data);
                             if (data.success === 'berhasil') {
                                 response($.map(data.data, function(item) {
-                                    return {
-                                        label: item.label, // Label shown in the autocomplete
+                                    return { // Value set in the input field
                                         value: item.value, // Value set in the input field
                                         id: item.id,
                                         harga_jual: item.harga_jual,
+                                        stok_obat: item.stok_obat,
+                                        nama_satuan: item.nama_satuan,
                                         kode_rak: item.kode_rak,
                                         nama_obat: item.nama_obat,
                                     };
@@ -383,42 +390,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         },
                         error: function(xhr, status, error) {
                             alert("Error: " + error);
-                            dataDetailtransaksi();
                         }
                     });
                 },
-                minLength: 1, // Trigger autocomplete after typing 2 characters
+                minLength: 1,
                 select: function(event, ui) {
-                    // Hanya mengambil data dari item yang dipilih
-                    console.log("Data yang dipilih:", ui.item);
                     $('#barcode_obat').val(ui.item.value);
                     $('#nama_obat').val(ui.item.nama_obat);
                     $('#harga_jual').val(ui.item.harga_jual);
                     $('#kode_rak').val(ui.item.kode_rak);
                     $('#barcode_obat').prop('disabled', true);
                     $('#qty').focus();
-                    dataDetailtransaksi();
                     return false;
-
                 }
-            });
-
-            // search obat (enter)
-            $('#searh_obat').keydown(function(e) {
-                if (e.keyCode == 13) {
-                    e.preventDefault();
-                    cekObat();
-
-                }
-            });
-
-            // button search klik
-            $('#search_obat').click(function(e) {
-                e.preventDefault();
-                cekObat();
-
-            });
-
+            }).autocomplete("instance")._renderItem = function(ul, item) {
+                return $("<li>")
+                    .append(
+                        `<div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; border-bottom: 1px solid #ddd;">
+                <span style="width: 90px; font-weight: bold; color: #555;">${item.kode_rak}</span>
+                <span style="flex-grow: 3; padding-left: 10px; color: #333;">${item.nama_obat}</span>
+                <span style="width: 50px; padding-left: 25px; color: #333;">${item.stok_obat}</span>
+                <span style="width: 40px; padding-left: 10px; color: #333;">${item.nama_satuan}</span>
+                <span style="width: 200px; text-align: right; font-weight: bold; color: #555;">${item.harga_jual}</span>
+            </div>`
+                    )
+                    .appendTo(ul);
+            };
 
         });
 
@@ -448,9 +445,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
         // data detaile transaksi end
 
-        // --------------------------------------------------------  Cek Obat
-        function cekObat() {
-
+        function cariObat() {
             let barcode = $('#barcode_obat').val();
 
             if (barcode.length == 0) {
@@ -462,13 +457,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         $('.viewmodal').html(response.viewmodal).show();
                         $('#modalObat').modal('show');
                         modalIsOpen = true;
-
-
                     },
                     error: function(xhr, status, error) {
                         alert("Error: " + error);
                     }
                 });
+            }
+
+
+        }
+
+        // --------------------------------------------------------  Cek Obat
+        function cekObat() {
+
+            let barcode = $('#barcode_obat').val();
+            let qty = $('#qty').val();
+
+            if (qty.length == 0) {
+                toastr.error('Quantity belum diinput');
             } else {
                 $.ajax({
                     type: "post",
@@ -485,23 +491,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     },
                     dataType: "json",
                     success: function(response) {
-                        if (response.totaldata == 'banyak') {
-                            $.ajax({
-                                type: "post",
-                                url: '<?= base_url('/cekObat'); ?>',
-                                dataType: 'json',
-                                data: {
-                                    keyword: barcode
-                                },
-                                success: function(response) {
-                                    $('.viewmodal').html(response.viewmodal).show();
-                                    $('#modalObat').modal('show');
-                                },
-                                error: function(xhr, status, error) {
-                                    alert("Error: " + error);
-                                }
-                            });
-                        };
                         if (response.success == 'berhasil') {
                             dataDetailtransaksi();
                             Kosong();

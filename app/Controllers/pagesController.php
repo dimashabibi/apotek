@@ -14,7 +14,13 @@ use App\Models\SatuanModel;
 use App\Models\EtiketModel;
 use App\Models\TransaksiModel;
 use App\Models\DetailTransaksiModel;
+use App\Models\HutangModel;
 use App\Models\TempModel;
+
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\Printer;
+
 use CodeIgniter\Config\Services as ConfigServices;
 use Config\Services;
 use PHPUnit\Util\Json;
@@ -33,6 +39,7 @@ class PagesController extends BaseController
     protected $transaksiModel;
     protected $detailtransaksiModel;
     protected $tempModel;
+    protected $hutangModel;
 
     public function __construct()
     {
@@ -46,26 +53,31 @@ class PagesController extends BaseController
         $this->transaksiModel         = new TransaksiModel();
         $this->detailtransaksiModel   = new DetailTransaksiModel();
         $this->tempModel              = new TempModel();
+        $this->hutangModel            = new HutangModel();
     }
 
     // ------------------------------------------------------------------------- Home Controller
     public function home()
     {
+        $bulan = $this->request->getGet('bulan') ?? date('Y-m');
         $data = [
             'title'             => 'Dashboard | Apotek Sumbersekar',
             'menu'              => 'dashboard',
             'submenu'           => '',
             'total_obat'        => $this->obatModel->countAllResults(),
-            'stok_menipis'        => $this->obatModel->where('stok_obat <= stok_min')->countAllResults(),
+            'stok_menipis'      => $this->obatModel->where('stok_obat <= stok_min')->countAllResults(),
             'stok_habis'        => $this->obatModel->where('stok_obat', null)->countAllResults(),
-            'total_kategori'    => $this->kategoriModel->countAllResults(),
-            'total_supplier'    => $this->supplierModel->countAllResults(),
+            'total_hutang'      => $this->hutangModel
+                ->select('SUM(total_hutang) as total_hutang')
+                ->where('is_paid', 0)
+                ->first()['total_hutang'] ?? 0,
             'income_per_hari'   => $this->transaksiModel->getTransaksiPerhari(),
             'income_per_bulan'  => $this->transaksiModel->getTransaksiPerbulan(),
             'income_per_tahun'  => $this->transaksiModel->getTransaksiPertahun(),
             'obat'              => $this->obatModel->getObat(),
             'data_kategori'     => $this->detailtransaksiModel->getKategoriObat(),
-            'data_transaksi'     => $this->detailtransaksiModel->getDataTransaksi(),
+            'data_transaksi'    => $this->detailtransaksiModel->getDataTransaksi(),
+            'data_terlaris'     => $this->detailtransaksiModel->getObatTerlaris($bulan),
         ];
         return view('pages/home', $data);
     }
@@ -173,24 +185,18 @@ class PagesController extends BaseController
             $nama_obat     = $this->request->getVar('nama_obat');
             $qty           = $this->request->getVar('qty');
             $no_faktur     = $this->request->getVar('no_faktur');
-            $kode_rak     = $this->request->getVar('kode_rak');
+            $kode_rak      = $this->request->getVar('kode_rak');
 
 
             $queryCekObat = $this->obatModel
-                ->where('nama_obat', $barcode_obat)
-                ->orwhere('barcode_obat', $barcode_obat)
-                ->orwhere('kode_rak', $barcode_obat)
+                ->where('nama_obat', $nama_obat)
+                ->orwhere('barcode_obat', $nama_obat)
+                ->orwhere('kode_rak', $nama_obat)
                 ->get();
-
-
 
             $totalData    = $queryCekObat->getNumRows();
 
-            if ($totalData > 1) {
-                $msg = [
-                    'totaldata' => 'banyak'
-                ];
-            } elseif ($totalData == 1) {
+            if ($totalData == 1) {
                 $rowObat = $queryCekObat->getRowArray();
                 $stokObat = $rowObat['stok_obat'];
 
@@ -264,7 +270,7 @@ class PagesController extends BaseController
     // hitung total end
 
     // ------------------------------------------------------------------------- Hapus Item Controller
-    public function hapusItem()
+    public function hapusItem() 
     {
         if ($this->request->isAJAX()) {
             $id = $this->request->getVar('id');
@@ -387,7 +393,8 @@ class PagesController extends BaseController
             $this->tempModel->where('no_faktur', $no_faktur)->delete();
 
             $msg = [
-                'success' => 'berhasil'
+                'success' => 'berhasil',
+                'no_faktur' => $no_faktur
             ];
             return $this->response->setJSON($msg);
         }
@@ -396,50 +403,204 @@ class PagesController extends BaseController
     public function autofill()
     {
         if ($this->request->isAJAX()) {
-            $barcode_obat  = $this->request->getVar('barcode_obat');
-            $nama_obat     = $this->request->getVar('nama_obat');
+            $barcode_obat = $this->request->getVar('barcode_obat');
+            $nama_obat    = $this->request->getVar('nama_obat');
             $kode_rak     = $this->request->getVar('kode_rak');
 
+            // Query untuk mencari obat
             $queryCekObat = $this->obatModel
                 ->select('tbl_obat.*, tbl_golongan.nama_golongan, tbl_kategori.nama_kategori, tbl_satuan.nama_satuan')
                 ->join('tbl_golongan', 'tbl_golongan.id = tbl_obat.id_golongan', 'left')
                 ->join('tbl_kategori', 'tbl_kategori.id = tbl_obat.id_kategori', 'left')
                 ->join('tbl_satuan', 'tbl_satuan.id = tbl_obat.id_satuan', 'left')
                 ->like('nama_obat', $barcode_obat)
-                ->orlike('barcode_obat', $barcode_obat)
-                ->orlike('kode_rak', $barcode_obat)
+                ->orLike('barcode_obat', $barcode_obat)
+                ->orLike('kode_rak', $barcode_obat)
                 ->get();
 
-
-            $totalData    = $queryCekObat->getNumRows();
+            // Menghitung total data hasil pencarian
+            $totalData = $queryCekObat->getNumRows();
 
             if ($totalData > 0) {
                 $result = [];
+                // Loop melalui hasil query
                 foreach ($queryCekObat->getResultArray() as $obat) {
                     $result[] = [
-                        'label' => $obat['kode_rak'] . ' - ' . $obat['nama_obat'] . ' - ' . \number_format($obat['stok_obat']) . ' ' . $obat['nama_satuan'],
                         'value' => $obat['barcode_obat'],
                         'id'    => $obat['id'],
-                        'harga_jual' => "Rp" . " " . \number_format($obat['harga_jual'], 0, ",", "."),
+                        'harga_jual' => "Rp " . \number_format($obat['harga_jual'], 0, ",", "."),
                         'kode_rak'  => $obat['kode_rak'],
+                        'stok_obat'  => \number_format($obat['stok_obat']),
+                        'nama_satuan'  => $obat['nama_satuan'],
                         'nama_obat'  => $obat['nama_obat'],
                     ];
-
-                    $msg = [
-                        'success' => 'berhasil',
-                        'data' => $result
-                    ];
                 }
+
+                $msg = [
+                    'success' => 'berhasil',
+                    'data'    => $result
+                ];
             } elseif ($totalData == 0) {
+                // Jika tidak ada data, tampilkan pesan obat tidak terdaftar
                 $result[] = [
-                    'label' => 'Obat tidak terdaftar'
+                    'harga_jual' => ' ',
+                    'kode_rak'  => ' ',
+                    'stok_obat'  => ' ',
+                    'nama_satuan'  => ' ',
+                    'nama_obat'  => 'Obat tidak Terdaftar',
                 ];
                 $msg = [
                     'success' => 'berhasil',
-                    'data' => $result
+                    'data'    => $result
                 ];
             }
+
             return $this->response->setJSON($msg);
         }
+    }
+
+    public function cetakStruk()
+    {
+        function buatBaris1Kolom($kolom1)
+        {
+            // Mengatur lebar setiap kolom (dalam satuan karakter)
+            $lebar_kolom_1 = 33;
+
+            // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
+            $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
+
+            // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
+            $kolom1Array = explode("\n", $kolom1);
+
+            // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
+            $jmlBarisTerbanyak = count($kolom1Array);
+
+            // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
+            $hasilBaris = array();
+
+            // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
+            for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
+
+                // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
+                $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
+
+                // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
+                $hasilBaris[] = $hasilKolom1;
+            }
+
+            // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
+            return implode($hasilBaris, "\n") . "\n";
+        }
+
+        function buatBaris3Kolom($kolom1, $kolom2, $kolom3)
+        {
+            // Mengatur lebar setiap kolom (dalam satuan karakter)
+            $lebar_kolom_1 = 11;
+            $lebar_kolom_2 = 11;
+            $lebar_kolom_3 = 11;
+
+            // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
+            $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
+            $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
+            $kolom3 = wordwrap($kolom3, $lebar_kolom_3, "\n", true);
+
+            // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
+            $kolom1Array = explode("\n", $kolom1);
+            $kolom2Array = explode("\n", $kolom2);
+            $kolom3Array = explode("\n", $kolom3);
+
+            // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
+            $jmlBarisTerbanyak = max(count($kolom1Array), count($kolom2Array), count($kolom3Array));
+
+            // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
+            $hasilBaris = array();
+
+            // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
+            for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
+
+                // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
+                $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
+                // memberikan rata kanan pada kolom 3 dan 4 karena akan kita gunakan untuk harga dan total harga
+                $hasilKolom2 = str_pad((isset($kolom2Array[$i]) ? $kolom2Array[$i] : ""), $lebar_kolom_2, " ", STR_PAD_LEFT);
+
+                $hasilKolom3 = str_pad((isset($kolom3Array[$i]) ? $kolom3Array[$i] : ""), $lebar_kolom_3, " ", STR_PAD_LEFT);
+
+                // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
+                $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3;
+            }
+
+            // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
+            return implode($hasilBaris, "\n") . "\n";
+        }
+
+
+
+        $profile = CapabilityProfile::load("simple");
+        $connector = new WindowsPrintConnector("apotek_printer");
+        $printer = new Printer($connector, $profile);
+
+        $no_faktur = $this->request->getVar('no_faktur');
+
+        $queryTransaksi = $this->transaksiModel->getWhere(['no_faktur' => $no_faktur]);
+        $rowTransaksi   = $queryTransaksi->getRowArray();
+
+        // judul
+        $printer->initialize();
+        $printer->selectPrintMode(Printer::MODE_DOUBLE_HEIGHT);
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Apotek Sumber Sekar" . "\n");
+        $printer->text("Jl. Raya Sumbersekar No.2," . "\n");
+        $printer->text("RT.05/RW.02, Krajan," . "\n");
+        $printer->text("Sumbersekar, Kec. Dau, " . "\n");
+        $printer->text("Kabupaten Malang" . "\n");
+        $printer->text("Jawa Timur 65151" . "\n");
+        $printer->text("Phone: 085175126445" . "\n");
+        $printer->text("\n");
+
+        // header
+        $printer->initialize();
+        $printer->selectPrintMode(Printer::MODE_FONT_A);
+        $printer->text(buatBaris1Kolom("Faktur : $no_faktur"));
+        $printer->text(buatBaris1Kolom("Tanggal : " . ($rowTransaksi['tgl_transaksi']) . " " . ($rowTransaksi['jam'])));
+
+
+        $printer->text(buatBaris1Kolom("---------------------------------"));
+
+        $queryTransaksiDetail = $this->detailtransaksiModel->select('nama_obat, qty, nama_satuan, harga_jual, sub_total')
+            ->join('tbl_obat', 'tbl_obat.id = tbl_detail_transaksi.id_obat')
+            ->join('tbl_satuan', 'tbl_satuan.id = tbl_obat.id_satuan')
+            ->where('no_faktur', $no_faktur)
+            ->get();
+
+
+        $total_pembayaran = 0;
+        foreach ($queryTransaksiDetail->getResultArray() as $d) {
+            $printer->text(buatBaris1Kolom("$d[nama_obat]"));
+            $printer->text(buatBaris3Kolom(\number_format($d['qty'], 0) . ' ' . $d['nama_satuan'], \number_format($d['harga_jual'], 0), \number_format($d['sub_total'])));
+
+            $total_pembayaran += $d['sub_total'];
+        }
+
+        $printer->text(buatBaris1Kolom("---------------------------------"));
+        $printer->text(buatBaris3Kolom("", "Subtotal : ", 'Rp' . \number_format($rowTransaksi['total_kotor'], 0)));
+        $printer->text(buatBaris3Kolom("", "Disc(%) : ", \number_format($rowTransaksi['diskon_persen'], 0) . '%'));
+        $printer->text(buatBaris3Kolom("", "Disc(Rp) : ", 'Rp' . \number_format($rowTransaksi['diskon_uang'], 0)));
+        $printer->text(buatBaris3Kolom("", "Total : ", 'Rp' . \number_format($rowTransaksi['total_bersih'], 0)));
+        $printer->text(buatBaris3Kolom("", "Tunai : ", 'Rp' . \number_format($rowTransaksi['jumlah_uang'], 0)));
+        $printer->text(buatBaris3Kolom("", "Kembali : ", 'Rp' . \number_format($rowTransaksi['sisa_uang'], 0)));
+        $printer->text("\n");
+
+        $printer->initialize();
+        $printer->selectPrintMode(Printer::MODE_FONT_A);
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Terimakasih Atas Kunjungannya");
+        $printer->text("Barang yang sudah dibeli");
+        $printer->text("tidak dapat kembali");
+
+
+        $printer->feed(4);
+        $printer->cut();
+        echo "Struk berhasil dicetak";
+        $printer->close();
     }
 }

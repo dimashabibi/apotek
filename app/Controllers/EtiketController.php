@@ -31,24 +31,72 @@ class EtiketController extends BaseController
 
     public function tambah_etiket()
     {
-        $this->etiketModel->insert([
-            'nama_etiket' => $this->request->getVar('nama_etiket'),
-            'ket_etiket'  => $this->request->getVar('ket_etiket')
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'nama_etiket' => [
+                'label'  => 'Nama Etiket',
+                'rules'  => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama Etiket belum diinput',
+                    'max_length' => 'Maksimal 100 karakter',
+                ],
+            ],
+            'ket_etiket' => [
+                'label'  => 'Keterangan',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data etiket berhasil ditambah');
-        return redirect()->to(base_url('/daftar_etiket'));
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->etiketModel->insert([
+                'nama_etiket' => $this->request->getVar('nama_etiket'),
+                'ket_etiket'  => $this->request->getVar('ket_etiket')
+            ]);
+            session()->setFlashdata('success', 'Data etiket berhasil ditambah');
+            return redirect()->to(base_url('/daftar_etiket'));
+        }
     }
 
     //-------------------------- Edit etiket Obat ----------------------------------------
 
     public function edit_etiket($id)
     {
-        $this->etiketModel->update($id, [
-            'nama_etiket' => $this->request->getVar('nama_etiket'),
-            'ket_etiket'  => $this->request->getVar('ket_etiket')
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'nama_etiket' => [
+                'label'  => 'Nama Etiket',
+                'rules'  => 'required|max_length[155]',
+                'errors' => [
+                    'required' => 'Nama Etiket belum diinput',
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
+            'ket_etiket' => [
+                'label'  => 'Keterangan',
+                'rules'  => 'max_length[155]',
+                'errors' => [
+                    'max_length' => 'Maksimal 155 karakter',
+                ],
+            ],
         ]);
-        session()->setFlashdata('success', 'Data etiket berhasil diubah');
-        return redirect()->to(base_url('/daftar_etiket'));
+        if (!$this->validate($validation->getRules())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $validation->getErrors());
+        } else {
+            $this->etiketModel->update($id, [
+                'nama_etiket' => $this->request->getVar('nama_etiket'),
+                'ket_etiket'  => $this->request->getVar('ket_etiket')
+            ]);
+            session()->setFlashdata('success', 'Data etiket berhasil diubah');
+            return redirect()->to(base_url('/daftar_etiket'));
+        }
     }
 
     //-------------------------- Delete etiket Obat ----------------------------------------

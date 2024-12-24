@@ -35,19 +35,34 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputPabrik" class="col-sm-2 col-form-label text-capitalize">Nama pabrik</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputPabrik" placeholder="Nama pabrik" name="nama_pabrik" autofocus>
+                            <input type="text" class="form-control <?= (session()->get('errors')['nama_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('nama_pabrik'); ?>" id="inputPabrik" placeholder="Nama pabrik" name="nama_pabrik" autofocus>
+                            <?php if (session()->get('errors')['nama_pabrik'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['nama_pabrik']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="alamatPabrik" class="col-sm-2 col-form-label text-capitalize">alamat</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="alamatPabrik" placeholder="Alamat Pabrik" name="alamat_pabrik">
+                            <textarea type="text" class="form-control <?= (session()->get('errors')['alamat_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" id="alamatPabrik" placeholder="Alamat Pabrik" name="alamat_pabrik"><?= old('nama_pabrik'); ?></textarea>
+                            <?php if (session()->get('errors')['alamat_pabrik'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['alamat_pabrik']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="Kota" class="col-sm-2 col-form-label text-capitalize">Kota</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="Kota" placeholder="Kota" name="kota">
+                            <input type="text" class="form-control <?= (session()->get('errors')['kota'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('nama_pabrik'); ?>" id="Kota" placeholder="Kota" name="kota">
+                            <?php if (session()->get('errors')['kota'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['kota']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
@@ -77,7 +92,12 @@
                     <div class="form-group row justify-content-center">
                         <label for="npwp" class="col-sm-2 col-form-label text-uppercase">keterangan</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="keterangan" placeholder="Keterangan" name="ket_pabrik">
+                            <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['ket_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('ket_pabrik'); ?>" id="keterangan" placeholder="Keterangan" name="ket_pabrik">
+                            <?php if (session()->get('errors')['ket_pabrik'] ?? false) : ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['ket_pabrik']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -173,36 +193,60 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="inputNamapabrik">Nama pabrik</label>
-                                        <input type="text" class="form-control" id="inputNamapabrik"
-                                            placeholder="Input Nama pabrik" name="nama_pabrik" value="<?= $edit['nama_pabrik']; ?>" autofocus>
+                                        <input type="text" class="form-control <?= (session()->get('errors')['nama_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" id="inputNamapabrik"
+                                            placeholder="Input Nama pabrik" name="nama_pabrik" value="<?= old('nama_pabrik') ? old('nama_pabrik') : $edit['nama_pabrik']; ?>" autofocus>
+                                        <?php if (session()->get('errors')['nama_pabrik'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['nama_pabrik']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">alamat</label>
-                                        <textarea name="alamat_pabrik" id="" class="form-control" placeholder="Alamat"><?= $edit['alamat_pabrik']; ?></textarea>
+                                        <textarea name="alamat_pabrik" id="" class="form-control <?= (session()->get('errors')['alamat_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="Alamat"><?= old('alamat_pabrik') ? old('alamat_pabrik') : $edit['alamat_pabrik']; ?></textarea>
+                                        <?php if (session()->get('errors')['alamat_pabrik'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['alamat_pabrik']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">kota</label>
-                                        <textarea name="kota" id="" class="form-control" placeholder="Kota"><?= $edit['kota']; ?></textarea>
+                                        <input name="kota" id="" class="form-control <?= (session()->get('errors')['kota'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('kota') ? old('kota') : $edit['kota']; ?>" placeholder="Kota">
+                                        <?php if (session()->get('errors')['kota'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['kota']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">No Telepon</label>
-                                        <textarea name="no_telp" id="" class="form-control" placeholder="No Telepon"><?= $edit['no_telp']; ?></textarea>
+                                        <input name="no_telp" id="" class="form-control " value="<?= $edit['no_telp']; ?>" placeholder="No Telepon">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">No Handphone</label>
-                                        <textarea name="no_hp" id="" class="form-control" placeholder="No Handphone"><?= $edit['no_hp']; ?></textarea>
+                                        <input name="no_hp" id="" class="form-control " value="<?= $edit['no_hp']; ?>" placeholder="No Handphone">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">No Rekening</label>
-                                        <textarea name="no_rekening" id="" class="form-control" placeholder="No Rekening"><?= $edit['no_rekening']; ?></textarea>
+                                        <input name="no_rekening" id="" class="form-control" value="<?= $edit['no_rekening']; ?>" placeholder="No Rekening">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">npwp</label>
-                                        <textarea name="npwp" id="" class="form-control" placeholder="npwp"><?= $edit['npwp']; ?></textarea>
+                                        <input name="npwp" id="" class="form-control " value="<?= $edit['npwp']; ?>" placeholder="npwp">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="pabrik" class="text-capitalize">Keterangan</label>
-                                        <textarea name="ket_pabrik" id="" class="form-control" placeholder="Keterangan"><?= $edit['ket_pabrik']; ?></textarea>
+                                        <textarea name="ket_pabrik" id="" class="form-control <?= (session()->get('errors')['ket_pabrik'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="Keterangan"><?= old('ket_pabrik') ? old('ket_pabrik') : $edit['ket_pabrik']; ?></textarea>
+                                        <?php if (session()->get('errors')['ket_pabrik'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['ket_pabrik']; ?>
+                                            </div>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>

@@ -27,6 +27,12 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Laporan Obat Terlaris</h3>
+                <div class="card-tools">
+                    <form action="" method="get" class="form-inline">
+                        <input type="month" name="bulan" class="form-control mr-2" value="<?= $bulan; ?>">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </form>
+                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">

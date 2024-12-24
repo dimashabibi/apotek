@@ -3,85 +3,150 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use CodeIgniter\Controller;
 
-use function PHPUnit\Framework\returnSelf;
-
-class AuthController extends BaseController
+class AuthController extends Controller
 {
+    protected $userModel;
+    protected $email;
 
-    //------------------------------- Login Controller -----------------------------------------
-    public function index()
+    public function __construct()
     {
+        $this->userModel = new UserModel();
+        $this->email = \Config\Services::email();
+    }
 
-        if (session()->get('logged_in')) {
-            return redirect()->to(base_url('/home'));
+    public function register()
+    {
+        return \view('auth/register_page');
+    }
+
+
+    public function proses_register()
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'nama_user' => 'required',
+            'username' => 'required|is_unique[user.username]',
+            'email' => 'required|valid_email',
+            'password' => 'required|min_length[3]',
+            'nohp' => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
-        $data = [
-            'title' => 'Login Page | Apotek Sumbersekar',
+        $verificationToken = bin2hex(random_bytes(32));
+
+        date_default_timezone_set('Asia/Jakarta');
+        $userData = [
+            'nama_user' => $this->request->getPost('nama_user'),
+            'username' => $this->request->getPost('username'),
+            'email' => $this->request->getPost('email'),
+            'password' => $this->request->getPost('password'),
+            'nohp' => $this->request->getPost('nohp'),
+            'role' => 'admin',
+            'verification_token' => $verificationToken,
+            'is_verified' => 0,
+            'created_at' => date('Y-m-d H:i:s')
         ];
-        return view('auth/login_page', $data);
+
+        $this->userModel->insert($userData);
+
+        // Send verification email
+        $this->sendVerificationEmail($userData['email'], $verificationToken);
+
+        return redirect()->to('/')->with('success', 'Registration successful. Please check your email to verify your account.');
+    }
+
+    private function sendVerificationEmail($email, $token)
+    {
+        $this->email->setFrom('noreply@apoteksumbersekar.com', 'Apotek Sumbersekar');
+        $this->email->setTo($email);
+        $this->email->setSubject('Email Verification');
+
+        $verificationLink = site_url('verify-email/' . $token);
+        $message = "
+        <html>
+        <body>
+            <h2>Email Verification</h2>
+            <p>Terima kasih telah mendaftar di Apotek Sumbersekar.</p>
+            <p>Silakan klik link di bawah ini untuk memverifikasi email Anda:</p>
+            <p><a href='{$verificationLink}'>Verifikasi Email</a></p>
+            <p>Atau salin link berikut: {$verificationLink}</p>
+        </body>
+        </html>
+        ";
+
+        $this->email->setMessage($message);
+        $this->email->send();
+    }
+
+    public function verifyEmail($token)
+    {
+        $user = $this->userModel->getUserByVerificationToken($token);
+
+        if ($user) {
+            $this->userModel->update($user['id'], [
+                'is_verified' => 1,
+                'verification_token' => null
+            ]);
+
+            return redirect()->to('/')->with('success', 'Email verified successfully. You can now login.');
+        }
+
+        return redirect()->to('/')->with('error', 'Invalid verification token.');
+    }
+
+    public function index()
+    {
+        return view('auth/login_page');
     }
 
     public function proses_login()
     {
-        $username = $this->request->getVar('username');
-        $password = $this->request->getVar('password');
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password');
+        $user = $this->userModel->where('username', $username)->first();
 
-        $usermodel = new UserModel();
-        $datauser = $usermodel->where('username', $username)->first();
-        if ($datauser) {
-            if (password_verify($password, $datauser['password'])) {
-                session()->set([
-                    'user_id'   => $datauser['id'],
-                    'nama_user' => $datauser['nama_user'],
-                    'username'  => $datauser['username'],
-                    'password'  => $datauser['password'],
-                    'role'      => $datauser['role'],
-                    'logged_in' => true,
-                ]);
-                session()->setFlashdata('success', 'Login Berhasil, Selamat Bekerja. Semangat!!!');
-                return redirect()->to(base_url('/home'));
-            } else {
-                session()->setFlashdata('error', 'Login Gagal');
-                return redirect()->back();
-            }
+        // Debug: Periksa apakah user ditemukan
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan');
         }
+
+        // Debug: Periksa password
+        if (!password_verify($password, $user['password'])) {
+            return redirect()->back()->with('error', 'Password salah');
+        }
+
+        if ($user && password_verify($password, $user['password'])) {
+            if ($user['is_verified'] == 0) {
+                return redirect()->back()->with('error', 'Please verify your email first.');
+            }
+
+            $session = session();
+            $sessionData = [
+                'id' => $user['id'],
+                'username' => $user['username'],
+                'nama_user' => $user['nama_user'],
+                'email' => $user['email'],
+                'role' => $user['role'],
+                'logged_in' => true
+            ];
+            $session->set($sessionData);
+
+            return redirect()->to('/kasir')->with('success', 'Login successful');
+        }
+
+        return redirect()->back()->with('error', 'Invalid login credentials');
     }
 
-    //------------------------------- Register Controller -----------------------------------------
-    public function register()
-    {
-        $data = [
-            'title' => 'Register Page | Apotek Sumbersekar'
-        ];
-        return view('auth/register_page', $data);
-    }
-
-    public function proses_register()
-    {
-        $usermodel = new UserModel();
-        $usermodel->insert([
-            'nama_user' => $this->request->getVar('nama_user'),
-            'username'  => $this->request->getVar('username'),
-            'email'     => $this->request->getVar('email'),
-            'password'  => password_hash($this->request->getVar('password'), PASSWORD_BCRYPT),
-            'role'      => 'admin',
-        ]);
-        session()->getFlashdata('success', 'Register Berhasil');
-        return redirect()->to(base_url('/'));
-    }
-
-    //------------------------------- Logout Controller -----------------------------------------
     public function logout()
     {
-        session()->destroy();
-        return redirect()->to(base_url('/'));
-    }
-
-    //------------------------------- Register Controller -----------------------------------------
-    public function lupa_password()
-    {
-        return view('auth/lupa_password');
+        $session = session();
+        $session->destroy();
+        return redirect()->to('/')->with('success', 'Logged out successfully');
     }
 }

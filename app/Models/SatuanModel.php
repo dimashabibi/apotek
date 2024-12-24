@@ -10,5 +10,11 @@ class SatuanModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['nama_satuan'];
+    protected $allowedFields    = [
+        'nama_satuan',
+        'created_at',
+        'deleted_at'
+    ];
+    protected $useSoftDeletes = true;
+    protected $deletedField = 'deleted_at';
 }

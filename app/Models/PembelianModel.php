@@ -6,41 +6,34 @@ use CodeIgniter\Model;
 
 class PembelianModel extends Model
 {
-    protected $table            = 'pembelians';
-    protected $primaryKey       = 'id';
+    protected $table            = 'tbl_pembelian';
+    protected $primaryKey       = 'id_pembelian';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id_pembelian', 'tgl_pembelian', 'no_faktur', 'id_supplier', 'total_pembelian', 'deskripsi'];
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
+    public function getNoPembelian()
+    {
 
-    protected array $casts = [];
-    protected array $castHandlers = [];
+        $db = \Config\Database::connect();
+        $builder = $db->table('tbl_pembelian');
 
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+        // Ambil nomor urut terakhir untuk tanggal saat ini
+        $builder->select('RIGHT(tbl_pembelian.id_pembelian, 4) as no_urut');
+        $builder->orderBy('no_urut', 'DESC');
+        $builder->limit(1);
+        $query = $builder->get();
 
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
+        // Periksa apakah ada data untuk tanggal tersebut
+        if ($query->getNumRows() > 0) {
+            $data = $query->getRowArray();
+            $no = intval($data['no_urut']) + 1; // Tambahkan 1 ke nomor urut terakhir
+        } else {
+            $no = 1; // Jika tidak ada data, mulai dengan 1
+        }
 
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+        $batas = str_pad($no, 4, "0", STR_PAD_LEFT);
+        $kodeTampil = 'NP' .  $batas;
+
+        return $kodeTampil;
+    }
 }

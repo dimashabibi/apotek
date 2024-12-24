@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= $title; ?></title>
+  <title>Register | Apotek Sumbersekar</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -68,11 +68,12 @@
           </div>
           <div class="social-auth-links text-center">
             <button name="submit" class="btn btn-block btn-primary">
-              register
+              Konfirmasi Register
             </button>
+            <a type="button" class="btn btn-block btn-outline-secondary" href="<?= site_url('/'); ?>"><i class="fas fa-arrow-left"></i>  Kembali Login</a>
           </div>
         </form>
-        <a href="<?= site_url('/'); ?>" class="text-center">Sudah punya akun</a>
+       
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->

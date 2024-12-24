@@ -35,49 +35,89 @@
                     <div class="form-group row justify-content-center">
                         <label for="inputSupplier" class="col-sm-2 col-form-label text-capitalize">Nama supplier</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputSupplier" placeholder="Nama supplier" name="nama_supplier" autofocus>
+                            <input type="text" class="form-control <?= (session()->get('errors')['nama_supplier'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('nama_supplier'); ?>" id="inputSupplier" placeholder="Nama supplier" name="nama_supplier" autofocus>
+                            <?php if (session()->get('errors')['nama_supplier'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['nama_supplier']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="alamatSupplier" class="col-sm-2 col-form-label text-capitalize">alamat</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="alamatSupplier" placeholder="Alamat Supplier" name="alamat_supplier">
+                            <textarea type="text" class="form-control <?= (session()->get('errors')['alamat_supplier'] ?? false) ? 'is-invalid' : ''; ?>" id="alamatSupplier" placeholder="Alamat Supplier" name="alamat_supplier"><?= old('alamat_supplier'); ?></textarea>
+                            <?php if (session()->get('errors')['alamat_supplier'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['alamat_supplier']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="Kota" class="col-sm-2 col-form-label text-capitalize">Kota</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="Kota" placeholder="Kota" name="kota">
+                            <input type="text" class="form-control <?= (session()->get('errors')['kta'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('kta'); ?>" id="Kota" placeholder="Kota" name="kota">
+                            <?php if (session()->get('errors')['kta'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['kta']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="Telepon" class="col-sm-2 col-form-label text-capitalize">No Telepon</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="Telepon" placeholder="No Telepon" name="no_telp">
+                            <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['no_telp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_telp'); ?>" id="Telepon" placeholder="No Telepon" name="no_telp">
+                            <?php if (session()->get('errors')['no_telp'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['no_telp']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="Hanphone" class="col-sm-2 col-form-label text-capitalize">No Handphone</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="Hanphone" placeholder="No Handphone" name="no_hp">
+                            <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['no_hp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_hp'); ?>" id="Hanphone" placeholder="No Handphone" name="no_hp">
+                            <?php if (session()->get('errors')['no_hp'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['no_hp']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="Rekening" class="col-sm-2 col-form-label text-capitalize">No Rekening</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="Rekening" placeholder="No Rekening" name="no_rekening">
+                            <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['no_rekening'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_rekening'); ?>" id="Rekening" placeholder="No Rekening" name="no_rekening">
+                            <?php if (session()->get('errors')['no_rekening'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['no_rekening']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="npwp" class="col-sm-2 col-form-label text-uppercase">npwp</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="npwp" placeholder="NPWP" name="npwp">
+                            <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['npwp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('npwp'); ?>" id="npwp" placeholder="NPWP" name="npwp">
+                            <?php if (session()->get('errors')['npwp'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['npwp']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="npwp" class="col-sm-2 col-form-label text-uppercase">keterangan</label>
                         <div class="col-sm-8">
-                            <input type="text" inputmode="numeric" class="form-control" id="keterangan" placeholder="Keterangan" name="ket_supplier">
+                            <textarea type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['ket_supplier'] ?? false) ? 'is-invalid' : ''; ?>" id="keterangan" placeholder="Keterangan" name="ket_supplier"><?= old('ket_supplier'); ?></textarea>
+                            <?php if (session()->get('errors')['ket_supplier'] ?? false): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->get('errors')['ket_supplier']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -174,36 +214,76 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="inputNamasupplier">Nama supplier</label>
-                                        <input type="text" class="form-control" id="inputNamasupplier"
-                                            placeholder="Input Nama supplier" name="nama_supplier" value="<?= $edit['nama_supplier']; ?>" autofocus>
+                                        <input type="text" class="form-control <?= (session()->get('errors')['nama_supplier'] ?? false) ? 'is-invalid' : ''; ?>" id="inputNamasupplier"
+                                            placeholder="Input Nama supplier" name="nama_supplier" value="<?= old('nama_supplier') ? old('nama_supplier') : $edit['nama_supplier']; ?>" autofocus>
+                                        <?php if (session()->get('errors')['nama_supplier'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['nama_supplier']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">alamat</label>
-                                        <textarea name="alamat_supplier" id="" class="form-control" placeholder="Alamat"><?= $edit['alamat_supplier']; ?></textarea>
+                                        <textarea name="alamat_supplier" id="" class="form-control <?= (session()->get('errors')['alamat_supplier'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="Alamat"><?= old('alamat_supplier') ? old('alamat_supplier') : $edit['alamat_supplier']; ?></textarea>
+                                        <?php if (session()->get('errors')['alamat_supplier'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['alamat_supplier']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">kota</label>
-                                        <textarea name="kota" id="" class="form-control" placeholder="Kota"><?= $edit['kota']; ?></textarea>
+                                        <input name="kota" id="" class="form-control <?= (session()->get('errors')['kota'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('kota') ? old('kota') : $edit['kota']; ?>" placeholder="Kota">
+                                        <?php if (session()->get('errors')['kota'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['kota']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">No Telepon</label>
-                                        <textarea name="no_telp" id="" class="form-control" placeholder="No Telepon"><?= $edit['no_telp']; ?></textarea>
+                                        <input name="no_telp" id="" class="form-control <?= (session()->get('errors')['no_telp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_telp') ? old('no_telp') : $edit['no_telp']; ?>" placeholder="No Telepon">
+                                        <?php if (session()->get('errors')['no_telp'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['no_telp']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">No Handphone</label>
-                                        <textarea name="no_hp" id="" class="form-control" placeholder="No Handphone"><?= $edit['no_hp']; ?></textarea>
+                                        <input name="no_hp" id="" class="form-control <?= (session()->get('errors')['no_hp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_hp') ? old('no_hp') : $edit['no_hp']; ?>" placeholder="No Handphone">
+                                        <?php if (session()->get('errors')['no_hp'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['no_hp']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">No Rekening</label>
-                                        <textarea name="no_rekening" id="" class="form-control" placeholder="No Rekening"><?= $edit['no_rekening']; ?></textarea>
+                                        <input name="no_rekening" id="" class="form-control <?= (session()->get('errors')['no_rekening'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('no_rekening') ? old('no_rekening') : $edit['no_rekening']; ?>" splaceholder="No Rekening">
+                                        <?php if (session()->get('errors')['no_rekening'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['no_rekening']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">npwp</label>
-                                        <textarea name="npwp" id="" class="form-control" placeholder="npwp"><?= $edit['npwp']; ?></textarea>
+                                        <input name="npwp" id="" class="form-control <?= (session()->get('errors')['npwp'] ?? false) ? 'is-invalid' : ''; ?>" value="<?= old('npwp') ? old('npwp') : $edit['npwp']; ?>" placeholder="npwp">
+                                        <?php if (session()->get('errors')['npwp'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['npwp']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="supplier" class="text-capitalize">Keterangan</label>
-                                        <textarea name="ket_supplier" id="" class="form-control" placeholder="Keterangan"><?= $edit['ket_supplier']; ?></textarea>
+                                        <textarea name="ket_supplier" id="" class="form-control <?= (session()->get('errors')['ket_supplier'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="Keterangan"><?= old('ket_supplier') ? old('ket_supplier') : $edit['ket_supplier']; ?></textarea>
+                                        <?php if (session()->get('errors')['ket_supplier'] ?? false): ?>
+                                            <div class="invalid-feedback">
+                                                <?= session()->get('errors')['ket_supplier']; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

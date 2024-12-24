@@ -9,7 +9,6 @@ class Pembelian extends Migration
     public function up()
     {
         $this->forge->addField([
-            ''
         ]);
     }
 

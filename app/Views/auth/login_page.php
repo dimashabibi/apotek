@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= $title ?></title>
+  <title>Login | Apotek Sumbersekar</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -32,10 +32,10 @@
 
         <form action="<?= site_url('proses_login') ?>" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="name" name="username" autofocus>
+            <input type="text" class="form-control " placeholder="name" name="username" autofocus>
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
+                <i class="fas fa-envelope"></i>
               </div>
             </div>
           </div>
@@ -43,33 +43,21 @@
             <input type="password" class="form-control" placeholder="Password" name="password">
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+                <i class="fas fa-lock"></i>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-8">
-              <div class="icheck-primary">
-                <input type="checkbox" id="remember">
-                <label for="remember">
-                  Remember Me
-                </label>
-              </div>
-            </div>
-          </div>
+          <p class="mb-1 text-right">
+            <a href="<?= site_url('lupa_password'); ?>"><small>Lupa password ?</small></a>
+          </p>
           <div class="social-auth-links text-center">
             <button name="submit" class="btn btn-block btn-primary">
               Login
             </button>
+            <a type="button" class="btn btn-block btn-outline-secondary" href="<?= site_url('register'); ?>">Register</a>
           </div>
         </form>
         <!-- form login end -->
-        <p class="mb-1">
-          <a href="<?= site_url('lupa_password'); ?>">I forgot my password</a>
-        </p>
-        <p class="mb-0">
-          <a href="<?= site_url('register') ?>" class="text-center">Belum punya akun?</a>
-        </p>
       </div>
       <!-- /.card-body -->
     </div>
