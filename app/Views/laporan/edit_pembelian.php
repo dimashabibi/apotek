@@ -24,6 +24,11 @@
 
 <div class="row d-flex justify-content-center">
     <div class="col-12">
+        <div class="my-3 col-1">
+            <a href="<?= site_url('laporan_pembelian'); ?>" class="btn btn-block btn-warning">
+                <i class="fas fa-angle-double-left"></i>
+                Kembali</a>
+        </div>
         <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title text-capitalize">Detail Transaksi Pembelian</h3>

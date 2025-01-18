@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="merkObat" class="col-sm-2 col-form-label">Merk Obat</label>
+                            <label for="merkObat" class="col-sm-2 col-form-label">Kandungan Obat</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control <?= (session()->get('errors')['merk_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="merkObat"
                                     placeholder="Input Merk Obat" name="merk_obat" value="<?= (old('merk_obat') ? old('merk_obat') : $obat['merk_obat']); ?>">

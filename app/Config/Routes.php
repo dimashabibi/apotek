@@ -38,6 +38,7 @@ $routes->post('/simpanPembayaran', 'PagesController::simpanPembayaran', ['filter
 $routes->get('/autofill', 'PagesController::autofill', ['filter' => 'AuthFilter']);
 $routes->post('/autofill', 'PagesController::autofill', ['filter' => 'AuthFilter']);
 $routes->post('/cetakStruk', 'PagesController::cetakStruk', ['filter' => 'AuthFilter']);
+$routes->get('/printStruk/(:any)', 'PagesController::printStruk/$1', ['filter' => 'AuthFilter']);
 
 
 // pembelian
@@ -79,6 +80,8 @@ $routes->get('/hutang', 'HutangController::hutang', ['filter' => 'AuthFilter']);
 $routes->post('/tambah_hutang', 'HutangController::tambah_hutang');
 $routes->post('/hutang/markAsPaid', 'HutangController::markAsPaid');
 $routes->post('/hutang/delete', 'HutangController::delete');
+$routes->get('/editHutang/(:any)', 'HutangController::editHutang/$1');
+$routes->post('/updateHutang', 'HutangController::updateHutang');
 
 //obat
 $routes->get('/daftar_obat', 'ObatController::daftar_obat', ['filter' => 'AuthFilter']);

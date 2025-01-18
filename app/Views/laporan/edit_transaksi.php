@@ -4,6 +4,7 @@
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
+
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0 text-capitalize">halaman Edit Transaksi</h1>
@@ -24,6 +25,11 @@
 
 <div class="row d-flex justify-content-center">
     <div class="col-12">
+        <div class="my-3 col-1">
+            <a href="<?= site_url('laporan_harian'); ?>" class="btn btn-block btn-warning">
+                <i class="fas fa-angle-double-left"></i>
+                  Kembali</a>
+        </div>
         <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title text-capitalize">Detail Transaksi Penjualan</h3>

@@ -26,7 +26,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Daftar Obat</h3>
+                <h3 class="card-title"><span class="text-bold"><i class="fas fa-capsules"></i></span> Daftar Obat</h3>
 
                 <a type="button" class="btn-sm btn-primary float-sm-right" href="<?= site_url('create_obat'); ?>">
                     <i class="fas fa-solid fa-plus nav-icon"></i>
@@ -49,7 +49,7 @@
                             <th>No</th>
                             <th>Kode Rak</th>
                             <th>Barcode Obat</th>
-                            <th>Merk Obat</th>
+                            <th>Kandungan</th>
                             <th>Nama Obat</th>
                             <th>Gol Obat</th>
                             <th>Kategori</th>
@@ -60,7 +60,9 @@
                             <th>Harga Pokok</th>
                             <th>Harga Jual</th>
                             <th>Etiket</th>
-                            <th>Aksi</th>
+                            <?php if (session()->get('role') == 'super admin') : ?>
+                                <th>Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,17 +89,19 @@
                                 <td><?= "Rp" . " " . " " .  number_format($row['harga_pokok'], 0, ",", "."); ?></td>
                                 <td><?= "Rp" . " " . " " . number_format($row['harga_jual'], 0, ",", "."); ?></td>
                                 <td><?= $row['nama_etiket']; ?></td>
-                                <td class="text-right py-0 align-middle">
-                                    <div class="btn-group btn-group-sm">
-                                        <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('edit_obat/' . $row['id']); ?>">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
-                                            data-target="#modalDelete<?= $row['id']; ?>">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                <?php if (session()->get('role') == 'super admin') : ?>
+                                    <td class="text-right py-0 align-middle">
+                                        <div class="btn-group btn-group-sm">
+                                            <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('edit_obat/' . $row['id']); ?>">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm bg-gradient-danger" data-toggle="modal"
+                                                data-target="#modalDelete<?= $row['id']; ?>">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -150,7 +154,7 @@
 <script>
     $(function() {
         $('body').addClass('sidebar-collapse');
-        
+
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": false,

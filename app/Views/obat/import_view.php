@@ -16,8 +16,10 @@
 
                 <form action="<?= site_url('process_import_obat') ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                    <div class="mb-1">
-                        <a href="<?= site_url('daftar_obat') ?>" class="btn btn-sm btn-warning ">Kembali</a>
+                    <div class="my-3 col-1">
+                        <a href="<?= site_url('daftar_obat'); ?>" class="btn btn-sm btn-block-sm btn-warning">
+                            <i class="fas fa-angle-double-left"></i>
+                            Kembali</a>
                     </div>
                     <div class="form-group">
                         <label>File Excel</label>
@@ -41,7 +43,7 @@
                     <ol>
                         <li>Download template Excel yang telah disediakan</li>
                         <li>Isi data sesuai format yang ada pada template</li>
-                        <li>Untuk kolom Golongan Obat, Kategori, Satuan, dan Etiket:
+                        <li>Untuk kolom <strong>Golongan Obat, Kategori, Satuan, dan Etiket:</strong>
                             <ul>
                                 <li>Jika mengisi dengan nama yang sudah ada, sistem akan menggunakan data yang sudah ada</li>
                                 <li>Jika mengisi dengan nama baru, sistem akan otomatis membuat data master baru</li>

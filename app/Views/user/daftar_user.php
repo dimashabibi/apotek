@@ -118,10 +118,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Select</label>
-                                        <select class="form-control">
+                                        <select class="form-control" name="role">
                                             <option class="selected" value="<?= $edit['role']; ?>" hidden selected><?= $edit['role']; ?></option>
                                             <option value="admin">Admin</option>
-                                            <option value="duper admin">Super Admin</option>
+                                            <option value="super admin">Super Admin</option>
                                         </select>
                                     </div>
                                 </div>

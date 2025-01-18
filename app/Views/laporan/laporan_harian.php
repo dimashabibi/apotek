@@ -35,16 +35,18 @@
             </div>
             <div class="card-body">
                 <table class="table table-bordered" id="datatable">
-                    <thead class="tet-center">
+                    <thead >
                         <tr>
                             <th>No</th>
+                            <th>Kasir</th>
                             <th>No Faktur</th>
                             <th>Tanggal</th>
                             <th>Detail Obat</th>
                             <th>Total Qty</th>
-                            <th>Total Penjualan</th>
-                            <th>Diskon Uang</th>
+                            <th>Total Kotor</th>
                             <th>Diskon Persen</th>
+                            <th>Diskon Uang</th>
+                            <th>total_bersih</th>
                             <?php if (session()->get('role') == 'super admin'): ?>
                                 <th>Aksi</th>
                             <?php endif; ?>
@@ -56,8 +58,9 @@
                         foreach ($data_hari as $transaksi): ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-                                <td><?= $transaksi['no_faktur']; ?></td>
-                                <td class="text-center"><?= date('d F Y', strtotime($transaksi['tgl_transaksi'])); ?></td>
+                                <td class="py-0 align-middle"><?= $transaksi['nama_kasir']; ?></td>
+                                <td class="py-0 align-middle"><?= $transaksi['no_faktur']; ?></td>
+                                <td class="text-center py-0 align-middle"><?= date('d F Y', strtotime($transaksi['tgl_transaksi'])); ?></td>
                                 <td>
                                     <table class="table table-borderless">
                                         <thead>
@@ -74,25 +77,29 @@
                                                 <tr>
                                                     <td><?= $item['nama_obat']; ?></td>
                                                     <td><?= $item['nama_kategori']; ?></td>
-                                                    <td><?= $item['total_qty']; ?> <?= $item['nama_satuan']; ?></td>
+                                                    <td><?= $item['qty']; ?> <?= $item['nama_satuan']; ?></td>
                                                     <td>Rp <?= number_format($item['harga_jual'], 0, ',', '.'); ?></td>
-                                                    <td>Rp <?= number_format($item['total_penjualan'], 0, ',', '.'); ?></td>
+                                                    <td>Rp <?= number_format($item['sub_total'], 0, ',', '.'); ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </td>
-                                <td class="text-center"><?= $transaksi['total_qty']; ?></td>
-                                <td class="text-center">Rp <?= number_format($transaksi['total_penjualan'], 0, ',', '.'); ?></td>
-                                <td class="text-center">Rp <?= number_format($transaksi['diskon_uang'], 0, ',', '.'); ?></td>
-                                <td class="text-center"><?= number_format($transaksi['diskon_persen'], 0, ',', '.'); ?> %</td>
+                                <td class="text-center py-0 align-middle"><?= $transaksi['total_qty']; ?></td>
+                                <td class="text-center py-0 align-middle">Rp <?= number_format($transaksi['total_kotor'], 0, ',', '.'); ?></td>
+                                <td class="text-center py-0 align-middle"><?= number_format($transaksi['diskon_persen']); ?> %</td>
+                                <td class="text-center py-0 align-middle">Rp <?= number_format($transaksi['diskon_uang']); ?></td>
+                                <td class="text-center py-0 align-middle text-bold">Rp <?= number_format($transaksi['total_bersih'], 0, ',', '.'); ?></td>
                                 <?php if (session()->get('role') == 'super admin') : ?>
-                                    <td class="text-center">
-                                        <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('editTransaksi/' . $transaksi['no_faktur']); ?>">
-                                            <i class="fa fa-edit"></i>
-                                        </a> <button type="button" class="btn btn-sm btn-danger" onclick="hapusTransaksi('<?= $transaksi['no_faktur']; ?>')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                    <td class="text-right py-0 align-middle">
+                                        <div class="btn-group btn-group-sm">
+                                            <a type="button" class="btn btn-sm bg-gradient-info" href="<?= site_url('editTransaksi/' . $transaksi['no_faktur']); ?>">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="hapusTransaksi('<?= $transaksi['no_faktur']; ?>')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 <?php endif; ?>
                             </tr>
@@ -100,11 +107,11 @@
                     </tbody>
                     <tfoot class="text-center">
                         <tr>
-                            <th colspan="4">Total</th>
+                            <th colspan="5">Total</th>
                             <th><?= number_format($total_qty); ?></th>
-                            <th>Rp <?= number_format($total_penjualan, 0, ',', '.'); ?></th>
-                            <th>Rp <?= number_format($diskon_uang, 0, ',', '.'); ?></th>
-                            <th><?= number_format($diskon_persen, 0, ',', '.'); ?> %</th>
+                            <th>Rp <?= number_format($total_kotor, 0, ',', '.'); ?></th>
+                            <th colspan="2"></th>
+                            <th class="text-danger">Rp <?= number_format($total_bersih, 0, ',', '.'); ?></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -116,6 +123,14 @@
 
 <?= $this->section('script'); ?>
 <script>
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+        }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
+    });
+
     function hapusTransaksi(id) {
         Swal.fire({
             title: "Hapus item?",

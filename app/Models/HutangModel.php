@@ -17,6 +17,7 @@ class HutangModel extends Model
         'nama_distributor',
         'tanggal',
         'total_hutang',
+        'sisa_hutang',
         'is_paid',
         'paid_at'
     ];
@@ -26,7 +27,8 @@ class HutangModel extends Model
         date_default_timezone_set('Asia/Jakarta');
         return $this->update($id, [
             'is_paid' => true,
-            'paid_at' => date('Y-m-d H:i:s')
+            'paid_at' => date('Y-m-d H:i:s'),
+            'sisa_hutang' => '0',
         ]);
     }
 

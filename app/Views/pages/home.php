@@ -23,68 +23,122 @@
 <?= $this->section('content'); ?>
 
 <div class="row">
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-lightblue">
-            <div class="inner">
-                <h3><?= $total_obat; ?></h3>
+    <?php if (session()->get('role') == 'super admin'): ?>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-lightblue">
+                <div class="inner">
+                    <h3><?= $total_obat; ?></h3>
 
-                <p class="text-capitalize">Daftar Obat</p>
+                    <p class="text-capitalize">Daftar Obat</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <a href="<?= base_url('daftar_obat'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <div class="icon">
-                <i class="fas fa-capsules"></i>
-            </div>
-            <a href="<?= base_url('daftar_obat'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-    </div>
 
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-maroon">
-            <div class="inner">
-                <h3><?= $stok_menipis; ?></h3>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-maroon">
+                <div class="inner">
+                    <h3><?= $stok_menipis; ?></h3>
 
-                <p class="text-capitalize">Stok Menipis</p>
+                    <p class="text-capitalize">Stok Menipis</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer text-center">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <div class="icon">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
-            <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer text-center">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-    </div>
-    <!-- ./col -->
+        <!-- ./col -->
 
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-secondary">
-            <div class="inner">
-                <h3><?= $stok_habis; ?></h3>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3><?= $stok_habis; ?></h3>
 
-                <p class="text-capitalize">Stok Habis</p>
+                    <p class="text-capitalize">Stok Habis</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <div class="icon">
-                <i class="fas fa-list"></i>
-            </div>
-            <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-olive ">
-            <div class="inner">
-                <h3><?= "Rp" . number_format($total_hutang); ?></h3>
+        <!-- ./col -->
 
-                <p class="text-capitalize">Daftar Hutang</p>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-olive ">
+                <div class="inner">
+                    <h3><?= "Rp" . number_format($total_hutang); ?></h3>
+
+                    <p class="text-capitalize">Daftar Hutang</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-money-check"></i>
+                </div>
+                <a href="<?= base_url('hutang'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <div class="icon">
-                <i class="fas fa-money-check"></i>
-            </div>
-            <a href="<?= base_url('hutang'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-    </div>
+    <?php endif; ?>
+
+    <?php if (session()->get('role') == 'admin'): ?>
+        <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-lightblue">
+                <div class="inner">
+                    <h3><?= $total_obat; ?></h3>
+
+                    <p class="text-capitalize">Daftar Obat</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <a href="<?= base_url('daftar_obat'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <!-- ./col -->
+        <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-maroon">
+                <div class="inner">
+                    <h3><?= $stok_menipis; ?></h3>
+
+                    <p class="text-capitalize">Stok Menipis</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer text-center">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <!-- ./col -->
+        <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3><?= $stok_habis; ?></h3>
+
+                    <p class="text-capitalize">Stok Habis</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <a href="<?= base_url('laporan_menipis'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+    <?php endif; ?>
 
 
     <div class="col-md-4">
@@ -186,6 +240,40 @@
                 </div>
                 <div class="position-relative mb-4">
                     <canvas id="barChart" height="200"></canvas>
+                </div>
+                <div class="d-flex flex-row justify-content-end align-items-center">
+                    <form action="" method="get" class="form-inline" id="yearForm">
+                        <!-- Tombol Previous Year -->
+                        <button type="button"
+                            class="btn btn-sm btn-outline-secondary mr-2"
+                            onclick="changeYear(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <!-- Input Tahun -->
+                        <div class="form-group">
+                            <input type="number"
+                                name="tahun"
+                                id="tahunInput"
+                                class="form-control form-control-sm text-center mr-2"
+                                value="<?= isset($tahun) ? htmlspecialchars($tahun) : date('Y'); ?>"
+                                placeholder="Tahun"
+                                style="width: 100px;"
+                                min="1900"
+                                max="<?= date('Y'); ?>">
+                        </div>
+
+                        <!-- Tombol Next Year -->
+                        <button type="button"
+                            class="btn btn-sm btn-outline-secondary mr-2"
+                            onclick="changeYear(1)"
+                            <?= (isset($tahun) && $tahun >= date('Y')) ? 'disabled' : '' ?>>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <!-- Tombol Filter -->
+                        <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -472,5 +560,28 @@
         legendContainer.innerHTML = legendHtml;
 
     })
+
+    function changeYear(increment) {
+        const input = document.getElementById('tahunInput');
+        const currentYear = parseInt(input.value);
+        const maxYear = <?= date('Y') ?>;
+
+        // Hitung tahun baru
+        let newYear = currentYear + increment;
+
+        // Validasi range tahun
+        if (newYear > maxYear) {
+            newYear = maxYear;
+        }
+        if (newYear < 1900) {
+            newYear = 1900;
+        }
+
+        // Update nilai input
+        input.value = newYear;
+
+        // Submit form
+        document.getElementById('yearForm').submit();
+    }
 </script>
 <?= $this->endSection(); ?>

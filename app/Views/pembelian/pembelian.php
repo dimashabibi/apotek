@@ -330,45 +330,59 @@
             },
             submitHandler: function(form) {
                 // Hanya jalankan ajax jika form valid
-                $.ajax({
-                    type: "post",
-                    url: $(form).attr('action'),
-                    data: $(form).serialize(),
-                    dataType: "json",
-                    beforeSend: function() {
-                        $('.buttonSimpan').prop('disabled', true);
-                        $('.buttonSimpan').html('<i class="fa fa-spin fa-spinner"></i>');
-                    },
-                    complete: function() {
-                        $('.buttonSimpan').prop('disabled', false);
-                        $('.buttonSimpan').html('<i class="fas fa-save">');
-                    },
-                    success: function(response) {
-                        if (response.success == 'berhasil') {
-                            var Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Data pembelian berhasil diinput'
-                            })
-                            window.location.reload();
-                        }
-                        if (response.error) {
-                            var Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-                            Toast.fire({
-                                icon: 'error',
-                                html: `<strong>${response.error}</strong>`
-                            })
-                        }
+
+                Swal.fire({
+                    title: "Simpan Pembelian",
+                    text: "Apakah ingin menyimpan pembelian ?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, simpan !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "post",
+                            url: $(form).attr('action'),
+                            data: $(form).serialize(),
+                            dataType: "json",
+                            beforeSend: function() {
+                                $('.buttonSimpan').prop('disabled', true);
+                                $('.buttonSimpan').html('<i class="fa fa-spin fa-spinner"></i>');
+                            },
+                            complete: function() {
+                                $('.buttonSimpan').prop('disabled', false);
+                                $('.buttonSimpan').html('<i class="fas fa-save">');
+                            },
+                            success: function(response) {
+                                if (response.success == 'berhasil') {
+                                    var Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Data pembelian berhasil diinput'
+                                    })
+                                    window.location.reload();
+                                }
+                                if (response.error) {
+                                    var Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+                                    Toast.fire({
+                                        icon: 'error',
+                                        html: `<strong>${response.error}</strong>`
+                                    })
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -384,7 +398,7 @@
         $('#btnTambahObat').click(function(e) {
             e.preventDefault();
             console.log("Button tambah supplier diklik");
-            window.location.href = '/create_obat';;
+            window.location.href = '/create_obat';
         });
 
         $('#simpanTemp').click(function(e) {

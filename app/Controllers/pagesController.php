@@ -59,25 +59,33 @@ class PagesController extends BaseController
     // ------------------------------------------------------------------------- Home Controller
     public function home()
     {
+        \date_default_timezone_set('Asia/Jakarta');
         $bulan = $this->request->getGet('bulan') ?? date('Y-m');
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+        $tahun = min((int)$tahun, (int)date('Y'));
+        $month = $month ?? date('n');
+        $year = $year ?? date('Y');
+        $day = $day ?? date('Y-m-d');
         $data = [
             'title'             => 'Dashboard | Apotek Sumbersekar',
             'menu'              => 'dashboard',
             'submenu'           => '',
             'total_obat'        => $this->obatModel->countAllResults(),
             'stok_menipis'      => $this->obatModel->where('stok_obat <= stok_min')->countAllResults(),
-            'stok_habis'        => $this->obatModel->where('stok_obat', null)->countAllResults(),
-            'total_hutang'      => $this->hutangModel
-                ->select('SUM(total_hutang) as total_hutang')
-                ->where('is_paid', 0)
-                ->first()['total_hutang'] ?? 0,
-            'income_per_hari'   => $this->transaksiModel->getTransaksiPerhari(),
-            'income_per_bulan'  => $this->transaksiModel->getTransaksiPerbulan(),
-            'income_per_tahun'  => $this->transaksiModel->getTransaksiPertahun(),
+            'stok_habis'        => $this->obatModel->where('stok_obat', null ?? 0)->countAllResults(),
+            'total_hutang'      => $this->hutangModel->select('SUM(sisa_hutang) as sisa_hutang')->where('is_paid', 0)->first()['sisa_hutang'] ?? 0,
+            'income_per_hari'   => $this->transaksiModel->select('SUM(total_bersih) as total_perhari')->where('tgl_transaksi', $day)->get()->getRowArray()['total_perhari'] ?? 0,
+            'income_per_bulan'  => $this->transaksiModel->select('SUM(total_bersih) as total_perbulan')->where('MONTH(tgl_transaksi)', $month)->get()->getRowArray()['total_perbulan'] ?? 0,
+            'income_per_tahun'  => $this->transaksiModel->select('SUM(total_bersih) as total_pertahun')->where('YEAR(tgl_transaksi)', $year)->get()->getRowArray()['total_pertahun'] ?? 0,
             'obat'              => $this->obatModel->getObat(),
             'data_kategori'     => $this->detailtransaksiModel->getKategoriObat(),
-            'data_transaksi'    => $this->detailtransaksiModel->getDataTransaksi(),
+            'data_transaksi'    => $this->transaksiModel->select('MONTH(tgl_transaksi) as bulan, SUM(total_bersih) as jumlah')
+                ->where('YEAR(tgl_transaksi)', $tahun)
+                ->groupBy('bulan')
+                ->get()
+                ->getResultArray(),
             'data_terlaris'     => $this->detailtransaksiModel->getObatTerlaris($bulan),
+            'tahun'             => $tahun,
         ];
         return view('pages/home', $data);
     }
@@ -270,7 +278,7 @@ class PagesController extends BaseController
     // hitung total end
 
     // ------------------------------------------------------------------------- Hapus Item Controller
-    public function hapusItem() 
+    public function hapusItem()
     {
         if ($this->request->isAJAX()) {
             $id = $this->request->getVar('id');
@@ -602,5 +610,40 @@ class PagesController extends BaseController
         $printer->cut();
         echo "Struk berhasil dicetak";
         $printer->close();
+    }
+
+    // Controller
+    // Controller
+    public function printStruk($no_faktur = null)
+    {
+        // Periksa apakah $no_faktur diberikan
+        if (empty($no_faktur)) {
+            return $this->response->setStatusCode(400)->setBody('No faktur tidak ditemukan.');
+        }
+
+        // Ambil data transaksi berdasarkan no_faktur
+        $transaksi = $this->transaksiModel->where('no_faktur', $no_faktur)->first();
+
+        if (!$transaksi) {
+            return $this->response->setStatusCode(404)->setBody('Transaksi tidak ditemukan.');
+        }
+
+        // Ambil detail transaksi
+        $detail = $this->detailtransaksiModel
+            ->select('nama_obat, tbl_detail_transaksi.qty, nama_satuan, tbl_detail_transaksi.harga_jual, tbl_detail_transaksi.sub_total')
+            ->join('tbl_obat', 'tbl_obat.id = tbl_detail_transaksi.id_obat')
+            ->join('tbl_satuan', 'tbl_satuan.id = tbl_obat.id_satuan')
+            ->where('no_faktur', $no_faktur)
+            ->findAll();
+
+        // Siapkan data untuk view
+        $data = [
+            'title'     => 'Print Struk',
+            'transaksi' => $transaksi,
+            'detail'    => $detail
+        ];
+
+        // Tampilkan view
+        return view('pages/print_struk', $data);
     }
 }

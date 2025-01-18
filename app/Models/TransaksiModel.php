@@ -5,6 +5,8 @@ namespace App\Models;
 use CodeIgniter\Database\MySQLi\Builder;
 use CodeIgniter\Model;
 
+use function PHPUnit\Framework\isNull;
+
 class TransaksiModel extends Model
 {
     protected $table            = 'tbl_transaksi';
@@ -56,56 +58,15 @@ class TransaksiModel extends Model
         return $kodeTampil;
     }
 
-    public function getTransaksiPerhari()
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        $tgl = date('Y-m-d');
-        $db      = \Config\Database::connect();
-        $builder = $db->table('tbl_transaksi');
-        $builder->select('DATE(tbl_transaksi.tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan');
-        $builder->groupBy('DATE(tbl_transaksi.tgl_transaksi)');
-        $builder->where('DATE(tbl_transaksi.tgl_transaksi)', $tgl);
-        $query   = $builder->get();
-        $result  = $query->getResultArray();
-
-        return !empty($result) ? $result[0]['total_penghasilan'] : 0;
-    }
-
-    public function getTransaksiPerbulan($bulan = null)
-    {
-        $bulan = $bulan ?? \date('Y-m');
-        $db      = \Config\Database::connect();
-        $builder = $db->table('tbl_transaksi');
-        $builder->select("SUM(total_bersih) as total_penghasilan");
-        $builder->groupBy('DATE_FORMAT(tbl_transaksi.tgl_transaksi, "%Y-%m")');
-        $builder->where("DATE_FORMAT(tbl_transaksi.tgl_transaksi, '%Y-%m')", $bulan);
-        $query   = $builder->get();
-        $result  = $query->getResultArray();
-
-        return !empty($result) ? $result[0]['total_penghasilan'] : 0;
-    }
-
-    public function getTransaksiPertahun($tahun = null)
-    {
-        $tahun = $tahun ?? date('Y');
-        $db = \Config\Database::connect();
-        $builder = $db->table('tbl_detail_transaksi');
-        $builder->select("SUM(tbl_detail_transaksi.qty * (tbl_detail_transaksi.harga_jual - (tbl_detail_transaksi.harga_jual * tbl_transaksi.diskon_persen / 100) - tbl_transaksi.diskon_uang)) as total_penghasilan");
-        $builder->join('tbl_transaksi', 'tbl_transaksi.no_faktur = tbl_detail_transaksi.no_faktur');
-        $builder->where("YEAR(tbl_transaksi.tgl_transaksi)", $tahun);
-        $query = $builder->get();
-        $result = $query->getResultArray();
-
-        return !empty($result) ? $result[0]['total_penghasilan'] : 0;
-    }
-
     public function getTotalTransaksi($namaUser = null, $startDate = null, $endDate = null)
     {
 
         $db      = \Config\Database::connect();
         $builder = $db->table('tbl_transaksi');
         $builder->select('COUNT(tbl_transaksi.no_faktur) as total_transaksi');
-        $builder->where('nama_kasir', $namaUser);
+        if (!is_null($namaUser)) {
+            $builder->where('nama_kasir', $namaUser);
+        }
 
         if ($startDate && $endDate) {
             $builder->where('tgl_transaksi >=', $startDate)
@@ -123,7 +84,10 @@ class TransaksiModel extends Model
         $db      = \Config\Database::connect();
         $builder = $db->table('tbl_transaksi');
         $builder->select('SUM(tbl_transaksi.total_bersih) as total_penghasilan');
-        $builder->where('nama_kasir', $namaUser);
+        if (!is_null($namaUser)) {
+            $builder->where('nama_kasir', $namaUser);
+        }
+
 
         if ($startDate && $endDate) {
             $builder->where('tgl_transaksi >=', $startDate)

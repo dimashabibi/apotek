@@ -35,6 +35,7 @@
                             <th>No</th>
                             <th>Kode Rak</th>
                             <th>Barcode Obat</th>
+                            <th>kandungan</th>
                             <th>Nama Obat</th>
                             <th>Gol Obat</th>
                             <th>Kategori</th>
@@ -50,11 +51,12 @@
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach ($stok_menipis as $row): ?>
-                            <?php if (!is_null($row['stok_obat']) && $row['stok_obat'] <= $row['stok_min']) : ?>
+                            <?php if (!is_null($row['stok_obat']) && $row['stok_obat'] > 0 && $row['stok_obat'] <= $row['stok_min']) : ?>
                                 <tr>
                                     <td><?= $i++; ?></td>
                                     <td><?= $row['kode_rak']; ?></td>
                                     <td><?= $row['barcode_obat']; ?></td>
+                                    <td><?= $row['merk_obat']; ?></td>
                                     <td><?= $row['nama_obat']; ?></td>
                                     <td><?= $row['nama_golongan']; ?></td>
                                     <td><?= $row['nama_kategori']; ?></td>
@@ -92,12 +94,13 @@
                 <h3 class="card-title">Daftar Stok Habis</h3>
             </div>
             <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example2" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Kode Rak</th>
                             <th>Barcode Obat</th>
+                            <th>Kandungan</th>
                             <th>Nama Obat</th>
                             <th>Gol Obat</th>
                             <th>Kategori</th>
@@ -118,6 +121,7 @@
                                     <td><?= $i++; ?></td>
                                     <td><?= $row['kode_rak']; ?></td>
                                     <td><?= $row['barcode_obat']; ?></td>
+                                    <td><?= $row['merk_obat']; ?></td>
                                     <td><?= $row['nama_obat']; ?></td>
                                     <td><?= $row['nama_golongan']; ?></td>
                                     <td><?= $row['nama_kategori']; ?></td>
@@ -153,7 +157,7 @@
 <?= $this->section('script'); ?>
 <script>
     $(function() {
-        $("#example1").DataTable({
+        $("#example1,#example2").DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,

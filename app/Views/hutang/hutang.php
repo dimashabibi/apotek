@@ -114,6 +114,7 @@
                             <th>Tanggal Bayar</th>
                             <th>Nama Distributor</th>
                             <th>Jumlah Hutang</th>
+                            <th>Sisa Hutang</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -128,6 +129,7 @@
                                 <td><?= $row['paid_at']; ?></td>
                                 <td><?= $row['nama_distributor']; ?></td>
                                 <td>Rp <?= number_format($row['total_hutang'], 2); ?></td>
+                                <td>Rp <?= number_format($row['sisa_hutang'], 2); ?></td>
                                 <td>
                                     <?php if ($row['is_paid']): ?>
                                         <span class="badge badge-success">Lunas</span>
@@ -137,6 +139,10 @@
                                 </td>
                                 <td>
                                     <?php if (!$row['is_paid']): ?>
+                                        <button onclick="editHutang('<?= $row['id_hutang']; ?>')"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fas fa-money-bill"></i> Cicil
+                                        </button>
                                         <button onclick="markAsPaid('<?= $row['id_hutang']; ?>')"
                                             class="btn btn-success btn-sm">
                                             <i class="fas fa-check"></i> Bayar
@@ -154,7 +160,9 @@
             </div>
         </div>
     </div>
+    <div class="viewmodal" style="display: none;"></div>
 </div>
+
 
 <form id="deleteForm" method="post" style="display:none;">
     <?= csrf_field() ?>
@@ -305,6 +313,25 @@
                         });
                     }
                 });
+            }
+        });
+    }
+
+    function editHutang($id) {
+        $.ajax({
+            type: "get",
+            url: "<?= site_url('editHutang/'); ?>" + $id,
+            success: function(response) {
+                if (response.data) {
+                    $('.viewmodal').html(response.data).show();
+                    $('#modalformedit').on('shown.bs.modal', function(event) {
+                        $('#jumlah_cicil').focus();
+                    });
+                    $('#modalformedit').modal('show');
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             }
         });
     }

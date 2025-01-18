@@ -58,7 +58,7 @@ class AuthController extends Controller
         // Send verification email
         $this->sendVerificationEmail($userData['email'], $verificationToken);
 
-        return redirect()->to('/')->with('success', 'Registration successful. Please check your email to verify your account.');
+        return redirect()->to('/')->with('success', 'Registrasi Berhasil. Silahkan cek email yang terdaftar untuk verifikasi akun.');
     }
 
     private function sendVerificationEmail($email, $token)
@@ -94,10 +94,10 @@ class AuthController extends Controller
                 'verification_token' => null
             ]);
 
-            return redirect()->to('/')->with('success', 'Email verified successfully. You can now login.');
+            return redirect()->to('/')->with('success', 'Email berhasil diverifikasi. Silahkan login.');
         }
 
-        return redirect()->to('/')->with('error', 'Invalid verification token.');
+        return redirect()->to('/')->with('error', 'Verifikasi gagal.');
     }
 
     public function index()
@@ -123,7 +123,7 @@ class AuthController extends Controller
 
         if ($user && password_verify($password, $user['password'])) {
             if ($user['is_verified'] == 0) {
-                return redirect()->back()->with('error', 'Please verify your email first.');
+                return redirect()->back()->with('error', 'Verifikasi email terlebih dahulu.');
             }
 
             $session = session();
@@ -137,16 +137,20 @@ class AuthController extends Controller
             ];
             $session->set($sessionData);
 
-            return redirect()->to('/kasir')->with('success', 'Login successful');
+            if (\session()->get('role') == 'admin') {
+                return redirect()->to('/kasir')->with('success', 'Login successful');
+            } else {
+                return redirect()->to('/home')->with('success', 'Login successful');
+            }
         }
 
-        return redirect()->back()->with('error', 'Invalid login credentials');
+        return redirect()->back()->with('error', 'Kredensial login tidak valid');
     }
 
     public function logout()
     {
         $session = session();
         $session->destroy();
-        return redirect()->to('/')->with('success', 'Logged out successfully');
+        return redirect()->to('/')->with('success', 'Berhasil Keluar');
     }
 }

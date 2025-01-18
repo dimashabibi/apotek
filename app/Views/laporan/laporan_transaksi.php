@@ -54,44 +54,12 @@
     <!-- ./col -->
 
     <div class="col-lg-12">
+        <?php
+        date_default_timezone_set('Asia/Jakarta');
+        ?>
         <form action="" method="post">
             <?php csrf_field() ?>
             <div class="row">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label>Sort Order:</label>
-                        <div class="input-group">
-                            <select class="form-control text-capitalize select2" name="order" id="order">
-                                <option value="<?= $order; ?>" hidden selected><?= $order; ?></option>
-                                <option value="terbaru">terbaru</option>
-                                <option value="terlama">terlama</option>
-                            </select>
-                            <span class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fa fa-save"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-group">
-                        <label>Search:</label>
-                        <div class="input-group">
-                            <input type="search" class="form-control" name="keyword" id="keyword"
-                                placeholder="Input no faktur"
-                                autocomplete="off"
-                                value="<?= $keyword ?? ''; ?>">
-                            <span class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <small id="emailHelp" class="form-text text-black">* klik search/tekan enter tanpa input untuk mengembalikan table</small>
-                    </div>
-                </div>
 
                 <div class="col-3">
                     <div class="form-group">
@@ -112,6 +80,43 @@
                                     <i class="fa fa-save"></i>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Filter Periode:</label>
+                        <div class="input-group">
+                            <select class="form-control" name="period_filter" id="period_filter">
+                                <option value="" hidden>Pilih Periode</option>
+                                <option value="3_hari" <?= ($period_filter == '3_hari') ? 'selected' : '' ?>>3 Hari Terakhir</option>
+                                <option value="7_hari" <?= ($period_filter == '7_hari') ? 'selected' : '' ?>>7 Hari Terakhir</option>
+                                <option value="1_bulan" <?= ($period_filter == '1_bulan') ? 'selected' : '' ?>>1 Bulan Terakhir</option>
+                            </select>
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-filter"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label>Sort Order:</label>
+                        <div class="input-group">
+                            <select class="form-control text-capitalize select2" name="order" id="order">
+                                <option value="<?= $order; ?>" hidden selected><?= $order; ?></option>
+                                <option value="terbaru">terbaru</option>
+                                <option value="terlama">terlama</option>
+                            </select>
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -171,8 +176,7 @@
                                                 <td class="text-center"><strong><?= "Rp " . number_format($value['harga_jual'], 0, ",", "."); ?></strong></td>
                                                 <td class="text-center"><?= $value['nama_satuan']; ?></td>
                                                 <td class="text-center text-bold"><?= number_format($value['qty']); ?></td>
-                                                <td class="text-center"><strong><?= "%" . number_format($value['diskon_persen'], 0, ",", "."); ?></strong></td>
-                                                <td class="text-center"><strong><?= "Rp" . number_format($value['diskon_uang'], 0, ",", "."); ?></strong></td>
+                                                <td colspan="2"></td>
                                                 <td class="text-center"><strong><?= "Rp " . number_format($value['sub_total'], 0, ",", "."); ?></strong></td>
                                             </tr>
                                         <?php endif; ?>
@@ -190,7 +194,8 @@
                                                     }
                                                     echo $sub_qty;
                                                     ?></strong></th>
-                                        <th colspan="2"></th>
+                                        <th> <?= number_format($faktur['diskon_persen']) . " %"; ?></th>
+                                        <th> <?= number_format($faktur['diskon_uang'], 0, ",", "."); ?></th>
                                         <th><strong><?= "Rp " . number_format($faktur['total_bersih'], 0, ",", "."); ?></strong></th>
                                     </tr>
                                 </tfoot>
@@ -231,6 +236,14 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
+        });
+
+        $('#period_filter').change(function() {
+            if ($(this).val() === 'custom') {
+                $('#custom_date_filter').show();
+            } else {
+                $('#custom_date_filter').hide();
+            }
         });
 
     });

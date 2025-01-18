@@ -169,27 +169,28 @@
                                 <p class="text-capitalize">Laporan stok menipis</p>
                             </a>
                         </li>
-
                     </ul>
                 </li>
                 <!-- Laporan End -->
 
-                <!-- Setting Start -->
-                <li class="nav-header">Hutang</li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/hutang'); ?>" class="nav-link <?= $menu == 'hutang' ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-money-check"></i>
-                        <p class="text-capitalize">Hutang</p>
-                    </a>
-                </li>
-                <!-- Setting End -->
+                <?php if (session()->get('role') == 'super admin'): ?>
+                    <!-- Setting Start -->
+                    <li class="nav-header">Hutang</li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/hutang'); ?>" class="nav-link <?= $menu == 'hutang' ? 'active' : ''; ?>">
+                            <i class="nav-icon fas fa-money-check"></i>
+                            <p class="text-capitalize">Hutang</p>
+                        </a>
+                    </li>
+                    <!-- Setting End -->
+                <?php endif; ?>
 
                 <!-- Setting Start -->
                 <li class="nav-header">Setting</li>
                 <li class="nav-item">
                     <a href="<?= site_url('/logout'); ?>" class="nav-link">
                         <i class="nav-icon fas fa-power-off"></i>
-                        <p class="text-capitalize">Logout</p>
+                        <p class="text-capitalize">Keluar</p>
                     </a>
                 </li>
                 <!-- Setting End -->

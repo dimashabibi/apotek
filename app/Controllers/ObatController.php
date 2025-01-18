@@ -351,7 +351,7 @@ class ObatController extends BaseController
         // Set headers
         $sheet->setCellValue('A1', 'Kode Rak');
         $sheet->setCellValue('B1', 'Barcode Obat');
-        $sheet->setCellValue('C1', 'Merk Obat');
+        $sheet->setCellValue('C1', 'Kandungan Obat');
         $sheet->setCellValue('D1', 'Nama Obat');
         $sheet->setCellValue('E1', 'Golongan Obat');
         $sheet->setCellValue('F1', 'Kategori');
@@ -470,19 +470,19 @@ class ObatController extends BaseController
                     $etiket = $this->getEtiketId(trim($data['M']));
 
                     $obatData = [
-                        'kode_rak' => trim($data['A']),
+                        'kode_rak'     => trim($data['A']),
                         'barcode_obat' => trim($data['B']),
-                        'merk_obat' => trim($data['C']),
-                        'nama_obat' => trim($data['D']),
-                        'id_golongan' => $golongan,
-                        'id_kategori' => $kategori,
-                        'konsinyasi' => trim($data['G']),
-                        'stok_min' => (int)$data['H'],
-                        'stok_obat' => (int)$data['I'],
-                        'id_satuan' => $satuan,
-                        'harga_pokok' => (float)str_replace(['Rp', '.', ','], '', $data['K']),
-                        'harga_jual' => (float)str_replace(['Rp', '.', ','], '', $data['L']),
-                        'id_etiket' => $etiket
+                        'merk_obat'    => trim($data['C']),
+                        'nama_obat'    => trim($data['D']),
+                        'id_golongan'  => $golongan,
+                        'id_kategori'  => $kategori,
+                        'konsinyasi'   => trim($data['G']),
+                        'stok_min'     => (int)$data['H'],
+                        'stok_obat'    => (int)$data['I'],
+                        'id_satuan'    => $satuan,
+                        'harga_pokok'  => (float)str_replace(['Rp', '.', ','], '', $data['K']),
+                        'harga_jual'   => (float)str_replace(['Rp', '.', ','], '', $data['L']),
+                        'id_etiket'    => $etiket
                     ];
 
                     // Check if data exists (based on barcode)
@@ -622,7 +622,7 @@ class ObatController extends BaseController
         // Set headers
         $sheet->setCellValue('A1', 'Kode Rak');
         $sheet->setCellValue('B1', 'Barcode Obat');
-        $sheet->setCellValue('C1', 'Merk Obat');
+        $sheet->setCellValue('C1', 'Kandungan Obat');
         $sheet->setCellValue('D1', 'Nama Obat');
         $sheet->setCellValue('E1', 'Golongan Obat');
         $sheet->setCellValue('F1', 'Kategori');

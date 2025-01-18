@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
+<?php setlocale(LC_ALL, 'id_ID'); ?>
 
 <head>
     <meta charset="utf-8">
@@ -70,7 +72,7 @@
         <footer class="main-footer">
             <strong>Apoket Sumbersekar</strong>
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.1.0
+
             </div>
         </footer>
     </div>
@@ -79,7 +81,7 @@
     <!-- REQUIRED SCRIPTS -->
 
     <!-- SweetAlert2 -->
-     
+
     <script src="<?= base_url('assets/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
 
     <?php if (!empty(session()->getFlashdata('success'))) : ?>
