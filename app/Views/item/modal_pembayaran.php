@@ -9,8 +9,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalPembayaranCenterTitle">Pembayaran</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+                    <span aria-hidden=" true">&times;</span>
                 </button>
             </div>
             <?= form_open('/simpanPembayaran', ['class' => 'formpembayaran']); ?>
@@ -59,7 +59,7 @@
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary tombolSimpan">Simpan</button>
 
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
             </div>
             <?= form_close(); ?>
         </div>
@@ -186,8 +186,6 @@
                 });
 
             }
-
-
             return false;
         });
         // form pembayaran end
@@ -203,7 +201,7 @@
 
         $('#total_bersih').val(hasil);
         let total_bersih = $('#total_bersih').val();
-        $('#total_bersih').autoNumeric('init', total_bersih);
+        $('#total_bersih').autoNumeric('set', total_bersih);
 
     }
 

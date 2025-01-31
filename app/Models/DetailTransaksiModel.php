@@ -135,6 +135,7 @@ class DetailTransaksiModel extends Model
         tbl_transaksi.no_faktur,
         tbl_transaksi.nama_kasir,
         tbl_transaksi.tgl_transaksi,
+        tbl_transaksi.jam,
         tbl_transaksi.diskon_persen,
         tbl_transaksi.diskon_uang,
         tbl_transaksi.total_kotor,
@@ -149,7 +150,8 @@ class DetailTransaksiModel extends Model
         tbl_detail_transaksi.qty,
         tbl_detail_transaksi.sub_total,
         SUM(tbl_detail_transaksi.qty) as total_qty,
-        SUM(tbl_transaksi.total_kotor) as sum_total_kotor
+        SUM(tbl_transaksi.total_kotor) as sum_total_kotor,
+        SUM(tbl_transaksi.total_bersih) as sum_total_bersih,
         ');
         $builder->join('tbl_obat', 'tbl_obat.id=tbl_detail_transaksi.id_obat');
         $builder->join('tbl_transaksi', 'tbl_transaksi.no_faktur=tbl_detail_transaksi.no_faktur');
@@ -187,7 +189,9 @@ class DetailTransaksiModel extends Model
         $builder = $db->table('tbl_detail_transaksi');
         $builder->select('
         tbl_transaksi.no_faktur,
+        tbl_transaksi.nama_kasir,
         tbl_transaksi.tgl_transaksi,
+        tbl_transaksi.jam,
         tbl_transaksi.diskon_persen,
         tbl_transaksi.diskon_uang,
         tbl_transaksi.total_kotor,
@@ -239,6 +243,8 @@ class DetailTransaksiModel extends Model
         $builder->select('
         tbl_transaksi.no_faktur,
         tbl_transaksi.tgl_transaksi,
+        tbl_transaksi.nama_kasir,
+        tbl_transaksi.jam,
         tbl_transaksi.diskon_persen,
         tbl_transaksi.diskon_uang,
         tbl_transaksi.total_kotor,
@@ -265,6 +271,7 @@ class DetailTransaksiModel extends Model
             'tbl_transaksi.diskon_uang',
             'tbl_transaksi.diskon_persen',
             'tbl_transaksi.tgl_transaksi',
+            'tbl_transaksi.jam',
             'tbl_obat.id',
             'tbl_obat.nama_obat',
             'tbl_obat.kode_rak',

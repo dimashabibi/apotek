@@ -31,8 +31,9 @@
         <!-- ------------------------ form login start --------------------------------------- -->
 
         <form action="<?= site_url('proses_login') ?>" method="post">
+          <?= csrf_field(); ?>
           <div class="input-group mb-3">
-            <input type="text" class="form-control " placeholder="name" name="username" autofocus>
+            <input type="text" class="form-control " placeholder="name" name="username" title="Input Username" autofocus>
             <div class="input-group-append">
               <div class="input-group-text">
                 <i class="fas fa-envelope"></i>
@@ -40,7 +41,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" name="password">
+            <input type="password" class="form-control" placeholder="Password" name="password" title="Input Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <i class="fas fa-lock"></i>

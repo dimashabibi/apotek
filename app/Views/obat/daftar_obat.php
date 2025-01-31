@@ -42,7 +42,7 @@
                 </a>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body ">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -152,23 +152,19 @@
 
 <?= $this->section('script'); ?>
 <script>
-    $(function() {
+    $(document).ready(function() {
+
         $('body').addClass('sidebar-collapse');
 
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+        var table = $('#example1').DataTable({
+            "pageLength": 10,
+            "scrollX": true,
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
         });
     });
 </script>

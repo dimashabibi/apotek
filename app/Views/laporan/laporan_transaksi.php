@@ -58,7 +58,7 @@
         date_default_timezone_set('Asia/Jakarta');
         ?>
         <form action="" method="post">
-            <?php csrf_field() ?>
+            <?= csrf_field(); ?>
             <div class="row">
 
                 <div class="col-3">

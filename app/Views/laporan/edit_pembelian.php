@@ -36,6 +36,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <?php form_open('/editTransaksi', ['class' => 'formpembayaran form-horizontal']) ?>
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group row justify-content-center">
                     <label for="id_pembelian" class="col-sm-2 col-form-label text-capitalize">No Pembelian</label>

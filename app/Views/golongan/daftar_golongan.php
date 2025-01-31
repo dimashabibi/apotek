@@ -31,6 +31,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form class="form-horizontal" method="post" action="<?= site_url('tambah_golongan'); ?>">
+            <?= csrf_field(); ?>
                 <div class="card-body">
                     <div class="form-group row justify-content-center">
                         <label for="inputGolongan" class="col-sm-2 col-form-label text-capitalize">Nama golongan</label>
@@ -203,7 +204,7 @@
                 <div class="modal-body">
                     <form class="row g-3 needs-validation" method="get"
                         action="<?= site_url('delete_golongan/' . $delete['id']); ?>">
-                        <?php csrf_field() ?>
+                        <?= csrf_field(); ?>
                         <div class="form-group">
                             <h5>Apakah anda ingin menghapus data ini ? </h5>
                         </div>
@@ -222,21 +223,15 @@
 
 <?= $this->section('script'); ?>
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+    $(document).ready(function() {
+        var table = $('#example1').DataTable({
+            "pageLength": 10
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
         });
     });
 </script>

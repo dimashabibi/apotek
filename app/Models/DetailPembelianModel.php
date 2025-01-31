@@ -30,6 +30,8 @@ class DetailPembelianModel extends Model
         tbl_satuan.nama_satuan,
         tbl_supplier.nama_supplier,
         tbl_detail_pembelian.harga_pokok,
+        tbl_detail_pembelian.qty,
+        tbl_detail_pembelian.sub_total,
         SUM(tbl_detail_pembelian.qty) as total_qty,
         SUM(tbl_detail_pembelian.qty * tbl_detail_pembelian.harga_pokok) as total_pembelian
     ');
@@ -49,6 +51,8 @@ class DetailPembelianModel extends Model
             'tbl_satuan.nama_satuan',
             'tbl_supplier.nama_supplier',
             'tbl_detail_pembelian.harga_pokok',
+            'tbl_detail_pembelian.qty',
+            'tbl_detail_pembelian.sub_total',
         ]);
         $builder->where('DATE_FORMAT(tbl_pembelian.tgl_pembelian, "%Y-%m")', $bulan);
         $builder->orderBy('tbl_pembelian.id_pembelian', 'ASC');

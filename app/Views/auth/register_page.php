@@ -26,8 +26,9 @@
         <p class="login-box-msg">Buat akun baru</p>
 
         <form action="<?= site_url('proses_register'); ?>" method="post">
+          <?= csrf_field(); ?>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Full name" name="nama_user" autocomplete="off">
+            <input type="text" class="form-control" placeholder="Full name" name="nama_user" title="Input Nama" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -35,7 +36,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" name="username" autocomplete="off">
+            <input type="text" class="form-control" placeholder="Username" name="username" title="Input Username" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -43,7 +44,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email" name="email" autocomplete="off">
+            <input type="email" class="form-control" placeholder="Email" name="email" title="Input Email" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-at"></span>
@@ -51,7 +52,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="No Handphone" name="nohp" autocomplete="off">
+            <input type="text" class="form-control" placeholder="No Handphone" name="nohp" title="Input No Hp" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <i class="fas fa-mobile"></i>
@@ -59,7 +60,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" name="password" autocomplete="off">
+            <input type="password" class="form-control" placeholder="Password" name="password" title="Input Password" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -67,13 +68,13 @@
             </div>
           </div>
           <div class="social-auth-links text-center">
-            <button name="submit" class="btn btn-block btn-primary">
+            <button name="submit" class="btn btn-block btn-primary" title="Konfirmasi Register">
               Konfirmasi Register
             </button>
-            <a type="button" class="btn btn-block btn-outline-secondary" href="<?= site_url('/'); ?>"><i class="fas fa-arrow-left"></i>  Kembali Login</a>
+            <a type="button" class="btn btn-block btn-outline-secondary" href="<?= site_url('/'); ?>"><i class="fas fa-arrow-left"></i> Kembali Login</a>
           </div>
         </form>
-       
+
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->

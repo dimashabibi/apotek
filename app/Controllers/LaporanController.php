@@ -15,6 +15,7 @@ use App\Models\PembelianModel;
 use App\Models\DetailTransaksiModel;
 use App\Models\DetailPembelianModel;
 use App\Models\TempModel;
+use Dompdf\Dompdf;
 
 class LaporanController extends BaseController
 {
@@ -54,68 +55,22 @@ class LaporanController extends BaseController
         $hari =  $this->request->getGet('hari') ?? date('Y-m-d');
         $data_hari = $this->detailtransaksiModel->getTransaksiPerhari($hari);
 
-        // Group data by unique criteria
-        $grouped_data = [];
-        $total_qty = 0;
-
-        $total_kotor = $this->transaksiModel
-            ->select('SUM(total_kotor) as total_kotor')
-            ->where('DATE(tgl_transaksi)', $hari)
+        $sum_total_kotor = $this->transaksiModel->select('SUM(total_kotor) as total_kotor')
+            ->where('DATE(tbl_transaksi.tgl_transaksi)', $hari)
             ->get()
             ->getRowArray()['total_kotor'] ?? 0;
-
-        $total_bersih = $this->transaksiModel
-            ->select('SUM(total_bersih) as total_bersih')
-            ->where('DATE(tgl_transaksi)', $hari)
+        $sum_total_bersih = $this->transaksiModel->select('SUM(total_bersih) as total_bersih')
+            ->where('DATE(tbl_transaksi.tgl_transaksi)', $hari)
             ->get()
             ->getRowArray()['total_bersih'] ?? 0;
-
-        foreach ($data_hari as $item) {
-            $key = $item['no_faktur'];
-
-            if (!isset($grouped_data[$key])) {
-                $grouped_data[$key] = [
-                    'nama_kasir'       => $item['nama_kasir'],
-                    'no_faktur'        => $item['no_faktur'],
-                    'tgl_transaksi'    => $item['tgl_transaksi'],
-                    'items'            => [],
-                    'total_qty'        => 0,
-                    'total_kotor'      => $item['total_kotor'],
-                    'diskon_persen'    => $item['diskon_persen'],
-                    'diskon_uang'      => $item['diskon_uang'],
-                    'total_bersih'     => $item['total_bersih'],
-                ];
-            }
-
-            // Tambahkan item ke transaksi
-            $grouped_data[$key]['items'][] = [
-                'nama_obat'      => $item['nama_obat'],
-                'kode_rak'       => $item['kode_rak'],
-                'barcode_obat'   => $item['barcode_obat'],
-                'nama_kategori'  => $item['nama_kategori'],
-                'nama_satuan'    => $item['nama_satuan'],
-                'harga_jual'     => $item['harga_jual'],
-                'qty'            => $item['qty'],
-                'sub_total'      => $item['sub_total'],
-            ];
-
-            $grouped_data[$key]['total_kotor'] = $item['total_kotor'];
-            $grouped_data[$key]['total_bersih'] = $item['total_bersih'];
-            $grouped_data[$key]['total_qty'] += $item['total_qty'];
-
-
-            $total_qty += $item['total_qty'];
-        }
-
 
         $data = [
             'menu'                    => 'laporan',
             'submenu'                 => 'harian',
             'title'                   => 'Laporan Harian | Apotek Sumbersekar',
-            'data_hari'               => $grouped_data,
-            'total_qty'               => $total_qty,
-            'total_kotor'             => $total_kotor,
-            'total_bersih'            => $total_bersih,
+            'data_hari'               => $data_hari,
+            'sum_total_bersih'        => $sum_total_bersih,
+            'sum_total_kotor'         => $sum_total_kotor,
             'hari'                    => $hari
         ];
 
@@ -127,73 +82,38 @@ class LaporanController extends BaseController
         $bulan = $this->request->getGet('bulan') ?? date('Y-m');
         $data_bulan = $this->detailtransaksiModel->getTransaksiPerbulan($bulan);
 
-        // Group data by transaction number and calculate totals
-        $grouped_data    = [];
-        $total_qty       = 0;
-
-        $total_kotor = $this->transaksiModel->select('SUM(total_kotor) as total_kotor')
+        $sum_total_kotor = $this->transaksiModel->select('SUM(total_kotor) as total_kotor')
             ->where('DATE_FORMAT(tbl_transaksi.tgl_transaksi, "%Y-%m")', $bulan)
             ->get()
             ->getRowArray()['total_kotor'] ?? 0;
-        $total_bersih = $this->transaksiModel->select('SUM(total_bersih) as total_bersih')
+        $sum_total_bersih = $this->transaksiModel->select('SUM(total_bersih) as total_bersih')
             ->where('DATE_FORMAT(tbl_transaksi.tgl_transaksi, "%Y-%m")', $bulan)
             ->get()
             ->getRowArray()['total_bersih'] ?? 0;
-
-        foreach ($data_bulan as $item) {
-            $key = $item['no_faktur'];
-
-            if (!isset($grouped_data[$key])) {
-                $grouped_data[$key] = [
-                    'no_faktur'        => $item['no_faktur'],
-                    'tgl_transaksi'    => $item['tgl_transaksi'],
-                    'items'            => [],
-                    'total_qty'        => 0,
-                    'total_kotor'      => $item['total_kotor'],
-                    'diskon_persen'    => $item['diskon_persen'],
-                    'diskon_uang'      => $item['diskon_uang'],
-                    'total_bersih'     => $item['total_bersih'],
-                ];
-            }
-
-            // Tambahkan item ke transaksi
-            $grouped_data[$key]['items'][] = [
-                'nama_obat'       => $item['nama_obat'],
-                'kode_rak'        => $item['kode_rak'],
-                'barcode_obat'    => $item['barcode_obat'],
-                'nama_kategori'   => $item['nama_kategori'],
-                'nama_satuan'     => $item['nama_satuan'],
-                'harga_jual'      => $item['harga_jual'],
-                'qty'             => $item['qty'],
-                'sub_total'       => $item['sub_total'],
-            ];
-
-            $grouped_data[$key]['total_kotor'] = $item['total_kotor'];
-            $grouped_data[$key]['total_bersih'] = $item['total_bersih'];
-            $grouped_data[$key]['total_qty'] += $item['total_qty'];
-
-            // Update overall totals
-
-            $total_qty += $item['total_qty'];
-        }
 
         $data = [
             'menu'           => 'laporan',
             'submenu'        => 'bulanan',
             'title'          => 'Laporan bulanan | Apotek Sumbersekar',
-            'data_bulan'     => $grouped_data,
-            'total_kotor'    => $total_kotor,
-            'total_bersih'   => $total_bersih,
-            'total_qty'      => $total_qty,
+            'data_bulan'     => $data_bulan,
+            'sum_total_kotor'    => $sum_total_kotor,
+            'sum_total_bersih'   => $sum_total_bersih,
             'bulan'          => $bulan,
-            'data_rekap'   => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
+            'data_rekap'     => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
                 ->where('DATE_FORMAT(tgl_transaksi, "%Y-%m")', $bulan)
                 ->groupBy('DATE(tgl_transaksi)')
                 ->orderBy('tanggal', 'ASC')
                 ->get()->getResultArray(),
+            'income_per_bulan'  => $this->transaksiModel->select('SUM(total_bersih) as total_perbulan')
+                ->where('DATE_FORMAT(tgl_transaksi, "%Y-%m")', $bulan)
+                ->get()->getRowArray()['total_perbulan'] ?? 0,
+
+
         ];
         return view('laporan/laporan_bulanan', $data);
     }
+
+
 
     public function laporan_tahunan()
     {
@@ -201,77 +121,38 @@ class LaporanController extends BaseController
         $tahun = min((int)$tahun, (int)date('Y'));
         $data_tahun = $this->detailtransaksiModel->getTransaksiPertahun($tahun);
 
-        // Group data by transaction number and calculate totals
-        $grouped_data = [];
-        $total_qty = 0;
-
-        $total_kotor  = $this->transaksiModel->select('SUM(total_kotor) as total_kotor')
+        $sum_total_kotor  = $this->transaksiModel->select('SUM(total_kotor) as total_kotor')
             ->where('YEAR(tgl_transaksi)', $tahun)
             ->get()
             ->getRowArray()['total_kotor'] ?? 0;
-        $total_bersih = $this->transaksiModel->select('SUM(total_bersih) as total_bersih')
+        $sum_total_bersih = $this->transaksiModel->select('SUM(total_bersih) as total_bersih')
             ->where('YEAR(tgl_transaksi)', $tahun)
             ->get()
             ->getRowArray()['total_bersih'] ?? 0;
 
-        foreach ($data_tahun as $item) {
-            $key = $item['no_faktur'];
-
-            if (!isset($grouped_data[$key])) {
-                $grouped_data[$key] = [
-                    'no_faktur'      => $item['no_faktur'],
-                    'tgl_transaksi'  => $item['tgl_transaksi'],
-                    'items'          => [],
-                    'total_qty'      => 0,
-                    'total_kotor'    => $item['total_kotor'],
-                    'diskon_persen'  => $item['diskon_persen'],
-                    'diskon_uang'    => $item['diskon_uang'],
-                    'total_bersih'   => $item['total_bersih'],
-                ];
-            }
-
-            // Tambahkan item ke transaksi
-            $grouped_data[$key]['items'][] = [
-                'nama_obat'      => $item['nama_obat'],
-                'kode_rak'       => $item['kode_rak'],
-                'barcode_obat'   => $item['barcode_obat'],
-                'nama_kategori'  => $item['nama_kategori'],
-                'nama_satuan'    => $item['nama_satuan'],
-                'harga_jual'     => $item['harga_jual'],
-                'qty'            => $item['qty'],
-                'sub_total'      => $item['sub_total'],
-            ];
-
-            $grouped_data[$key]['total_kotor'] = $item['total_kotor'];
-            $grouped_data[$key]['total_bersih'] = $item['total_bersih'];
-            $grouped_data[$key]['total_qty'] += $item['total_qty'];
-
-            // Update overall totals
-
-            $total_qty    += $item['total_qty'];
-        }
-
         $data = [
-            'menu'           => 'laporan',
-            'submenu'        => 'tahunan',
-            'title'          => 'Laporan Tahunan | Apotek Sumbersekar',
-            'data_tahun'     => $grouped_data,
-            'total_kotor'    => $total_kotor,
-            'total_bersih'   => $total_bersih,
-            'total_qty'      => $total_qty,
-            'tahun'          => $tahun,
-            'data_rekap'   => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
+            'menu'               => 'laporan',
+            'submenu'            => 'tahunan',
+            'title'              => 'Laporan Tahunan | Apotek Sumbersekar',
+            'data_tahun'         => $data_tahun,
+            'sum_total_kotor'    => $sum_total_kotor,
+            'sum_total_bersih'   => $sum_total_bersih,
+            'tahun'              => $tahun,
+            'data_rekap'         => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
                 ->where('YEAR(tgl_transaksi)', $tahun)
                 ->groupBy('DATE(tgl_transaksi)')
                 ->orderBy('tanggal', 'ASC')
                 ->get()->getResultArray(),
+            'income_per_tahun'  => $this->transaksiModel->select('SUM(total_bersih) as total_pertahun')
+                ->where('YEAR(tgl_transaksi)', $tahun)
+                ->get()->getRowArray()['total_pertahun'] ?? 0,
         ];
         return view('laporan/laporan_tahunan', $data);
     }
 
 
     public function invoice($no_faktur)
-    {   
+    {
 
         $data = [
             'menu'                    => 'laporan',
@@ -598,53 +479,18 @@ class LaporanController extends BaseController
         $bulan = $this->request->getGet('bulan') ?? date('Y-m');
         $data_bulan = $this->detailpembelianModel->getPembelianPerbulan($bulan);
 
-        // Group data by transaction number and calculate totals
-        $grouped_data      = [];
-        $total_pembelian   = 0;
-        $total_qty         = 0;
+        $total_pembelian = $this->pembelianModel->select('SUM(total_pembelian) as total_pembelian')
+            ->where('DATE_FORMAT(tgl_pembelian, "%Y-%m")', $bulan)
+            ->get()
+            ->getRowArray()['total_pembelian'] ?? 0;
 
-        foreach ($data_bulan as $item) {
-            $key = $item['id_pembelian'];
-
-            if (!isset($grouped_data[$key])) {
-                $grouped_data[$key] = [
-                    'id_pembelian'       => $item['id_pembelian'],
-                    'tgl_pembelian'      => $item['tgl_pembelian'],
-                    'items'              => [],
-                    'total_pembelian'    => 0,
-                    'total_qty'          => 0,
-                ];
-            }
-
-            // Tambahkan item ke transaksi
-            $grouped_data[$key]['items'][] = [
-                'nama_obat'          => $item['nama_obat'],
-                'kode_rak'           => $item['kode_rak'],
-                'barcode_obat'       => $item['barcode_obat'],
-                'nama_kategori'      => $item['nama_kategori'],
-                'nama_supplier'      => $item['nama_supplier'],
-                'nama_satuan'        => $item['nama_satuan'],
-                'harga_pokok'        => $item['harga_pokok'],
-                'total_qty'          => $item['total_qty'],
-                'total_pembelian'    => $item['total_pembelian']
-            ];
-
-            // Update transaction totals
-            $grouped_data[$key]['total_pembelian'] += $item['total_pembelian'];
-            $grouped_data[$key]['total_qty'] += $item['total_qty'];
-
-            // Update overall totals
-            $total_pembelian = $this->pembelianModel->select('SUM(total_pembelian) as pembelian')->where('DATE_FORMAT(tbl_pembelian.tgl_pembelian, "%Y-%m")', $bulan)->get()->getRowArray()['pembelian'] ?? 0;
-            $total_qty += $item['total_qty'];
-        }
 
         $data = [
             'menu'                    => 'laporan',
             'submenu'                 => 'pembelian',
             'title'                   => 'Laporan Pembelian | Apotek Sumbersekar',
-            'data_bulan'              => $grouped_data,
+            'data_bulan'              => $data_bulan,
             'total_pembelian'         => $total_pembelian,
-            'total_qty'               => $total_qty,
             'bulan'                   => $bulan
         ];
         return view('laporan/laporan_pembelian', $data);
@@ -782,5 +628,75 @@ class LaporanController extends BaseController
                 return $this->response->setJSON($msg);
             }
         }
+    }
+
+    // In your controller
+    public function exportpdf_bulanan()
+    {
+        $bulan = $this->request->getGet('bulan') ?? date('Y-m');
+        $data = [
+            'data_rekap'       => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
+                ->where('DATE_FORMAT(tgl_transaksi, "%Y-%m")', $bulan)
+                ->groupBy('DATE(tgl_transaksi)')
+                ->orderBy('tanggal', 'ASC')
+                ->get()->getResultArray(),
+
+            'income_per_bulan'  => $this->transaksiModel->select('SUM(total_bersih) as total_perbulan')
+                ->where('DATE_FORMAT(tgl_transaksi, "%Y-%m")', $bulan)
+                ->get()->getRowArray()['total_perbulan'] ?? 0,
+            'bulan' => $bulan
+        ];
+
+        $filename = 'Laporan Pendapatan Bulanan - ' . date('F Y', strtotime($bulan));
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        // load HTML content
+        $dompdf->loadHtml(view('laporan/exportpdf_bulanan', $data));
+
+        // (optional) setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // render html as PDF
+        $dompdf->render();
+
+        // output the generated pdf
+        $dompdf->stream($filename);
+    }
+
+    // In your controller
+    public function exportpdf_tahunan()
+    {
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+        $tahun = min((int)$tahun, (int)date('Y'));
+        $data = [
+            'data_rekap'   => $this->transaksiModel->select('DATE(tgl_transaksi) as tanggal, SUM(total_bersih) as total_penghasilan')
+                ->where('YEAR(tgl_transaksi)', $tahun)
+                ->groupBy('DATE(tgl_transaksi)')
+                ->orderBy('tanggal', 'ASC')
+                ->get()->getResultArray(),
+            'income_per_tahun'  => $this->transaksiModel->select('SUM(total_bersih) as total_pertahun')
+                ->where('YEAR(tgl_transaksi)', $tahun)
+                ->get()->getRowArray()['total_pertahun'] ?? 0,
+            'tahun' => $tahun
+        ];
+
+        $filename = 'Laporan Pendapatan Tahunan - ' . $tahun;
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        // load HTML content
+        $dompdf->loadHtml(view('laporan/exportpdf_tahunan', $data));
+
+        // (optional) setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // render html as PDF
+        $dompdf->render();
+
+        // output the generated pdf
+        $dompdf->stream($filename);
     }
 }

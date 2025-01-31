@@ -8,6 +8,7 @@
                 </button>
             </div>
             <?= form_open('simpanTransaksi', ['class' => 'formsimpan']) ?>
+            <?= csrf_field(); ?>
             <div class="modal-body">
 
                 <input type="hidden" name="detail_transaksi_id" value="<?= $detail['detail_transaksi_id']; ?>">

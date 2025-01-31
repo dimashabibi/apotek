@@ -38,7 +38,7 @@ class TransaksiModel extends Model
         $builder = $db->table('tbl_transaksi');
 
         // Ambil nomor urut terakhir untuk tanggal saat ini
-        $builder->select('RIGHT(tbl_transaksi.no_faktur, 4) as no_urut');
+        $builder->select('RIGHT(tbl_transaksi.no_faktur, 3) as no_urut');
         $builder->where('tbl_transaksi.tgl_transaksi', $tgl);
         $builder->orderBy('no_urut', 'DESC');
         $builder->limit(1);
@@ -52,8 +52,8 @@ class TransaksiModel extends Model
             $no = 1; // Jika tidak ada data, mulai dengan 1
         }
 
-        $batas = str_pad($no, 4, "0", STR_PAD_LEFT);
-        $kodeTampil = date('Ymd') . $batas;
+        $batas = str_pad($no, 3, "0", STR_PAD_LEFT);
+        $kodeTampil = date('ymd') . $batas;
 
         return $kodeTampil;
     }

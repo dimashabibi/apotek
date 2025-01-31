@@ -74,6 +74,8 @@ $routes->get('/editPembelian/(:any)', 'LaporanController::editPembelian/$1', ['f
 $routes->get('edit_detail_pembelian/(:num)', 'LaporanController::edit_detail_pembelian/$1', ['filter' => 'AuthFilter']);
 $routes->post('/updatePembelian', 'LaporanController::updatePembelian', ['filter' => 'AuthFilter']);
 $routes->post('/hapusPembelian', 'LaporanController::hapusPembelian', ['filter' => 'AuthFilter']);
+$routes->get('exportpdf_bulanan', 'LaporanController::exportpdf_bulanan', ['filter' => 'AuthFilter']);
+$routes->get('exportpdf_tahunan', 'LaporanController::exportpdf_tahunan', ['filter' => 'AuthFilter']);
 
 // hutang
 $routes->get('/hutang', 'HutangController::hutang', ['filter' => 'AuthFilter']);

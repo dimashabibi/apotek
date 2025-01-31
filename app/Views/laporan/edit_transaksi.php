@@ -28,7 +28,7 @@
         <div class="my-3 col-1">
             <a href="<?= site_url('laporan_harian'); ?>" class="btn btn-block btn-warning">
                 <i class="fas fa-angle-double-left"></i>
-                  Kembali</a>
+                Kembali</a>
         </div>
         <div class="card card-info">
             <div class="card-header">
@@ -37,6 +37,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <?php form_open('/editTransaksi', ['class' => 'formpembayaran form-horizontal']) ?>
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <div class="form-group row justify-content-center">
                     <label for="no_faktur" class="col-sm-2 col-form-label text-capitalize">No Faktur</label>

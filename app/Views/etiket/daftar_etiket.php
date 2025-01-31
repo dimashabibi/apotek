@@ -31,11 +31,12 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form class="form-horizontal" method="post" action="<?= site_url('tambah_etiket'); ?>">
+                <?= csrf_field(); ?>
                 <div class="card-body">
                     <div class="form-group row justify-content-center">
                         <label for="InputEtiket" class="col-sm-2 col-form-label text-capitalize">Nama etiket</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control <?= (session()->get('errors')['nama_etiket'] ?? false) ? 'is-invalid' : ''; ?>" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket" value="<?= old('nama_etiket'); ?>" autofocus>
+                            <input type="text" class="form-control <?= (session()->get('errors')['nama_etiket'] ?? false) ? 'is-invalid' : ''; ?>" id="InputEtiket" placeholder="Nama Etiket" name="nama_etiket" value="<?= old('nama_etiket'); ?>" title="Input Etiket" autofocus>
                             <?php if (session()->get('errors')['nama_etiket'] ?? false) : ?>
                                 <div class="invalid-feedback">
                                     <?= session()->get('errors')['nama_etiket']; ?>
@@ -46,7 +47,7 @@
                     <div class="form-group row justify-content-center">
                         <label for="etiket" class="col-sm-2 col-form-label text-capitalize">Keterangan etiket</label>
                         <div class="col-sm-8">
-                            <textarea name="ket_etiket" id="" class="form-control <?= (session()->get('errors')['ket_etiket'] ?? false) ? 'is-invalid' : ''; ?>" placeholder="keterangan">
+                            <textarea name="ket_etiket" id="" class="form-control <?= (session()->get('errors')['ket_etiket'] ?? false) ? 'is-invalid' : ''; ?>" title="Input Keterangan" placeholder="keterangan">
                                 <?= old('ket_etiket'); ?>
                             </textarea>
                         </div>
@@ -54,7 +55,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer text-center">
-                    <button type="submit" class="btn btn-lg btn-info">
+                    <button type="submit" class="btn btn-lg btn-info" title="Simpan Data">
                         <span><i class="fas fa-save"></i></span>
                         Save</button>
                 </div>
@@ -65,7 +66,7 @@
 
 
     <div class="col-12">
-        <div class="card">
+        <div class="card" title="Table Data Etiket">
             <div class="card-header">
                 <h3 class="card-title text-capitalize">daftar etiket</h3>
             </div>
@@ -89,11 +90,11 @@
                                 <td class="text-lowercase"><?= $row['ket_etiket']; ?></td>
                                 <td>
                                     <button type="button" class="btn bg-gradient-info" data-toggle="modal"
-                                        data-target="#modalEdit<?= $row['id']; ?>">
+                                        data-target="#modalEdit<?= $row['id']; ?>" title="Edit Item">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                     <button type="button" class="btn bg-gradient-danger" data-toggle="modal"
-                                        data-target="#modalDelete<?= $row['id']; ?>">
+                                        data-target="#modalDelete<?= $row['id']; ?>" title="Hapus Item">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -167,7 +168,7 @@
                 <div class="modal-body">
                     <form class="row g-3 needs-validation" method="get"
                         action="<?= site_url('delete_etiket/' . $delete['id']); ?>">
-                        <?php csrf_field() ?>
+                        <?= csrf_field(); ?>
                         <div class="form-group">
                             <h5>Apakah anda ingin menghapus data ini ? </h5>
                         </div>
@@ -186,21 +187,15 @@
 
 <?= $this->section('script'); ?>
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+    $(document).ready(function() {
+        var table = $('#example1').DataTable({
+            "pageLength": 10
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
         });
     });
 </script>

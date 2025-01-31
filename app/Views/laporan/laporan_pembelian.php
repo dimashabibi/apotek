@@ -28,20 +28,22 @@
                 <h3 class="card-title">Detail Penjualan Bulanan</h3>
                 <div class="card-tools">
                     <form action="" method="get" class="form-inline">
+                        <?= csrf_field(); ?>
                         <input type="month" name="bulan" class="form-control mr-2" value="<?= $bulan; ?>">
                         <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered" id="datatable">
+                <table class="table table-bordered table-striped" id="datatable">
                     <thead class="tet-center">
                         <tr>
                             <th>No</th>
-                            <th>No Pembelian</th>
                             <th>Tanggal</th>
-                            <th>Detail Obat</th>
-                            <th>Total Qty</th>
+                            <th>No Pembelian</th>
+                            <th>Nama Obat</th>
+                            <th>Qty</th>
+                            <th>Jumlah</th>
                             <th>Total Pembelian</th>
                             <?php if (session()->get('role') == 'super admin'): ?>
                                 <th>Aksi</th>
@@ -55,33 +57,9 @@
                                 <td class="text-center"><?= $no++; ?></td>
                                 <td class="text-center"><?= $pembelian['id_pembelian']; ?></td>
                                 <td class="text-center"><?= date('d F Y', strtotime($pembelian['tgl_pembelian'])); ?></td>
-                                <td>
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Supplier</th>
-                                                <th>Nama Obat</th>
-                                                <th>Kategori</th>
-                                                <th>Qty</th>
-                                                <th>Harga</th>
-                                                <th>total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($pembelian['items'] as $item): ?>
-                                                <tr>
-                                                    <td><?= $item['nama_supplier']; ?></td>
-                                                    <td><?= $item['nama_obat']; ?></td>
-                                                    <td><?= $item['nama_kategori']; ?></td>
-                                                    <td><?= $item['total_qty']; ?></td>
-                                                    <td>Rp <?= number_format($item['harga_pokok'], 0, ',', '.'); ?></td>
-                                                    <td>Rp <?= number_format($item['total_pembelian'], 0, ',', '.'); ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="text-center"><?= $pembelian['total_qty']; ?></td>
+                                <td><?= $pembelian['nama_obat']; ?></td>
+                                <td class="text-center"><?= $pembelian['qty']; ?></td>
+                                <td class="text-center">Rp <?= number_format($pembelian['sub_total'], 0, ',', '.'); ?></td>
                                 <td class="text-center">Rp <?= number_format($pembelian['total_pembelian'], 0, ',', '.'); ?></td>
                                 <?php if (session()->get('role') == 'super admin') : ?>
                                     <td class="text-center">
@@ -98,9 +76,9 @@
                     </tbody>
                     <tfoot class="text-center">
                         <tr>
-                            <th colspan="4">Total</th>
-                            <th><?= number_format($total_qty); ?></th>
+                            <th colspan="6">Total</th>
                             <th>Rp <?= number_format($total_pembelian, 0, ',', '.'); ?></th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -114,13 +92,17 @@
 <?= $this->section('script'); ?>
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
+        var table = $('#datatable').DataTable({
+            "pageLength": 10
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
+        });
     });
+
 
     function hapusPembelian(id) {
         Swal.fire({

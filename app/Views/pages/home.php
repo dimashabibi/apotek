@@ -243,6 +243,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-end align-items-center">
                     <form action="" method="get" class="form-inline" id="yearForm">
+                        <?= csrf_field(); ?>
                         <!-- Tombol Previous Year -->
                         <button type="button"
                             class="btn btn-sm btn-outline-secondary mr-2"

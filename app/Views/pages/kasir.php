@@ -88,7 +88,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label for="" class="text-capitalize">Nama Kasir</label>
-                                            <input class="form-control text-bold" id="nama_kasir" name="nama_kasir" value="<?= session()->get('nama_user'); ?>" readonly>
+                                            <input class="form-control text-bold" id="nama_kasir" name="nama_kasir" value="<?= session()->get('username'); ?>" readonly>
                                         </div>
                                     </div>
 
@@ -113,8 +113,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <div class="col-sm-12">
                         <div class="card card-primary card-outline">
-                            <div class="card-body">
+                            <div class="card-body table-responsive p-4">
                                 <?= form_open('/dataDetail'); ?>
+                                <?= csrf_field(); ?>
                                 <div class="row">
                                     <input type="hidden" id="no_faktur" name="no_faktur" value="<?= $no_faktur; ?>">
                                     <input type="hidden" id="nama_kategori" name="nama_kategori">
@@ -141,15 +142,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="col-1">
                                         <div class="input-group">
                                             <input id="qty" type="number" min="1" value="1" class="form-control text-center" placeholder="QTY" name="qty">
+                                            <small id="emailHelp" class="form-text text-muted">Klik ENTER untuk submit</small>
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <button type="reset" id="reset_obat" class="btn btn-warning btn-flat"><i class="fas fa-sync"></i><span> (CTRL+Backspace)</span></button>
-                                        <button
-                                            type="button" id="hapus_tab" name="hapus_tab" class="btn btn-danger btn-flat"><i class="fas fa-trash-alt"></i>
-                                            <span>(del)</span>
-                                        </button>
-                                        <button class="btn btn-success btn-flat" id="saveTransaksi"><i class="fas fa-cash-register"></i> <span>(F9)</span></button>
+                                        <button type="button" id="simpanTemp" class="btn btn-info" title="Simpan data obat"><i class="fas fa-check"></i></button>
+                                        <button type="reset" id="reset_obat" class="btn btn-warning"><i class="fas fa-sync"></i></button>
+                                        <button type="button" id="hapus_tab" name="hapus_tab" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-success" id="saveTransaksi"><i class="fas fa-cash-register"></i> </button>
                                     </div>
                                 </div>
                                 <?= form_close(); ?>
@@ -222,13 +222,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
                 // back home end
 
-                // hapus input (ctrl + backspace)
-                if (e.ctrlKey && e.keyCode === 8) {
-                    e.preventDefault();
-                    Kosong();
-                }
-                // hapus input end
-
                 // focus input (ESC)
                 if (e.keyCode == 27) {
                     e.preventDefault();
@@ -241,7 +234,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 if (e.keyCode == 120) {
                     e.preventDefault();
                     pembayaran();
-
                 }
                 // pembayaran end
 
@@ -317,7 +309,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 if (e.keyCode == 13) {
                     e.preventDefault();
                     cekObat();
+                }
+            });
 
+            // clear input (f4)
+            $('#qty').keydown(function(e) {
+                if (e.keyCode == 67) {
+                    e.preventDefault();
+                    Kosong();
                 }
             });
 
@@ -325,6 +324,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#search_obat').click(function(e) {
                 e.preventDefault();
                 cariObat();
+            });
+
+            $('#simpanTemp').click(function(e) {
+                e.preventDefault();
+                cekObat();
             });
 
 

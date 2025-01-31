@@ -58,12 +58,6 @@ class UserController extends BaseController
                     'required' => 'Nomor HP tidak boleh kosong.',
                 ],
             ],
-            'password' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'Password tidak boleh kosong.',
-                ],
-            ],
             'role' => [
                 'rules'  => 'required',
                 'errors' => [
@@ -81,7 +75,6 @@ class UserController extends BaseController
                 'username'  => $this->request->getVar('username'),
                 'nohp'      => $this->request->getVar('nohp'),
                 'email'     => $this->request->getVar('email'),
-                'password'  => $this->request->getVar('password'),
                 'role'      => $this->request->getVar('role'),
             ]);
             session()->setFlashdata('success', 'Data berhasil diubah');

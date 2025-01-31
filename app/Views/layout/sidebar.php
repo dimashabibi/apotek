@@ -122,7 +122,7 @@
                     <a href="#" class="nav-link <?= $menu == 'laporan' ? 'active' : ''; ?>">
                         <i class="fas fa-mail-bulk"></i>
                         <p class="text-capitalize">
-                            Data Laporan
+                            Laporan
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -130,43 +130,43 @@
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_pembelian'); ?>" class="nav-link <?= $submenu == 'pembelian' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan pembelian</p>
+                                <p class="text-capitalize">pembelian</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_transaksi'); ?>" class="nav-link <?= $submenu == 'transaksi' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan transaksi</p>
+                                <p class="text-capitalize">transaksi</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_harian'); ?>" class="nav-link <?= $submenu == 'harian' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan harian</p>
+                                <p class="text-capitalize">harian</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_bulanan'); ?>" class="nav-link <?= $submenu == 'bulanan' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan bulanan</p>
+                                <p class="text-capitalize">bulanan</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_tahunan'); ?>" class="nav-link <?= $submenu == 'tahunan' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan tahunan</p>
+                                <p class="text-capitalize">tahunan</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_terlaris'); ?>" class="nav-link <?= $submenu == 'terlaris' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan obat terlaris</p>
+                                <p class="text-capitalize">obat terlaris</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= site_url('laporan_menipis'); ?>" class="nav-link <?= $submenu == 'menipis' ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle"></i>
-                                <p class="text-capitalize">Laporan stok menipis</p>
+                                <p class="text-capitalize">stok menipis</p>
                             </a>
                         </li>
                     </ul>

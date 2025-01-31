@@ -41,6 +41,6 @@ class UserModel extends Model
 
     public function getUserByVerificationToken($token)
     {
-        return $this->where('verification_token', $token)->first();
+        return $this->where('verification_token', $token)->where('token_expires >', date('Y-m-d H:i:s'))->first();
     }
 }

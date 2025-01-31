@@ -29,6 +29,7 @@
                 <h3 class="card-title">Laporan Obat Terlaris</h3>
                 <div class="card-tools">
                     <form action="" method="get" class="form-inline">
+                        <?= csrf_field(); ?>
                         <input type="month" name="bulan" class="form-control mr-2" value="<?= $bulan; ?>">
                         <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
@@ -79,13 +80,16 @@
 
 <?= $this->section('script'); ?>
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $(document).ready(function() {
+        var table = $('#example1').DataTable({
+            "pageLength": 10
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
+        });
     });
 </script>
 <?= $this->endSection(); ?>

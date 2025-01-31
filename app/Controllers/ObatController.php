@@ -78,14 +78,6 @@ class ObatController extends BaseController
                     'max_length' => 'Maksimal 25 karakter',
                 ],
             ],
-            'merk_obat' => [
-                'label'  => 'Merk Obat',
-                'rules'  => 'required|max_length[50]',
-                'errors' => [
-                    'required' => 'Merk belum diinput.',
-                    'max_length' => 'Maksimal 50 karakter.',
-                ],
-            ],
             'nama_obat' => [
                 'label'  => 'Nama Obat',
                 'rules'  => 'required|max_length[100]',
@@ -161,8 +153,8 @@ class ObatController extends BaseController
 
         if (!$this->validate($validation->getRules())) {
             return redirect()->back()
-                ->withInput()
-                ->with('errors', $validation->getErrors());
+                ->with('errors', $validation->getErrors())
+                ->withInput();
         } else {
             $this->obatModel->insert([
                 'kode_rak'          => $this->request->getVar('kode_rak'),
@@ -225,14 +217,6 @@ class ObatController extends BaseController
                 'errors' => [
                     'required' => 'Kode rak belum diinput',
                     'max_length' => 'Maksimal 25 karakter',
-                ],
-            ],
-            'merk_obat' => [
-                'label'  => 'Merk Obat',
-                'rules'  => 'required|max_length[50]',
-                'errors' => [
-                    'required' => 'Merk belum diinput.',
-                    'max_length' => 'Maksimal 50 karakter.',
                 ],
             ],
             'nama_obat' => [

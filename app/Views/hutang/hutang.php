@@ -104,8 +104,8 @@
             <div class="card-header">
                 <h3 class="card-title">Daftar Hutang</h3>
             </div>
-            <div class="card-body">
-                <table id="debtTable" class="table table-bordered table-striped">
+            <div class="card-body ">
+                <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -174,6 +174,17 @@
 <script src="<?= base_url('assets/plugins/autoNumeric.js') ?>"></script>
 <script>
     $(function() {
+
+        var table = $('#example1').DataTable({
+            "pageLength": 10
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
+        });
+
         $('#reservationdatetime').datetimepicker({
             icons: {
                 time: 'far fa-clock'
@@ -186,13 +197,6 @@
             aDec: '.',
             mDec: '0'
         });
-
-        $("#debtTable").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print"]
-        }).buttons().container().appendTo('#debtTable_wrapper .col-md-6:eq(0)');
 
         $('.formHutang').validate({
             rules: {

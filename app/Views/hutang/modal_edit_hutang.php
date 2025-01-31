@@ -12,6 +12,7 @@
                 </button>
             </div>
             <?= form_open('updateHutang', ['class' => 'formsimpan']) ?>
+            <?= csrf_field(); ?>
             <div class="modal-body">
                 <input type="hidden" name="detail_transaksi_id" value="<?= $hutang['id_hutang']; ?>">
                 <div class="row">

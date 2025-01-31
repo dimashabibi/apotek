@@ -28,21 +28,23 @@
                 <h3 class="card-title">Detail Penjualan Harian</h3>
                 <div class="card-tools">
                     <form action="" method="get" class="form-inline">
+                        <?= csrf_field(); ?>
                         <input type="date" name="hari" class="form-control mr-2" value="<?= $hari; ?>">
                         <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered" id="datatable">
-                    <thead >
+                <table class="table table-bordered table-striped" id="example1">
+                    <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tanggal</th>
                             <th>Kasir</th>
                             <th>No Faktur</th>
-                            <th>Tanggal</th>
-                            <th>Detail Obat</th>
-                            <th>Total Qty</th>
+                            <th>Nama Obat</th>
+                            <th>Qty</th>
+                            <th>jumlah</th>
                             <th>Total Kotor</th>
                             <th>Diskon Persen</th>
                             <th>Diskon Uang</th>
@@ -57,39 +59,17 @@
                         <?php $no = 1;
                         foreach ($data_hari as $transaksi): ?>
                             <tr>
-                                <td><?= $no++; ?></td>
-                                <td class="py-0 align-middle"><?= $transaksi['nama_kasir']; ?></td>
-                                <td class="py-0 align-middle"><?= $transaksi['no_faktur']; ?></td>
-                                <td class="text-center py-0 align-middle"><?= date('d F Y', strtotime($transaksi['tgl_transaksi'])); ?></td>
-                                <td>
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Obat</th>
-                                                <th>Kategori</th>
-                                                <th>Qty</th>
-                                                <th>Harga</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($transaksi['items'] as $item): ?>
-                                                <tr>
-                                                    <td><?= $item['nama_obat']; ?></td>
-                                                    <td><?= $item['nama_kategori']; ?></td>
-                                                    <td><?= $item['qty']; ?> <?= $item['nama_satuan']; ?></td>
-                                                    <td>Rp <?= number_format($item['harga_jual'], 0, ',', '.'); ?></td>
-                                                    <td>Rp <?= number_format($item['sub_total'], 0, ',', '.'); ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="text-center py-0 align-middle"><?= $transaksi['total_qty']; ?></td>
-                                <td class="text-center py-0 align-middle">Rp <?= number_format($transaksi['total_kotor'], 0, ',', '.'); ?></td>
-                                <td class="text-center py-0 align-middle"><?= number_format($transaksi['diskon_persen']); ?> %</td>
-                                <td class="text-center py-0 align-middle">Rp <?= number_format($transaksi['diskon_uang']); ?></td>
-                                <td class="text-center py-0 align-middle text-bold">Rp <?= number_format($transaksi['total_bersih'], 0, ',', '.'); ?></td>
+                                <td class="text-center"><?= $no++; ?></td>
+                                <td style="width: 100px;"><?= date('Y/m/d', strtotime($transaksi['tgl_transaksi'])); ?> <?= $transaksi['jam']; ?></td>
+                                <td style="width: 50px;"><?= $transaksi['nama_kasir']; ?></td>
+                                <td style="width: 50px;"><?= $transaksi['no_faktur']; ?></td>
+                                <td style="width: 300px;"><?= $transaksi['nama_obat']; ?> </td>
+                                <td><?=  number_format($transaksi['qty']); ?> <?= $transaksi['nama_satuan']; ?></td>
+                                <td><?= number_format($transaksi['sub_total'], 0, ',', '.'); ?> </td>
+                                <td style="width: 150px;"><?= number_format($transaksi['total_kotor'], 0, ',', '.'); ?> </td>
+                                <td style="width: 15px;"><?= number_format($transaksi['diskon_persen']); ?> %</td>
+                                <td style="width: 15px;"><?= number_format($transaksi['diskon_uang'], 0, ',', '.'); ?> </td>
+                                <td style="width: 150px;"><?= number_format($transaksi['total_bersih'], 0, ',', '.'); ?> </td>
                                 <?php if (session()->get('role') == 'super admin') : ?>
                                     <td class="text-right py-0 align-middle">
                                         <div class="btn-group btn-group-sm">
@@ -105,13 +85,13 @@
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-                    <tfoot class="text-center">
+                    <tfoot>
                         <tr>
-                            <th colspan="5">Total</th>
-                            <th><?= number_format($total_qty); ?></th>
-                            <th>Rp <?= number_format($total_kotor, 0, ',', '.'); ?></th>
+                            <th colspan="7" class="text-center">Total</th>
+                            <th>Rp <?= number_format($sum_total_kotor, 0, ',', '.'); ?></th>
                             <th colspan="2"></th>
-                            <th class="text-danger">Rp <?= number_format($total_bersih, 0, ',', '.'); ?></th>
+                            <th>Rp <?= number_format($sum_total_bersih, 0, ',', '.'); ?></th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -124,11 +104,16 @@
 <?= $this->section('script'); ?>
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-        }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
+        var table = $('#example1').DataTable({
+            "pageLength": 10
+            
+        });
+
+        $('#pageLength').on('change', function() {
+            var pageLength = parseInt($(this).val()); // Ambil nilai dropdown sebagai integer
+
+            table.page.len(pageLength).draw(); // Ubah page length di tabel
+        });
     });
 
     function hapusTransaksi(id) {

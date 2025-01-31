@@ -35,16 +35,22 @@
             </ul>
         </div>
         <form action="<?= site_url('tambah_obat'); ?>" method="post" class="form-horizontal">
-
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <!-- Obat Start -->
                 <div class="tab-content" id="custom-tabs-four-tabContent">
                     <div class="tab-pane fade show active" id="detail-obat" role="tabpanel" aria-labelledby="detail-obat-tab">
                         <div class="form-group row">
                             <label for="barcodeObat" class="col-sm-2 col-form-label">Barcode Obat</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="barcodeObat"
-                                    placeholder="Input Barcode Obat" name="barcode_obat" autocomplete="off" autofocus>
+                            <div class="input-group col-sm-10">
+                                <input type="text" class="form-control barcodeObat" id="barcodeObat"
+                                    placeholder="Input Barcode Obat" name="barcode_obat" value="<?= old('barcode_obat'); ?>" autocomplete="off" autofocus>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-default btnGenerate " id="btnGenerate">
+                                        <i class="fas fa-barcode"></i>
+                                        Generate Code
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -64,12 +70,7 @@
                             <label for="merkObat" class="col-sm-2 col-form-label">Kandungan Obat</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control <?= (session()->get('errors')['merk_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="merkObat"
-                                    placeholder="Input Merk Obat" name="merk_obat" value="<?= old('merk_obat'); ?>" autocomplete="off">
-                                <?php if (session()->get('errors')['merk_obat'] ?? false): ?>
-                                    <div class="invalid-feedback">
-                                        <?= session()->get('errors')['merk_obat']; ?>
-                                    </div>
-                                <?php endif; ?>
+                                    placeholder="Input Kandungan Obat" name="merk_obat" value="<?= old('merk_obat'); ?>" autocomplete="off">
                             </div>
                         </div>
 
@@ -104,7 +105,9 @@
                                 <select class="form-control select2 <?= (session()->get('errors')['id_kategori'] ?? false) ? 'is-invalid' : ''; ?>" name="id_kategori">
                                     <option value="" hidden <?= old('id_kategori') === null ? 'selected' : ''; ?>>Pilih Kategori</option>
                                     <?php foreach ($kategori as $kat) : ?>
-                                        <option value="<?= $kat['id']; ?>" <?= old('id_kategori') == $gol['id'] ? 'selected' : ''; ?>><?= $kat['nama_kategori']; ?></option>
+                                        <option value="<?= $kat['id']; ?>" <?= old('id_kategori') == $kat['id'] ? 'selected' : ''; ?>>
+                                            <?= $kat['nama_kategori']; ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span class="input-group-append">
@@ -124,9 +127,11 @@
                             <label class="col-sm-2 col-form-label">Etiket/Aturan Pakai</label>
                             <div class="input-group col-sm-10">
                                 <select class="form-control select2 <?= (session()->get('errors')['id_etiket'] ?? false) ? 'is-invalid' : ''; ?>" name="id_etiket">
-                                    <option selected="selected" value=" " <?= old(''); ?> hidden>Pilih Etiket</option>
+                                    <option selected="selected" value=" " <?= old('id_etiket') === null ? 'selected' : ''; ?> hidden>Pilih Etiket</option>
                                     <?php foreach ($etiket as $et) : ?>
-                                        <option value="<?= $et['id']; ?>"><?= $et['nama_etiket']; ?></option>
+                                        <option value="<?= $et['id']; ?>" <?= old('id_etiket') == $et['id'] ? 'selected' : ''; ?>>
+                                            <?= $et['nama_etiket']; ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span class="input-group-append">
@@ -147,9 +152,9 @@
                                 <label class="col-sm-2 col-form-label">Konsinyasi</label>
                                 <div class="col-sm-10">
                                     <select class="form-control select2 <?= (session()->get('errors')['konsinyasi'] ?? false) ? 'is-invalid' : ''; ?>" style="width: 100%;" name="konsinyasi">
-                                        <option selected="selected" value=" " hidden>Pilih Konsinyasi</option>
-                                        <option value="konsinyasi">Konsinyasi</option>
-                                        <option value="non konsinyasi">Non Konsinyasi</option>
+                                        <option selected="selected" value="" <?= old('konsinyasi') === null ? 'selected' : ''; ?> hidden>Pilih Konsinyasi</option>
+                                        <option value="konsinyasi" <?= old('konsinyasi') == 'konsinyasi' ? 'selected' : ''; ?>>Konsinyasi</option>
+                                        <option value="non konsinyasi" <?= old('konsinyasi') == 'non konsinyasi' ? 'selected' : ''; ?>>Non Konsinyasi</option>
                                     </select>
                                     <?php if (session()->get('errors')['konsinyasi'] ?? false): ?>
                                         <div class="invalid-feedback">
@@ -178,9 +183,11 @@
                                     <label class="col-sm-2 col-form-label">Satuan</label>
                                     <div class="input-group col-sm-10">
                                         <select class="form-control select2 <?= (session()->get('errors')['id_satuan'] ?? false) ? 'is-invalid' : ''; ?>" name="id_satuan">
-                                            <option selected="selected" value=" " hidden>Pilih Satuan</option>
+                                            <option selected="selected" value=" " <?= old('id_satuan') === null ? 'selected' : ''; ?> hidden>Pilih Satuan</option>
                                             <?php foreach ($satuan as $sat) : ?>
-                                                <option value="<?= $sat['id']; ?>"><?= $sat['nama_satuan']; ?></option>
+                                                <option value="<?= $sat['id']; ?>" <?= old('id_satuan') == $sat['id'] ? 'selected' : ''; ?>>
+                                                    <?= $sat['nama_satuan']; ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                         <span class="input-group-append">
@@ -200,7 +207,7 @@
                                     <label for="stokObat" class="col-sm-2 col-form-label">Stok Obat</label>
                                     <div class="col-sm-10">
                                         <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['stok_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="stokObat"
-                                            placeholder="Input Stok Obat" name="stok_obat" autocomplete="off">
+                                            placeholder="Input Stok Obat" name="stok_obat" value="<?= old('stok_obat'); ?>" autocomplete="off">
                                         <?php if (session()->get('errors')['stok_obat'] ?? false): ?>
                                             <div class="invalid-feedback">
                                                 <?= session()->get('errors')['stok_obat']; ?>
@@ -213,7 +220,7 @@
                                     <label for="stokMin" class="col-sm-2 col-form-label">Stok Minimal</label>
                                     <div class="col-sm-10">
                                         <input type="text" inputmode="numeric" class="form-control <?= (session()->get('errors')['stok_min'] ?? false) ? 'is-invalid' : ''; ?>" id="stokMin"
-                                            placeholder="Input Stok Minimal" name="stok_min" autocomplete="off">
+                                            placeholder="Input Stok Minimal" name="stok_min" value="<?= old('stok_min'); ?>" autocomplete="off">
                                         <?php if (session()->get('errors')['stok_min'] ?? false): ?>
                                             <div class="invalid-feedback">
                                                 <?= session()->get('errors')['stok_min']; ?>
@@ -226,7 +233,7 @@
                                     <label for="stokMin" class="col-sm-2 col-form-label">Kode Rak</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control <?= (session()->get('errors')['kode_rak'] ?? false) ? 'is-invalid' : ''; ?>" id="kodeRak"
-                                            placeholder="Input Kode Rak" name="kode_rak" autocomplete="off">
+                                            placeholder="Input Kode Rak" name="kode_rak" value="<?= old('kode_rak'); ?>" autocomplete="off">
                                         <?php if (session()->get('errors')['kode_rak'] ?? false): ?>
                                             <div class="invalid-feedback">
                                                 <?= session()->get('errors')['kode_rak']; ?>
@@ -244,7 +251,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_pokok'] ?? false) ? 'is-invalid' : ''; ?>" id="harga_pokok" name="harga_pokok" placeholder="Input Harga Pokok" autocomplete="off">
+                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_pokok'] ?? false) ? 'is-invalid' : ''; ?>" id="harga_pokok" name="harga_pokok" value="<?= old('harga_pokok'); ?>" placeholder="Input Harga Pokok" autocomplete="off">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -273,7 +280,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_jual'] ?? false) ? 'is-invalid' : ''; ?>" id="harga_jual" name="harga_jual" placeholder="Input Harga Jual" autocomplete="off">
+                                            <input type="text" class="form-control <?= (session()->get('errors')['harga_jual'] ?? false) ? 'is-invalid' : ''; ?>" id="harga_jual" name="harga_jual" value="<?= old('harga_jual'); ?>" placeholder="Input Harga Jual" autocomplete="off">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -432,6 +439,11 @@
             e.preventDefault();
             tambahSatuan();
         });
+        $('#btnGenerate').click(function(e) {
+            e.preventDefault();
+            const randomBarcode = generateRandomBarcode();
+            document.getElementById('barcodeObat').value = randomBarcode;
+        });
 
     });
 
@@ -543,6 +555,26 @@
                 alert("Terjadi kesalahan:\n" + errorMessage);
             }
         });
+    }
+
+    function generateRandomBarcode() {
+        // Generate 12 digit random number (digit ke-13 adalah check digit)
+        let barcode = '';
+        for (let i = 0; i < 12; i++) {
+            barcode += Math.floor(Math.random() * 10);
+        }
+
+        // Hitung check digit (digit ke-13)
+        let sum = 0;
+        for (let i = 0; i < 12; i++) {
+            sum += parseInt(barcode[i]) * (i % 2 === 0 ? 1 : 3);
+        }
+        const checkDigit = (10 - (sum % 10)) % 10;
+
+        // Tambahkan check digit ke barcode
+        barcode += checkDigit;
+
+        return barcode;
     }
 </script>
 <?php $this->endSection(); ?>

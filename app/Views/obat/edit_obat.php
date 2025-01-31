@@ -35,15 +35,22 @@
             </ul>
         </div>
         <form action="<?= site_url('update/' . $obat['id']); ?>" method="post" class="form-horizontal">
+            <?= csrf_field(); ?>
             <div class="card-body">
                 <!-- Obat Start -->
                 <div class="tab-content" id="custom-tabs-four-tabContent">
                     <div class="tab-pane fade show active" id="detail-obat" role="tabpanel" aria-labelledby="detail-obat-tab">
                         <div class="form-group row">
                             <label for="barcodeObat" class="col-sm-2 col-form-label">Barcode Obat</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10 input-group">
                                 <input type="text" class="form-control" id="barcodeObat"
-                                    placeholder="Input Barcode Obat" name="barcode_obat" value="<?= $obat['barcode_obat']; ?>">
+                                    placeholder="Input Barcode Obat" name="barcode_obat" value="<?= (old('barcode_obat') ? old('barcode_obat') : $obat['barcode_obat']); ?>">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-default btnGenerate " id="btnGenerate">
+                                        <i class="fas fa-barcode"></i>
+                                        Generate Code
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -63,7 +70,7 @@
                             <label for="merkObat" class="col-sm-2 col-form-label">Kandungan Obat</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control <?= (session()->get('errors')['merk_obat'] ?? false) ? 'is-invalid' : ''; ?>" id="merkObat"
-                                    placeholder="Input Merk Obat" name="merk_obat" value="<?= (old('merk_obat') ? old('merk_obat') : $obat['merk_obat']); ?>">
+                                    placeholder="Input Kandungan Obat" name="merk_obat" value="<?= (old('merk_obat') ? old('merk_obat') : $obat['merk_obat']); ?>">
                                 <?php if (session()->get('errors')['merk_obat'] ?? false): ?>
                                     <div class="invalid-feedback">
                                         <?= session()->get('errors')['merk_obat']; ?>
@@ -431,6 +438,11 @@
             e.preventDefault();
             tambahSatuan();
         });
+        $('#btnGenerate').click(function(e) {
+            e.preventDefault();
+            const randomBarcode = generateRandomBarcode();
+            document.getElementById('barcodeObat').value = randomBarcode;
+        });
     });
 
     function ambilHarga() {
@@ -539,6 +551,26 @@
                 alert("Error: " + error);
             }
         });
+    }
+
+    function generateRandomBarcode() {
+        // Generate 12 digit random number (digit ke-13 adalah check digit)
+        let barcode = '';
+        for (let i = 0; i < 12; i++) {
+            barcode += Math.floor(Math.random() * 10);
+        }
+
+        // Hitung check digit (digit ke-13)
+        let sum = 0;
+        for (let i = 0; i < 12; i++) {
+            sum += parseInt(barcode[i]) * (i % 2 === 0 ? 1 : 3);
+        }
+        const checkDigit = (10 - (sum % 10)) % 10;
+
+        // Tambahkan check digit ke barcode
+        barcode += checkDigit;
+
+        return barcode;
     }
 </script>
 <?php $this->endSection(); ?>

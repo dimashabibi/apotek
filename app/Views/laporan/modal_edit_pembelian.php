@@ -9,6 +9,7 @@
                 </button>
             </div>
             <?= form_open('updatePembelian', ['class' => 'formsimpanpembelian']); ?>
+            <?= csrf_field(); ?>
             <div class="modal-body">
                 <!-- Hidden inputs -->
                 <input type="hidden" name="detail_pembelian_id" value="<?= $detail['detail_pembelian_id']; ?>">
